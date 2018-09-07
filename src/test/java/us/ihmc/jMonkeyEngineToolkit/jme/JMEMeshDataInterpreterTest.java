@@ -8,18 +8,13 @@ import com.jme3.math.Triangle;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Mesh;
 
-import us.ihmc.continuousIntegration.ContinuousIntegrationAnnotations.ContinuousIntegrationPlan;
-import us.ihmc.continuousIntegration.ContinuousIntegrationAnnotations.ContinuousIntegrationTest;
-import us.ihmc.continuousIntegration.IntegrationCategory;
 import us.ihmc.euclid.tuple3D.Point3D32;
 import us.ihmc.graphicsDescription.MeshDataGenerator;
 import us.ihmc.graphicsDescription.MeshDataHolder;
 
-@ContinuousIntegrationPlan(categories = {IntegrationCategory.UI})
 public class JMEMeshDataInterpreterTest
 {
 
-   @ContinuousIntegrationTest(estimatedDuration = 0.1)
    @Test(timeout = 30000)
    public void testForASingleTriangle()
    {
@@ -45,7 +40,6 @@ public class JMEMeshDataInterpreterTest
       assertJMEVectorEqualsPoint(triangle.get3(), vertices[2]);
    }
 
-   @ContinuousIntegrationTest(estimatedDuration = 0.0)
    @Test(timeout = 30000)
    public void testForASimpleCube()
    {

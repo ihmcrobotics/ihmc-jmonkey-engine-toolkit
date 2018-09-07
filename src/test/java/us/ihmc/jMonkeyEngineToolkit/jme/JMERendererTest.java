@@ -6,9 +6,6 @@ import java.util.concurrent.Callable;
 
 import org.junit.Test;
 
-import us.ihmc.continuousIntegration.ContinuousIntegrationAnnotations.ContinuousIntegrationPlan;
-import us.ihmc.continuousIntegration.ContinuousIntegrationAnnotations.ContinuousIntegrationTest;
-import us.ihmc.continuousIntegration.IntegrationCategory;
 import us.ihmc.euclid.geometry.Sphere3D;
 import us.ihmc.euclid.tuple3D.Vector3D;
 import us.ihmc.graphicsDescription.Graphics3DObject;
@@ -18,11 +15,9 @@ import us.ihmc.jMonkeyEngineToolkit.Graphics3DFrameListener;
 import us.ihmc.jMonkeyEngineToolkit.utils.CoordinateFrameNode;
 import us.ihmc.jMonkeyEngineToolkit.utils.FlatHeightMap;
 
-@ContinuousIntegrationPlan(categories={IntegrationCategory.UI})
 public class JMERendererTest
 {
 
-	@ContinuousIntegrationTest(estimatedDuration = 0.1)
 	@Test(timeout = 30000)
    public void testInitialization()
    {
@@ -39,7 +34,6 @@ public class JMERendererTest
     * Ground should flash on and off a few times.
     */
 
-	@ContinuousIntegrationTest(estimatedDuration = 2.1)
 	@Test(timeout = 30000)
    public void testSetGroundVisible()
    {
@@ -65,7 +59,6 @@ public class JMERendererTest
     * Should see a sphere orbit in a circle and leave 5 copies of itself along the way.
     */
 
-	@ContinuousIntegrationTest(estimatedDuration = 3.1)
 	@Test(timeout = 30000)
    public void testFreezeFrame()
    {
