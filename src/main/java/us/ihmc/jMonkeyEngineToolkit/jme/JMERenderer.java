@@ -27,7 +27,6 @@ import javax.swing.JComponent;
 import javax.swing.RepaintManager;
 
 import com.google.common.collect.HashBiMap;
-import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.AssetConfig;
 import com.jme3.asset.AssetManager;
@@ -61,7 +60,6 @@ import jme3dae.ColladaLoader;
 import jme3dae.collada14.ColladaDocumentV14;
 import jme3dae.materials.FXBumpMaterialGenerator;
 import us.ihmc.commons.MathTools;
-import us.ihmc.commons.PrintTools;
 import us.ihmc.commons.exception.DefaultExceptionHandler;
 import us.ihmc.commons.nio.FileTools;
 import us.ihmc.commons.nio.PathTools;
@@ -99,6 +97,7 @@ import us.ihmc.jMonkeyEngineToolkit.jme.util.JMEDataTypeUtils;
 import us.ihmc.jMonkeyEngineToolkit.jme.util.JMEGeometryUtils;
 import us.ihmc.jMonkeyEngineToolkit.jme.util.JMENodeTools;
 import us.ihmc.jMonkeyEngineToolkit.stlLoader.STLLoader;
+import us.ihmc.log.LogTools;
 import us.ihmc.tools.thread.CloseableAndDisposable;
 import us.ihmc.tools.thread.CloseableAndDisposableRegistry;
 
@@ -417,14 +416,14 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
       {
          if (DEBUG_GPU_LIDAR_PARALLEL_SCENE)
          {
-            System.out.println(PrintTools.DEBUG + "Adding " + PBOAwtPanelsContext.class.getSimpleName() + " listener.");
+            LogTools.debug("Adding " + PBOAwtPanelsContext.class.getSimpleName() + " listener.");
          }
          ((PBOAwtPanelsContext) getContext()).addPBOAwtPanelListener(this);
          pboAwtPanels = ((PBOAwtPanelsContext) getContext()).getPanelList();
       }
       else
       {
-         System.out.println(PrintTools.DEBUG + "Context is not of type " + PBOAwtPanelsContext.class.getSimpleName());
+         LogTools.debug("Context is not of type " + PBOAwtPanelsContext.class.getSimpleName());
       }
    }
 
@@ -962,7 +961,7 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
    @Override
    public void isShowing(PBOAwtPanel pboAwtPanel)
    {
-      PrintTools.info(this, "A " + pboAwtPanel.getClass().getSimpleName() + " showed on screen.");
+      LogTools.info("A " + pboAwtPanel.getClass().getSimpleName() + " showed on screen.");
 
       addRepaintListeners(pboAwtPanel);
 
@@ -1101,7 +1100,7 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
    {
       if (DEBUG_GPU_LIDAR_PARALLEL_SCENE)
       {
-         PrintTools.debug(this, "Creating " + pboAwtPanel.getClass().getSimpleName());
+         LogTools.debug("Creating " + pboAwtPanel.getClass().getSimpleName());
       }
    }
 
@@ -1117,7 +1116,7 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
          }
 
          notifyRepaint();
-         PrintTools.info(this, "GPULidar scene updated. Took " + MathTools.roundToSignificantFigures(timer.totalElapsed(), 2) + " s");
+         LogTools.info("GPULidar scene updated. Took " + MathTools.roundToSignificantFigures(timer.totalElapsed(), 2) + " s");
       }
    }
 

@@ -2,12 +2,12 @@ package us.ihmc.jMonkeyEngineToolkit.camera;
 
 import java.awt.image.BufferedImage;
 
-import us.ihmc.commons.PrintTools;
 import us.ihmc.euclid.tuple3D.interfaces.Point3DReadOnly;
 import us.ihmc.euclid.tuple4D.interfaces.QuaternionReadOnly;
 import us.ihmc.graphicsDescription.image.ImageCallback;
 import us.ihmc.jMonkeyEngineToolkit.CameraAdapter;
 import us.ihmc.jMonkeyEngineToolkit.Graphics3DAdapter;
+import us.ihmc.log.LogTools;
 import us.ihmc.tools.TimestampProvider;
 
 public class OffscreenBufferVideoServer   
@@ -33,7 +33,7 @@ public class OffscreenBufferVideoServer
       CameraUpdater cameraUpdater = new CameraUpdater();
       this.imageCallback = imageCallback;
       this.timestampProvider = timestampProvider;
-      PrintTools.info(this, "Starting video stream");
+      LogTools.info("Starting video stream");
       viewport.getCaptureDevice().streamTo(cameraUpdater, framesPerSecond);
 
    }
