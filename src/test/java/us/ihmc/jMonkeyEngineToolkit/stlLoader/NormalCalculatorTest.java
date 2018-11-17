@@ -24,9 +24,6 @@ import java.io.InputStream;
 
 import org.junit.Test;
 
-import us.ihmc.continuousIntegration.ContinuousIntegrationAnnotations.ContinuousIntegrationPlan;
-import us.ihmc.continuousIntegration.ContinuousIntegrationAnnotations.ContinuousIntegrationTest;
-import us.ihmc.continuousIntegration.IntegrationCategory;
 
 /**
  * Test the normal calculation routine based on the normals in the the teapotBinary.STL model.
@@ -34,11 +31,9 @@ import us.ihmc.continuousIntegration.IntegrationCategory;
  * @author Jesper Smith
  *
  */
-@ContinuousIntegrationPlan(categories={IntegrationCategory.UI})
 public class NormalCalculatorTest
 {
 
-	@ContinuousIntegrationTest(estimatedDuration = 0.0)
 	@Test(timeout = 30000)
    public void testNormalsBasedOnTeapot() throws IOException
    {

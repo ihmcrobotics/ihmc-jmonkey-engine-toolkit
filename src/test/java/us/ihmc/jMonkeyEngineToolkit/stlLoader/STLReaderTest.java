@@ -25,9 +25,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import us.ihmc.continuousIntegration.ContinuousIntegrationAnnotations.ContinuousIntegrationPlan;
-import us.ihmc.continuousIntegration.ContinuousIntegrationAnnotations.ContinuousIntegrationTest;
-import us.ihmc.continuousIntegration.IntegrationCategory;
 
 /**
  * Test loading of STL files based on a hand crafted STL files with three triangles and known values.
@@ -39,11 +36,9 @@ import us.ihmc.continuousIntegration.IntegrationCategory;
  *
  */
 
-@ContinuousIntegrationPlan(categories = IntegrationCategory.IN_DEVELOPMENT)
 public class STLReaderTest
 {
 
-	@ContinuousIntegrationTest(estimatedDuration = 0.0)
 	@Test(timeout = 30000)
    public void testASCIILoad() throws IOException
    {
@@ -55,7 +50,6 @@ public class STLReaderTest
       checkData(reader);
    }
 
-	@ContinuousIntegrationTest(estimatedDuration = 0.0)
 	@Test(timeout = 30000)
    public void testBinaryLoad() throws IOException
    {

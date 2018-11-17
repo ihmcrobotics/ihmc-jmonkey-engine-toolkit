@@ -2,20 +2,15 @@ package us.ihmc.jMonkeyEngineToolkit;
 
 import org.junit.Test;
 
-import us.ihmc.continuousIntegration.ContinuousIntegrationAnnotations.ContinuousIntegrationPlan;
-import us.ihmc.continuousIntegration.ContinuousIntegrationAnnotations.ContinuousIntegrationTest;
 import us.ihmc.euclid.geometry.Sphere3D;
-import us.ihmc.continuousIntegration.IntegrationCategory;
 import us.ihmc.graphicsDescription.Graphics3DObject;
 import us.ihmc.graphicsDescription.appearance.YoAppearance;
 import us.ihmc.graphicsDescription.structure.Graphics3DNode;
 import us.ihmc.jMonkeyEngineToolkit.jme.JMEGraphics3DAdapter;
 
-@ContinuousIntegrationPlan(categories={IntegrationCategory.UI})
 public class Graphics3DWorldTest
 {
 
-	@ContinuousIntegrationTest(estimatedDuration = 1.2)
 	@Test(timeout = 30000)
    public void testShowGui()
    {
@@ -25,7 +20,6 @@ public class Graphics3DWorldTest
       world.stop();
    }
 
-	@ContinuousIntegrationTest(estimatedDuration = 1.1)
 	@Test(timeout = 30000)
    public void testWithoutGui()
    {
@@ -35,7 +29,6 @@ public class Graphics3DWorldTest
       world.stop();
    }
 
-	@ContinuousIntegrationTest(estimatedDuration = 1.1)
 	@Test(timeout = 30000)
    public void addASphere()
    {
@@ -46,7 +39,6 @@ public class Graphics3DWorldTest
       world.stop();
    }
 
-	@ContinuousIntegrationTest(estimatedDuration = 1.1)
 	@Test(timeout = 30000)
    public void addASphereAfterGuiStarted()
    {
@@ -57,7 +49,6 @@ public class Graphics3DWorldTest
       world.stop();
    }
 
-	@ContinuousIntegrationTest(estimatedDuration = 1.1)
 	@Test(timeout = 30000)
    public void testSetCameraPosition()
    {
@@ -69,7 +60,6 @@ public class Graphics3DWorldTest
       world.stop();
    }
 
-	@ContinuousIntegrationTest(estimatedDuration = 1.1)
 	@Test(timeout = 30000)
    public void fixCameraOnSphere()
    {

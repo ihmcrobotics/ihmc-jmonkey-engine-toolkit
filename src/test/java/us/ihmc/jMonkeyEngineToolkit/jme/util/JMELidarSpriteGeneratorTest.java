@@ -13,14 +13,10 @@ import com.jme3.collision.CollisionResults;
 import com.jme3.math.Ray;
 import com.jme3.math.Vector3f;
 
-import us.ihmc.continuousIntegration.ContinuousIntegrationAnnotations.ContinuousIntegrationPlan;
-import us.ihmc.continuousIntegration.ContinuousIntegrationAnnotations.ContinuousIntegrationTest;
-import us.ihmc.continuousIntegration.IntegrationCategory;
 import us.ihmc.euclid.tuple3D.Point3D32;
 import us.ihmc.jMonkeyEngineToolkit.jme.JMERenderer;
 import us.ihmc.commons.thread.ThreadTools;
 
-@ContinuousIntegrationPlan(categories = { IntegrationCategory.UI })
 /**
  * Tests for point cloud collision stuff in JMELidarSpriteGenerator 
  *
@@ -59,7 +55,6 @@ public class JMELidarSpriteGeneratorTest
     * Not sure if we actually want this
     */
    @Ignore
-   @ContinuousIntegrationTest(estimatedDuration = 0.1)
    @Test(timeout = 300000)
    public void testCollideWithSimple()
    {
@@ -83,7 +78,6 @@ public class JMELidarSpriteGeneratorTest
     * Tests intersection against zero points.
     */
 
-	@ContinuousIntegrationTest(estimatedDuration = 0.1)
    @Test(timeout = 30000)
    public void testEmptyCollide()
    {
@@ -101,7 +95,6 @@ public class JMELidarSpriteGeneratorTest
     * Not sure if we actually want this
     */
    @Ignore
-   @ContinuousIntegrationTest(estimatedDuration = 0.1)
    @Test(timeout = 300000)
    public void testMultiplePointsOneLine()
    {
@@ -123,7 +116,6 @@ public class JMELidarSpriteGeneratorTest
     * Tests a case when there is no intersection with the point cloud. 
     */
 
-	@ContinuousIntegrationTest(estimatedDuration = 1.4)
    @Test(timeout = 30000)
    public void testMultiplePointsNoMatch()
    {

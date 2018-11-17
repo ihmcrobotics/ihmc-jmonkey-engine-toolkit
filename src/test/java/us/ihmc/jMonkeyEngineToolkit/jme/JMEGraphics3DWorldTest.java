@@ -10,18 +10,13 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Sphere;
 
-import us.ihmc.continuousIntegration.ContinuousIntegrationAnnotations.ContinuousIntegrationPlan;
-import us.ihmc.continuousIntegration.ContinuousIntegrationAnnotations.ContinuousIntegrationTest;
 import us.ihmc.euclid.geometry.Sphere3D;
-import us.ihmc.continuousIntegration.IntegrationCategory;
 import us.ihmc.graphicsDescription.Graphics3DObject;
 import us.ihmc.graphicsDescription.structure.Graphics3DNode;
 
-@ContinuousIntegrationPlan(categories={IntegrationCategory.UI})
 public class JMEGraphics3DWorldTest
 {
 
-	@ContinuousIntegrationTest(estimatedDuration = 1.2)
 	@Test(timeout = 30000)
    public void testShowGui()
    {
@@ -33,7 +28,6 @@ public class JMEGraphics3DWorldTest
       world.stop();
    }
 
-	@ContinuousIntegrationTest(estimatedDuration = 1.1)
 	@Test(timeout = 30000)
    public void testWithoutGui()
    {
@@ -45,7 +39,6 @@ public class JMEGraphics3DWorldTest
       world.stop();
    }
 
-	@ContinuousIntegrationTest(estimatedDuration = 1.1)
 	@Test(timeout = 30000)
    public void addASphere()
    {
@@ -58,7 +51,6 @@ public class JMEGraphics3DWorldTest
       world.stop();
    }
 
-	@ContinuousIntegrationTest(estimatedDuration = 1.1)
 	@Test(timeout = 30000)
    public void addASphereAfterGuiStarted()
    {
@@ -71,7 +63,6 @@ public class JMEGraphics3DWorldTest
       world.stop();
    }
 
-	@ContinuousIntegrationTest(estimatedDuration = 1.1)
 	@Test(timeout = 30000)
    public void addAJMESphere()
    {
@@ -94,7 +85,6 @@ public class JMEGraphics3DWorldTest
       world.stop();
    }
 
-	@ContinuousIntegrationTest(estimatedDuration = 1.1)
 	@Test(timeout = 30000)
    public void testSetCameraPosition()
    {
@@ -108,7 +98,6 @@ public class JMEGraphics3DWorldTest
       world.stop();
    }
 
-	@ContinuousIntegrationTest(estimatedDuration = 1.1)
 	@Test(timeout = 30000)
    public void fixCameraOnSphere()
    {

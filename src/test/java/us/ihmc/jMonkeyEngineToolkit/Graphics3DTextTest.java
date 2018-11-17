@@ -2,23 +2,18 @@ package us.ihmc.jMonkeyEngineToolkit;
 
 import org.junit.Test;
 
-import us.ihmc.continuousIntegration.ContinuousIntegrationAnnotations.ContinuousIntegrationPlan;
-import us.ihmc.continuousIntegration.ContinuousIntegrationAnnotations.ContinuousIntegrationTest;
 import us.ihmc.euclid.Axis;
-import us.ihmc.continuousIntegration.IntegrationCategory;
 import us.ihmc.graphicsDescription.Graphics3DObject;
 import us.ihmc.graphicsDescription.appearance.YoAppearance;
 import us.ihmc.graphicsDescription.instructions.Graphics3DAddExtrusionInstruction;
 import us.ihmc.graphicsDescription.structure.Graphics3DNode;
 import us.ihmc.jMonkeyEngineToolkit.jme.JMEGraphics3DAdapter;
 
-@ContinuousIntegrationPlan(categories={IntegrationCategory.UI})
 public class Graphics3DTextTest implements Graphics3DFrameListener
 {
    int counter = 0;
    Graphics3DAddExtrusionInstruction instruction;
 
-	@ContinuousIntegrationTest(estimatedDuration = 4.0)
 	@Test(timeout = 30000)
    public void testTextDisplay()
    {

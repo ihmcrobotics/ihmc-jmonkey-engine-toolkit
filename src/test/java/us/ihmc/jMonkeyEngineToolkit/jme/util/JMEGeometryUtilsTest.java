@@ -10,7 +10,6 @@ import com.jme3.math.Quaternion;
 import com.jme3.math.Transform;
 import com.jme3.math.Vector3f;
 
-import us.ihmc.continuousIntegration.ContinuousIntegrationAnnotations.ContinuousIntegrationTest;
 import us.ihmc.euclid.axisAngle.AxisAngle;
 import us.ihmc.euclid.matrix.RotationMatrix;
 import us.ihmc.euclid.tools.EuclidCoreRandomTools;
@@ -28,7 +27,6 @@ import us.ihmc.euclid.tuple4D.interfaces.QuaternionBasics;
 public class JMEGeometryUtilsTest
 {
 
-	@ContinuousIntegrationTest(estimatedDuration = 0.0)
 	@Test(timeout = 30000)
    public void testGetInverse()
    {
@@ -47,7 +45,6 @@ public class JMEGeometryUtilsTest
       }
    }
 
-	@ContinuousIntegrationTest(estimatedDuration = 0.0)
 	@Test(timeout = 30000)
    public void testTransformFromJMECoordinatesToZup()
    {
@@ -85,7 +82,6 @@ public class JMEGeometryUtilsTest
       assertTrue(expectedAnswer.epsilonEquals(originalVectorTransformedToZup, 1e-6));
    }
 
-	@ContinuousIntegrationTest(estimatedDuration = 0.0)
 	@Test(timeout = 30000)
    public void testTransformFromJMECoordinatesToZupWithItsInverse()
    {
@@ -101,7 +97,6 @@ public class JMEGeometryUtilsTest
       }
    }
 
-	@ContinuousIntegrationTest(estimatedDuration = 0.0)
 	@Test(timeout = 30000)
    public void testTransformFromJMECoordinatesToZupWith90RotAboutX()
    {
@@ -159,7 +154,6 @@ public class JMEGeometryUtilsTest
       assertTrue(expectedAnswer.epsilonEquals(originalVectorTransformedToZup, 1e-6));
    }
 
-	@ContinuousIntegrationTest(estimatedDuration = 0.0)
 	@Test(timeout = 30000)
    public void testTransformFromZupToJMECoordinates()
    {
@@ -193,7 +187,6 @@ public class JMEGeometryUtilsTest
       assertTrue(areVectorsEqual(expectedAnswer, pointTransformed));
    }
 
-	@ContinuousIntegrationTest(estimatedDuration = 0.0)
 	@Test(timeout = 30000)
    public void testTransformFromJMECoordinatesToZupPoint()
    {
@@ -223,7 +216,6 @@ public class JMEGeometryUtilsTest
       assertTrue(areVectorsEqual(expectedAnswer, pointTransformed));
    }
 
-	@ContinuousIntegrationTest(estimatedDuration = 0.0)
 	@Test(timeout = 30000)
    public void testTransformFromZupToJMECoordinatesQuaternion()
    {
@@ -240,7 +232,6 @@ public class JMEGeometryUtilsTest
 //      transformFromZupToJMECoordinates(Quaternion rotation)
    }
 
-	@ContinuousIntegrationTest(estimatedDuration = 0.0)
 	@Test(timeout = 30000)
    public void testRotationsFromAndToJMEToZupCoordinates()
    {

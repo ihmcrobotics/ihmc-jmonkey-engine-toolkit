@@ -8,15 +8,11 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.JUnitCore;
 
-import us.ihmc.continuousIntegration.ContinuousIntegrationAnnotations.ContinuousIntegrationPlan;
-import us.ihmc.continuousIntegration.ContinuousIntegrationAnnotations.ContinuousIntegrationTest;
-import us.ihmc.continuousIntegration.IntegrationCategory;
 import us.ihmc.jMonkeyEngineToolkit.jme.lidar.manual.JMELidar120FovTest;
 import us.ihmc.jMonkeyEngineToolkit.jme.lidar.manual.JMELidar360FovTest;
 import us.ihmc.jMonkeyEngineToolkit.jme.lidar.manual.JMELidar60FovTest;
 import us.ihmc.jMonkeyEngineToolkit.jme.lidar.manual.JMELidarSphere270FovTest;
 
-@ContinuousIntegrationPlan(categories={IntegrationCategory.UI})
 public class JMEGPULidarTest implements LidarTestListener
 {
    private static final boolean TEST_MANUALLY = false;
@@ -52,7 +48,6 @@ public class JMEGPULidarTest implements LidarTestListener
       lidarTest.getWorld().stop();
    }
 
-	@ContinuousIntegrationTest(estimatedDuration = 5.5)
 	@Test(timeout = 30000)
    public void test60DegreeFieldOfView()
    {
@@ -60,7 +55,6 @@ public class JMEGPULidarTest implements LidarTestListener
       doATest(parameters);
    }
 
-	@ContinuousIntegrationTest(estimatedDuration = 4.7)
 	@Test(timeout = 30000)
    public void test120DegreeFieldOfView()
    {
@@ -68,7 +62,6 @@ public class JMEGPULidarTest implements LidarTestListener
       doATest(parameters);
    }
 
-	@ContinuousIntegrationTest(estimatedDuration = 4.2)
 	@Test(timeout = 30000)
    public void test360DegreeFieldOfView()
    {
@@ -76,7 +69,6 @@ public class JMEGPULidarTest implements LidarTestListener
       doATest(parameters);
    }
 
-	@ContinuousIntegrationTest(estimatedDuration = 4.5)
 	@Test(timeout = 30000)
    public void test270DegreeFieldOfView()
    {

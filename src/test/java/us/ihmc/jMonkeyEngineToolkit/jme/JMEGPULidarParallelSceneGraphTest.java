@@ -4,9 +4,6 @@ import java.util.concurrent.Callable;
 
 import org.junit.Test;
 
-import us.ihmc.continuousIntegration.ContinuousIntegrationAnnotations.ContinuousIntegrationPlan;
-import us.ihmc.continuousIntegration.ContinuousIntegrationAnnotations.ContinuousIntegrationTest;
-import us.ihmc.continuousIntegration.IntegrationCategory;
 import us.ihmc.euclid.Axis;
 import us.ihmc.euclid.geometry.Sphere3D;
 import us.ihmc.euclid.transform.RigidBodyTransform;
@@ -23,14 +20,12 @@ import us.ihmc.jMonkeyEngineToolkit.jme.lidar.LidarTestScan;
 import us.ihmc.jMonkeyEngineToolkit.jme.util.JMELidarScanVisualizer;
 import us.ihmc.jMonkeyEngineToolkit.utils.FlatHeightMap;
 
-@ContinuousIntegrationPlan(categories={IntegrationCategory.UI})
 public class JMEGPULidarParallelSceneGraphTest
 {
    /**
     * The blue sphere should not show up in the lidar data.
     */
 
-	@ContinuousIntegrationTest(estimatedDuration = 10.2)
 	@Test(timeout = 51000)
    public void testGPULidarParallelSceneGraph()
    {
