@@ -14,7 +14,8 @@ import javax.swing.JPanel;
 
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 
-import us.ihmc.euclid.geometry.Sphere3D;
+import us.ihmc.commons.thread.ThreadTools;
+import us.ihmc.euclid.shape.Sphere3D;
 import us.ihmc.euclid.transform.AffineTransform;
 import us.ihmc.euclid.tuple3D.Point3D;
 import us.ihmc.euclid.tuple3D.Vector3D;
@@ -34,7 +35,6 @@ import us.ihmc.jMonkeyEngineToolkit.camera.ClassicCameraController;
 import us.ihmc.jMonkeyEngineToolkit.camera.SimpleCameraTrackingAndDollyPositionHolder;
 import us.ihmc.jMonkeyEngineToolkit.camera.ViewportAdapter;
 import us.ihmc.tools.inputDevices.keyboard.ModifierKeyInterface;
-import us.ihmc.commons.thread.ThreadTools;
 
 public class GraphicsDemoTools
 {

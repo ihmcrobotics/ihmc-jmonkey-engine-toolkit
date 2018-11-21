@@ -6,7 +6,7 @@ import java.util.concurrent.Callable;
 
 import org.junit.Test;
 
-import us.ihmc.euclid.geometry.Sphere3D;
+import us.ihmc.euclid.shape.Sphere3D;
 import us.ihmc.euclid.tuple3D.Vector3D;
 import us.ihmc.graphicsDescription.Graphics3DObject;
 import us.ihmc.graphicsDescription.appearance.YoAppearance;

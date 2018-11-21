@@ -1,7 +1,7 @@
 package us.ihmc.jMonkeyEngineToolkit.jme.lidar;
 
 import us.ihmc.euclid.Axis;
-import us.ihmc.euclid.geometry.Sphere3D;
+import us.ihmc.euclid.shape.Sphere3D;
 import us.ihmc.euclid.transform.AffineTransform;
 import us.ihmc.euclid.transform.RigidBodyTransform;
 import us.ihmc.euclid.tuple3D.Point3D;
