@@ -11,7 +11,7 @@ import com.jme3.scene.Node;
 import com.jme3.scene.shape.Sphere;
 
 import us.ihmc.euclid.Axis;
-import us.ihmc.euclid.geometry.Sphere3D;
+import us.ihmc.euclid.shape.Sphere3D;
 import us.ihmc.graphicsDescription.Graphics3DObject;
 import us.ihmc.graphicsDescription.appearance.YoAppearance;
 import us.ihmc.graphicsDescription.structure.Graphics3DNode;

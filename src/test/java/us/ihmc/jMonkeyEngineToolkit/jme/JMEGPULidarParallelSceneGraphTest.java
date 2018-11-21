@@ -5,7 +5,7 @@ import java.util.concurrent.Callable;
 import org.junit.Test;
 
 import us.ihmc.euclid.Axis;
-import us.ihmc.euclid.geometry.Sphere3D;
+import us.ihmc.euclid.shape.Sphere3D;
 import us.ihmc.euclid.transform.RigidBodyTransform;
 import us.ihmc.graphicsDescription.Graphics3DObject;
 import us.ihmc.graphicsDescription.appearance.AppearanceDefinition;

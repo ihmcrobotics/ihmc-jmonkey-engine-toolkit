@@ -1,12 +1,12 @@
 package us.ihmc.jMonkeyEngineToolkit.camera;
 
-import us.ihmc.commons.PrintTools;
 import us.ihmc.euclid.tuple3D.interfaces.Point3DReadOnly;
 import us.ihmc.euclid.tuple4D.interfaces.QuaternionReadOnly;
 import us.ihmc.graphicsDescription.image.DepthImage;
 import us.ihmc.graphicsDescription.image.DepthImageCallback;
 import us.ihmc.jMonkeyEngineToolkit.CameraAdapter;
 import us.ihmc.jMonkeyEngineToolkit.Graphics3DAdapter;
+import us.ihmc.log.LogTools;
 import us.ihmc.tools.TimestampProvider;
 
 public class OffscreenBufferDepthImageServer   
@@ -38,7 +38,7 @@ public class OffscreenBufferDepthImageServer
       CameraUpdater cameraUpdater = new CameraUpdater();
       this.depthImageCallback = imageCallback;
       this.timestampProvider = timestampProvider;
-      PrintTools.info(this, "Starting RGBD stream");
+      LogTools.info("Starting RGBD stream");
       viewport.getCaptureDevice().streamTo(cameraUpdater, framesPerSecond);
 
    }
