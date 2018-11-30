@@ -17,12 +17,12 @@
  */
 package us.ihmc.jMonkeyEngineToolkit.stlLoader;
 
-import static org.junit.Assert.*;
+import static us.ihmc.robotics.Assert.*;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 
 /**
@@ -34,7 +34,7 @@ import org.junit.Test;
 public class NormalCalculatorTest
 {
 
-	@Test(timeout = 30000)
+	@Test// timeout = 30000
    public void testNormalsBasedOnTeapot() throws IOException
    {
       InputStream stream = getClass().getClassLoader().getResourceAsStream("teapotBinary.STL");

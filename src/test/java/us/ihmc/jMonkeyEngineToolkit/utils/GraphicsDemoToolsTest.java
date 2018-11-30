@@ -1,11 +1,11 @@
 package us.ihmc.jMonkeyEngineToolkit.utils;
 
-import static org.junit.Assert.*;
+import static us.ihmc.robotics.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import us.ihmc.euclid.tuple3D.Point3D;
 import us.ihmc.graphicsDescription.appearance.YoAppearance;
@@ -14,7 +14,7 @@ import us.ihmc.graphicsDescription.structure.Graphics3DNode;
 public class GraphicsDemoToolsTest
 {
 
-	@Test(timeout = 30000)
+	@Test// timeout = 30000
    public void testCreatePointCloud()
    {
       List<Point3D> worldPoints = new ArrayList<Point3D>();

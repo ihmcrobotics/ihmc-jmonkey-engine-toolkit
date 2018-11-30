@@ -2,7 +2,7 @@ package us.ihmc.jMonkeyEngineToolkit.jme.util;
 
 import java.util.Random;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import us.ihmc.euclid.tools.EuclidCoreRandomTools;
 import us.ihmc.euclid.transform.RigidBodyTransform;
@@ -10,7 +10,7 @@ import us.ihmc.euclid.transform.RigidBodyTransform;
 public class JMEDataTypeUtilsTest
 {
 
-	@Test(timeout = 30000)
+	@Test// timeout = 30000
    public void testTransforms()
    {
       for (int i = 0; i < 1000; i++)
