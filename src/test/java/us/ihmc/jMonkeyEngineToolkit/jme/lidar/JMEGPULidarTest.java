@@ -1,16 +1,17 @@
 package us.ihmc.jMonkeyEngineToolkit.jme.lidar;
 
-import static us.ihmc.robotics.Assert.*;
-
-import java.util.concurrent.LinkedBlockingQueue;
-
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
 import us.ihmc.jMonkeyEngineToolkit.jme.lidar.manual.JMELidar120FovTest;
 import us.ihmc.jMonkeyEngineToolkit.jme.lidar.manual.JMELidar360FovTest;
 import us.ihmc.jMonkeyEngineToolkit.jme.lidar.manual.JMELidar60FovTest;
 import us.ihmc.jMonkeyEngineToolkit.jme.lidar.manual.JMELidarSphere270FovTest;
+
+import java.time.Duration;
+import java.util.concurrent.LinkedBlockingQueue;
+
+import static us.ihmc.robotics.Assert.assertTrue;
 
 /**
  * For some reason, this class cannot be run with -ea (enable assertions)
@@ -70,14 +71,16 @@ public class JMEGPULidarTest implements LidarTestListener
 
    private void doATest(LidarTestParameters parameters)
    {
-      lidarTest = new JMEGPULidarTestEnviroment();
+      Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
+         lidarTest = new JMEGPULidarTestEnviroment();
 
-      if (TEST_MANUALLY)
-         lidarTest.testManually(parameters, this);
-      else
-         lidarTest.testAutomatically(parameters, this);
+         if (TEST_MANUALLY)
+            lidarTest.testManually(parameters, this);
+         else
+            lidarTest.testAutomatically(parameters, this);
 
-      beginAssertingLidarScans();
+         beginAssertingLidarScans();
+      });
    }
 
    private void beginAssertingLidarScans()
