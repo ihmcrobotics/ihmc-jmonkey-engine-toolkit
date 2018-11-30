@@ -12,6 +12,11 @@ import us.ihmc.jMonkeyEngineToolkit.jme.lidar.manual.JMELidar360FovTest;
 import us.ihmc.jMonkeyEngineToolkit.jme.lidar.manual.JMELidar60FovTest;
 import us.ihmc.jMonkeyEngineToolkit.jme.lidar.manual.JMELidarSphere270FovTest;
 
+/**
+ * For some reason, this class cannot be run with -ea (enable assertions)
+ * An internal JME assert fails if you do. Not sure what to do about it,
+ * but it'll likely be a difficult problem to solve.
+ */
 public class JMEGPULidarTest implements LidarTestListener
 {
    private static final boolean TEST_MANUALLY = false;
