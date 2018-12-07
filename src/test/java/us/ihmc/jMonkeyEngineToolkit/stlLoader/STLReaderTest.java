@@ -50,6 +50,8 @@ public class STLReaderTest
    {
 
       JMEGraphics3DWorld world = new JMEGraphics3DWorld("testWorld", new JMEGraphics3DAdapter());
+      world.startWithGui();
+      ThreadTools.sleep(2);
       AssetManager assetManager = (world.getGraphics3DAdapter()).getRenderer().getAssetManager();
       ModelKey modelKey = new ModelKey("testASCIISTL.STL");
       UrlAssetInfo urlAssetInfo = UrlAssetInfo.create(assetManager, modelKey, getClass().getClassLoader().getResource("testASCIISTL.STL"));
