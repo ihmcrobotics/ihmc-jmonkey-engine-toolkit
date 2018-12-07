@@ -19,20 +19,20 @@ public class JMERayCollisionAdapterTest
    {
 //      ThreadTools.sleep(10000); // Put this in to give me time to attach the debugger to this test.
       JMEGraphics3DWorld world = new JMEGraphics3DWorld(new JMEGraphics3DAdapter());
-      
+      world.startWithGui();
+
       double CUBE_SIDE = 2.0;
       double CUBE_X = 2.0;
       double ERROR_TOLERANCE = 1e-6;
       double EXPECTED_BOX_CONTACT_X = 1.0;
-      
+
       Graphics3DObject cubeGraphics = new Graphics3DObject();
       cubeGraphics.translate(new Vector3D(CUBE_X, 0, -1));
       cubeGraphics.addCube(CUBE_SIDE, CUBE_SIDE, CUBE_SIDE);
 
       world.addChild(new Graphics3DNode("CubeNode", cubeGraphics));
-      
-      world.startWithGui();
-      
+
+
       world.keepAlive(0.1); // Needs to happen so scene graph initializes properly!
       
       Line3D ray3d = new Line3D(new Point3D(0.0, 0.0, 0.0), new Vector3D(1.0, 0.0, 0.0));
