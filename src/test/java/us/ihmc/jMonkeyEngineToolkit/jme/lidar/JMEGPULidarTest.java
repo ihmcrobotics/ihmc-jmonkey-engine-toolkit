@@ -73,7 +73,7 @@ public class JMEGPULidarTest implements LidarTestListener
 
    private void doATest(LidarTestParameters parameters)
    {
-      Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
+      Assertions.assertTimeout(Duration.ofSeconds(30), () -> {
          lidarTest = new JMEGPULidarTestEnviroment();
 
          if (TEST_MANUALLY)
