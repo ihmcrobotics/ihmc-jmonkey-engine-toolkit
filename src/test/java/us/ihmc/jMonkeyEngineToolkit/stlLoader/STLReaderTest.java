@@ -65,7 +65,7 @@ public class STLReaderTest
    {
 
       JMEGraphics3DWorld world = new JMEGraphics3DWorld("testWorld", new JMEGraphics3DAdapter());
-      world.startWithoutGui();
+      world.startWithGui();
       ThreadTools.sleep(2);
       AssetManager assetManager = (world.getGraphics3DAdapter()).getRenderer().getAssetManager();
       ModelKey modelKey = new ModelKey("testBinarySTL.STL");
