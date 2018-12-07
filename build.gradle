@@ -19,7 +19,7 @@ fast.enableAssertions = false
 
 def gui = categories.create("gui")
 gui.enableAssertions = false
-gui.classesPerJVM = 1
+gui.classesPerJVM = 0
 gui.maxJVMs = 1
 
 mainDependencies {
