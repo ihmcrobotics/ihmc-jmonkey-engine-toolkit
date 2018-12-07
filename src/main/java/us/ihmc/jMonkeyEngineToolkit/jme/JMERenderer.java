@@ -965,7 +965,7 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
 
       addRepaintListeners(pboAwtPanel);
 
-      if (!gpuLidars.isEmpty())
+      if (gpuLidars != null && !gpuLidars.isEmpty())
       {
          updateGPULidarScenes();
       }

@@ -39,6 +39,7 @@ import us.ihmc.jMonkeyEngineToolkit.jme.context.PBOAwtPanelsContext;
 import us.ihmc.jMonkeyEngineToolkit.jme.input.JMEInputManager;
 import us.ihmc.jMonkeyEngineToolkit.jme.util.JMEDataTypeUtils;
 import us.ihmc.jMonkeyEngineToolkit.jme.util.JMEGeometryUtils;
+import us.ihmc.log.LogTools;
 
 public class JMEViewportAdapter extends ViewportAdapter implements InputMapSetter, SceneProcessor
 {
@@ -166,6 +167,12 @@ public class JMEViewportAdapter extends ViewportAdapter implements InputMapSette
          else if (context instanceof PBOAwtPanelsContext)
          {
             PBOAwtPanel awtPanel = ((PBOAwtPanelsContext) context).createPanel();
+            if (awtPanel == null)
+            {
+               LogTools.warn("Waiting for AWT panel to show...");
+               while ((awtPanel = ((PBOAwtPanelsContext) context).createPanel()) != null)
+                  ;
+            }
             jmeRenderer.addRepaintListeners(awtPanel);
             awtPanel.attachTo(isMainViewport, viewPort);
             panel = awtPanel;
