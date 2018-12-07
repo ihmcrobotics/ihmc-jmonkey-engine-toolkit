@@ -167,12 +167,6 @@ public class JMEViewportAdapter extends ViewportAdapter implements InputMapSette
          else if (context instanceof PBOAwtPanelsContext)
          {
             PBOAwtPanel awtPanel = ((PBOAwtPanelsContext) context).createPanel();
-            if (awtPanel == null)
-            {
-               LogTools.warn("Waiting for AWT panel to show...");
-               while ((awtPanel = ((PBOAwtPanelsContext) context).createPanel()) == null)
-                  ;
-            }
             jmeRenderer.addRepaintListeners(awtPanel);
             awtPanel.attachTo(isMainViewport, viewPort);
             panel = awtPanel;
