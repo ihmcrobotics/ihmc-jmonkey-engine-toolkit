@@ -17,7 +17,7 @@ ihmc {
 def fast = categories.get("fast")
 fast.enableAssertions = false
 
-def gui = categories.get("gui")
+def gui = categories.create("gui")
 gui.enableAssertions = false
 gui.classesPerJVM = 1
 gui.maxJVMs = 1
