@@ -1,5 +1,6 @@
 package us.ihmc.jMonkeyEngineToolkit;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import us.ihmc.euclid.Axis;
@@ -9,6 +10,7 @@ import us.ihmc.graphicsDescription.instructions.Graphics3DAddExtrusionInstructio
 import us.ihmc.graphicsDescription.structure.Graphics3DNode;
 import us.ihmc.jMonkeyEngineToolkit.jme.JMEGraphics3DAdapter;
 
+@Tag("gui")
 public class Graphics3DTextTest implements Graphics3DFrameListener
 {
    int counter = 0;

@@ -1,5 +1,6 @@
 package us.ihmc.jMonkeyEngineToolkit;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import us.ihmc.euclid.shape.Sphere3D;
@@ -8,6 +9,7 @@ import us.ihmc.graphicsDescription.appearance.YoAppearance;
 import us.ihmc.graphicsDescription.structure.Graphics3DNode;
 import us.ihmc.jMonkeyEngineToolkit.jme.JMEGraphics3DAdapter;
 
+@Tag("gui")
 public class Graphics3DWorldTest
 {
 

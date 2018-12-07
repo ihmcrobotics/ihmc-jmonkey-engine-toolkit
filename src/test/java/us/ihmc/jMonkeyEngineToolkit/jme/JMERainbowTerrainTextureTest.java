@@ -8,7 +8,9 @@ import com.jme3.system.AppSettings;
 import com.jme3.terrain.geomipmap.TerrainQuad;
 import com.jme3.terrain.heightmap.HeightMap;
 import com.jme3.terrain.heightmap.HillHeightMap;
+import org.junit.jupiter.api.Tag;
 
+@Tag("gui")
 public class JMERainbowTerrainTextureTest extends SimpleApplication
 {
    int counter = 0;

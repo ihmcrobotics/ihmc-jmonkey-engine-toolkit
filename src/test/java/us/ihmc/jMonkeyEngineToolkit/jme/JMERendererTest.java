@@ -4,6 +4,7 @@ import static us.ihmc.robotics.Assert.*;
 
 import java.util.concurrent.Callable;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import us.ihmc.euclid.shape.Sphere3D;
@@ -15,6 +16,7 @@ import us.ihmc.jMonkeyEngineToolkit.Graphics3DFrameListener;
 import us.ihmc.jMonkeyEngineToolkit.utils.CoordinateFrameNode;
 import us.ihmc.jMonkeyEngineToolkit.utils.FlatHeightMap;
 
+@Tag("gui")
 public class JMERendererTest
 {
 
