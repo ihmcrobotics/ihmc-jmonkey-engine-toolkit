@@ -28,6 +28,7 @@ import com.jme3.asset.ModelKey;
 import com.jme3.asset.plugins.UrlAssetInfo;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import us.ihmc.commons.thread.ThreadTools;
 import us.ihmc.jMonkeyEngineToolkit.jme.JMEGraphics3DAdapter;
 import us.ihmc.jMonkeyEngineToolkit.jme.JMEGraphics3DWorld;
 
@@ -64,6 +65,7 @@ public class STLReaderTest
    {
 
       JMEGraphics3DWorld world = new JMEGraphics3DWorld("testWorld", new JMEGraphics3DAdapter());
+      ThreadTools.sleep(2);
       AssetManager assetManager = (world.getGraphics3DAdapter()).getRenderer().getAssetManager();
       ModelKey modelKey = new ModelKey("testBinarySTL.STL");
       UrlAssetInfo urlAssetInfo = UrlAssetInfo.create(assetManager, modelKey, getClass().getClassLoader().getResource("testBinarySTL.STL"));
