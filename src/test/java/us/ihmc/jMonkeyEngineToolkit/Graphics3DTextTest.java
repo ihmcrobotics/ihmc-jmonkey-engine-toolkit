@@ -35,7 +35,7 @@ public class Graphics3DTextTest implements Graphics3DFrameListener
       
       world.addFrameListener(this);
       
-      world.keepAlive(3);
+      world.keepAlive(5);
       
       world.stop();
    }
