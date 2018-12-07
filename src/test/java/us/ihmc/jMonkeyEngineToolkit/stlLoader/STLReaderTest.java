@@ -60,6 +60,9 @@ public class STLReaderTest
       assertEquals(reader.getClass(), ASCIISTLReader.class);
       
       checkData(reader);
+
+      ThreadTools.sleep(3);
+      world.stop();
    }
 
 	@Test// timeout = 30000
@@ -77,6 +80,9 @@ public class STLReaderTest
       assertEquals(reader.getClass(), BinarySTLReader.class);
       
       checkData(reader);
+      
+      ThreadTools.sleep(3);
+      world.stop();
    }
 
    private void checkData(STLReader reader)
