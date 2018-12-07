@@ -64,5 +64,8 @@ public class NormalCalculatorTest
          
          assertTrue(NormalCalculator.compareNormal(normal, calculatedNormal, 1e-2f));
       }
+
+      ThreadTools.sleep(3);
+      world.stop();
    }
 }
