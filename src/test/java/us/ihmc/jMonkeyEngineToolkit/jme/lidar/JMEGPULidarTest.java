@@ -2,6 +2,7 @@ package us.ihmc.jMonkeyEngineToolkit.jme.lidar;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import us.ihmc.jMonkeyEngineToolkit.jme.lidar.manual.JMELidar120FovTest;
 import us.ihmc.jMonkeyEngineToolkit.jme.lidar.manual.JMELidar360FovTest;
@@ -18,6 +19,7 @@ import static us.ihmc.robotics.Assert.assertTrue;
  * An internal JME assert fails if you do. Not sure what to do about it,
  * but it'll likely be a difficult problem to solve.
  */
+@Tag("gui")
 public class JMEGPULidarTest implements LidarTestListener
 {
    private static final boolean TEST_MANUALLY = false;

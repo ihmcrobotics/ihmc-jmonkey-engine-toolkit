@@ -2,6 +2,7 @@ package us.ihmc.jMonkeyEngineToolkit.jme;
 
 import static us.ihmc.robotics.Assert.*;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import us.ihmc.euclid.geometry.Line3D;
@@ -10,6 +11,7 @@ import us.ihmc.euclid.tuple3D.Vector3D;
 import us.ihmc.graphicsDescription.Graphics3DObject;
 import us.ihmc.graphicsDescription.structure.Graphics3DNode;
 
+@Tag("gui")
 public class JMERayCollisionAdapterTest
 {
 	@Test// timeout=300000
