@@ -1,12 +1,11 @@
 package us.ihmc.jMonkeyEngineToolkit.jme.lidar;
 
-import static org.junit.Assert.assertTrue;
+import static us.ihmc.robotics.Assert.*;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
-import org.junit.After;
-import org.junit.Test;
-import org.junit.runner.JUnitCore;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
 import us.ihmc.jMonkeyEngineToolkit.jme.lidar.manual.JMELidar120FovTest;
 import us.ihmc.jMonkeyEngineToolkit.jme.lidar.manual.JMELidar360FovTest;
@@ -23,19 +22,7 @@ public class JMEGPULidarTest implements LidarTestListener
    private double averageDifference = 0.0;
    private long numScans = 0;
 
-   public static void main(String[] args)
-   {
-      JUnitCore junit = new JUnitCore();
-
-      for (int i = 0; i < 5; i++)
-      {
-         System.out.println("Test Number " + i + "...");
-
-         junit.run(JMEGPULidarTest.class);
-      }
-   }
-
-   @After
+   @AfterEach
    public void tearDown()
    {
       System.out.println("Average difference: " + averageDifference / numScans + " Number of Scans: " + numScans);
@@ -48,28 +35,28 @@ public class JMEGPULidarTest implements LidarTestListener
       lidarTest.getWorld().stop();
    }
 
-	@Test(timeout = 30000)
+	@Test// timeout = 30000
    public void test60DegreeFieldOfView()
    {
       parameters = new JMELidar60FovTest();
       doATest(parameters);
    }
 
-	@Test(timeout = 30000)
+	@Test// timeout = 30000
    public void test120DegreeFieldOfView()
    {
       parameters = new JMELidar120FovTest();
       doATest(parameters);
    }
 
-	@Test(timeout = 30000)
+	@Test// timeout = 30000
    public void test360DegreeFieldOfView()
    {
       parameters = new JMELidar360FovTest();
       doATest(parameters);
    }
 
-	@Test(timeout = 30000)
+	@Test// timeout = 30000
    public void test270DegreeFieldOfView()
    {
       parameters = new JMELidarSphere270FovTest();

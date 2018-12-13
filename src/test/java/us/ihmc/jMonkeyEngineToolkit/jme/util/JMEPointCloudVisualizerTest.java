@@ -3,7 +3,7 @@ package us.ihmc.jMonkeyEngineToolkit.jme.util;
 import java.util.Arrays;
 import java.util.Random;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import us.ihmc.euclid.tools.EuclidCoreRandomTools;
 import us.ihmc.euclid.tuple3D.Point3D32;
@@ -15,7 +15,7 @@ public class JMEPointCloudVisualizerTest
       new JMEPointCloudVisualizerTest().testJMEPointCloudVisualizer();
    }
 
-	@Test(timeout = 30000)
+	@Test// timeout = 30000
    public void testJMEPointCloudVisualizer()
    {
       JMEPointCloudVisualizer jmePointCloudVisualizer = new JMEPointCloudVisualizer();

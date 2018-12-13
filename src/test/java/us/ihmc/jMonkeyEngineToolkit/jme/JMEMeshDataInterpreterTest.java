@@ -1,8 +1,8 @@
 package us.ihmc.jMonkeyEngineToolkit.jme;
 
-import static org.junit.Assert.*;
+import static us.ihmc.robotics.Assert.*;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.jme3.math.Triangle;
 import com.jme3.math.Vector3f;
@@ -15,7 +15,7 @@ import us.ihmc.graphicsDescription.MeshDataHolder;
 public class JMEMeshDataInterpreterTest
 {
 
-   @Test(timeout = 30000)
+   @Test// timeout = 30000
    public void testForASingleTriangle()
    {
       Point3D32[] vertices =
@@ -40,7 +40,7 @@ public class JMEMeshDataInterpreterTest
       assertJMEVectorEqualsPoint(triangle.get3(), vertices[2]);
    }
 
-   @Test(timeout = 30000)
+   @Test// timeout = 30000
    public void testForASimpleCube()
    {
       MeshDataHolder meshData = MeshDataGenerator.Cube(1.0f, 1.0f, 1.0f, true, null);

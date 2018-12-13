@@ -2,7 +2,7 @@ package us.ihmc.jMonkeyEngineToolkit.jme;
 
 import java.util.concurrent.Callable;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import us.ihmc.euclid.Axis;
 import us.ihmc.euclid.shape.Sphere3D;
@@ -26,7 +26,7 @@ public class JMEGPULidarParallelSceneGraphTest
     * The blue sphere should not show up in the lidar data.
     */
 
-	@Test(timeout = 51000)
+	@Test// timeout = 51000
    public void testGPULidarParallelSceneGraph()
    {
       JMEGraphics3DWorld world = new JMEGraphics3DWorld(getClass().getSimpleName(), new JMEGraphics3DAdapter(true));

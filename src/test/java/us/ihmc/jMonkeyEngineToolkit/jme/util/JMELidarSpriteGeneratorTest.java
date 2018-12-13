@@ -3,11 +3,11 @@
  */
 package us.ihmc.jMonkeyEngineToolkit.jme.util;
 
-import static org.junit.Assert.*;
+import static us.ihmc.robotics.Assert.*;
 
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
+import us.ihmc.robotics.Assert;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import com.jme3.collision.CollisionResults;
 import com.jme3.math.Ray;
@@ -54,8 +54,8 @@ public class JMELidarSpriteGeneratorTest
    /**
     * Not sure if we actually want this
     */
-   @Ignore
-   @Test(timeout = 300000)
+   @Disabled
+   @Test// timeout = 300000
    public void testCollideWithSimple()
    {
       JMELidarSpriteGenerator generator = createUI(new float[][] { new float[] { 0, 0, 0 } });
@@ -78,7 +78,7 @@ public class JMELidarSpriteGeneratorTest
     * Tests intersection against zero points.
     */
 
-   @Test(timeout = 30000)
+   @Test// timeout = 30000
    public void testEmptyCollide()
    {
       JMELidarSpriteGenerator generator = createUI(new float[][] {});
@@ -94,8 +94,8 @@ public class JMELidarSpriteGeneratorTest
 	/**
     * Not sure if we actually want this
     */
-   @Ignore
-   @Test(timeout = 300000)
+   @Disabled
+   @Test// timeout = 300000
    public void testMultiplePointsOneLine()
    {
       JMELidarSpriteGenerator generator = createUI(new float[][] { new float[] { 0, 0, 0 }, new float[] { -1, -1, -1 }, new float[] { 0.5f, 0.5f, 0.5f }, new float[] { -0.5f, -0.5f, -0.5f } });
@@ -116,7 +116,7 @@ public class JMELidarSpriteGeneratorTest
     * Tests a case when there is no intersection with the point cloud. 
     */
 
-   @Test(timeout = 30000)
+   @Test// timeout = 30000
    public void testMultiplePointsNoMatch()
    {
       JMELidarSpriteGenerator generator = createUI(new float[][] { new float[] { 10, 10, 100 }, new float[] { -100, -10, -10 },

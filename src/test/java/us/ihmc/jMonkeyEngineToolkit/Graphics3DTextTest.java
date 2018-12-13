@@ -1,6 +1,6 @@
 package us.ihmc.jMonkeyEngineToolkit;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import us.ihmc.euclid.Axis;
 import us.ihmc.graphicsDescription.Graphics3DObject;
@@ -14,7 +14,7 @@ public class Graphics3DTextTest implements Graphics3DFrameListener
    int counter = 0;
    Graphics3DAddExtrusionInstruction instruction;
 
-	@Test(timeout = 30000)
+	@Test// timeout = 30000
    public void testTextDisplay()
    {
       Graphics3DWorld world = new Graphics3DWorld(new JMEGraphics3DAdapter());

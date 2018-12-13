@@ -1,8 +1,8 @@
 package us.ihmc.jMonkeyEngineToolkit.jme;
 
-import static org.junit.Assert.assertEquals;
+import static us.ihmc.robotics.Assert.*;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import us.ihmc.euclid.geometry.Line3D;
 import us.ihmc.euclid.tuple3D.Point3D;
@@ -12,7 +12,7 @@ import us.ihmc.graphicsDescription.structure.Graphics3DNode;
 
 public class JMERayCollisionAdapterTest
 {
-	@Test(timeout=300000)
+	@Test// timeout=300000
    public void testObjectPicking()
    {
 //      ThreadTools.sleep(10000); // Put this in to give me time to attach the debugger to this test.
