@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.GraphicsDevice;
 import java.net.URL;
 
-import us.ihmc.commons.thread.ThreadTools;
 import us.ihmc.euclid.tuple3D.Vector3D;
 import us.ihmc.graphicsDescription.Graphics3DSpotLight;
 import us.ihmc.graphicsDescription.HeightMap;
@@ -33,8 +32,6 @@ public class JMEGraphics3DAdapter implements Graphics3DAdapter
    public JMEGraphics3DAdapter()
    {
       this(true);
-
-      ThreadTools.sleep(2); // give some time to initialize
    }
 
    public JMEGraphics3DAdapter(boolean setupSky)

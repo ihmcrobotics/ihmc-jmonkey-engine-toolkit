@@ -39,7 +39,6 @@ import us.ihmc.jMonkeyEngineToolkit.jme.context.PBOAwtPanelsContext;
 import us.ihmc.jMonkeyEngineToolkit.jme.input.JMEInputManager;
 import us.ihmc.jMonkeyEngineToolkit.jme.util.JMEDataTypeUtils;
 import us.ihmc.jMonkeyEngineToolkit.jme.util.JMEGeometryUtils;
-import us.ihmc.log.LogTools;
 
 public class JMEViewportAdapter extends ViewportAdapter implements InputMapSetter, SceneProcessor
 {

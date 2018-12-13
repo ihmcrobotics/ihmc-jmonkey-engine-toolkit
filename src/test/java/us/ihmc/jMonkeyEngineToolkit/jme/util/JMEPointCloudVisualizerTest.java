@@ -3,13 +3,11 @@ package us.ihmc.jMonkeyEngineToolkit.jme.util;
 import java.util.Arrays;
 import java.util.Random;
 
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import us.ihmc.euclid.tools.EuclidCoreRandomTools;
 import us.ihmc.euclid.tuple3D.Point3D32;
 
-@Tag("gui")
 public class JMEPointCloudVisualizerTest
 {
    public static void main(String[] args)

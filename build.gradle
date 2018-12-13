@@ -1,6 +1,6 @@
 plugins {
-   id("us.ihmc.ihmc-build") version "0.15.5"
-   id("us.ihmc.ihmc-ci") version "3.5"
+   id("us.ihmc.ihmc-build") version "0.15.4"
+   id("us.ihmc.ihmc-ci") version "2.4"
    id("us.ihmc.log-tools") version "0.2.2"
 }
 
@@ -13,12 +13,6 @@ ihmc {
    configureDependencyResolution()
    configurePublications()
 }
-
-def fast = categories.get("fast")
-fast.enableAssertions = false
-
-def gui = categories.create("gui")
-gui.enableAssertions = false
 
 mainDependencies {
    compile group: "us.ihmc", name: "euclid", version: "0.11.0"

@@ -5,7 +5,6 @@ package us.ihmc.jMonkeyEngineToolkit.jme.util;
 
 import static us.ihmc.robotics.Assert.*;
 
-import org.junit.jupiter.api.Tag;
 import us.ihmc.robotics.Assert;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -22,7 +21,6 @@ import us.ihmc.commons.thread.ThreadTools;
  * Tests for point cloud collision stuff in JMELidarSpriteGenerator 
  *
  */
-@Tag("gui")
 public class JMELidarSpriteGeneratorTest
 {
 
