@@ -15,7 +15,10 @@ ihmc {
 }
 
 categories.configure("fast").enableAssertions = false
-categories.configure("gui").enableAssertions = false
+def gui = categories.configure("gui")
+gui.enableAssertions = false
+gui.minHeapSizeGB = 2
+gui.maxHeapSizeGB = 6
 
 mainDependencies {
    compile group: "us.ihmc", name: "euclid", version: "0.11.0"
