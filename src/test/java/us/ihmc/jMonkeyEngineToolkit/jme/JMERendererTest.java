@@ -4,6 +4,7 @@ import static us.ihmc.robotics.Assert.*;
 
 import java.util.concurrent.Callable;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -61,6 +62,7 @@ public class JMERendererTest
     * Should see a sphere orbit in a circle and leave 5 copies of itself along the way.
     */
 
+   @Disabled
 	@Test// timeout = 30000
    public void testFreezeFrame()
    {
