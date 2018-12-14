@@ -47,7 +47,7 @@ public class JMEGraphics3DWorldTest
       JMEGraphics3DWorld world = new JMEGraphics3DWorld("testWorld", new JMEGraphics3DAdapter());
       
       world.addChild(new Graphics3DNode("Sphere", new Graphics3DObject(new Sphere3D())));
-      world.startWithoutGui();
+      world.startWithGui();
 
       world.keepAlive(1);
       world.stop();
@@ -58,7 +58,7 @@ public class JMEGraphics3DWorldTest
    {
       JMEGraphics3DWorld world = new JMEGraphics3DWorld("testWorld", new JMEGraphics3DAdapter());
       
-      world.startWithoutGui();
+      world.startWithGui();
       world.addChild(new Graphics3DNode("Sphere", new Graphics3DObject(new Sphere3D())));
 
       world.keepAlive(1);
@@ -81,7 +81,7 @@ public class JMEGraphics3DWorldTest
       jmeSphereNode.attachChild(geometry);
       
       world.addChild(jmeSphereNode);
-      world.startWithoutGui();
+      world.startWithGui();
 
       world.keepAlive(1);
       world.stop();
