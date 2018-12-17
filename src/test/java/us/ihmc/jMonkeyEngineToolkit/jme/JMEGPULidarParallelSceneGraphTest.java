@@ -2,6 +2,7 @@ package us.ihmc.jMonkeyEngineToolkit.jme;
 
 import java.util.concurrent.Callable;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -28,6 +29,7 @@ public class JMEGPULidarParallelSceneGraphTest
     * The blue sphere should not show up in the lidar data.
     */
 
+   @Disabled
 	@Test// timeout = 51000
    public void testGPULidarParallelSceneGraph()
    {
