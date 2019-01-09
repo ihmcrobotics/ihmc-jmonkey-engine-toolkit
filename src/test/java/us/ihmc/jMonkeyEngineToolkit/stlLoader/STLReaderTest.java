@@ -17,20 +17,21 @@
  */
 package us.ihmc.jMonkeyEngineToolkit.stlLoader;
 
-import static us.ihmc.robotics.Assert.*;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
-
 import com.jme3.asset.AssetManager;
 import com.jme3.asset.ModelKey;
 import com.jme3.asset.plugins.UrlAssetInfo;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import us.ihmc.commons.thread.ThreadTools;
 import us.ihmc.jMonkeyEngineToolkit.jme.JMEGraphics3DAdapter;
 import us.ihmc.jMonkeyEngineToolkit.jme.JMEGraphics3DWorld;
+
+import java.io.IOException;
+import java.time.Duration;
+import java.util.List;
+
+import static us.ihmc.robotics.Assert.assertEquals;
 
 /**
  * Test loading of STL files based on a hand crafted STL files with three triangles and known values.
@@ -44,45 +45,46 @@ import us.ihmc.jMonkeyEngineToolkit.jme.JMEGraphics3DWorld;
 @Tag("jme")
 public class STLReaderTest
 {
-
 	@Test// timeout = 30000
    public void testASCIILoad() throws IOException
    {
+      Assertions.assertTimeoutPreemptively(Duration.ofSeconds(20), () -> {
+         JMEGraphics3DWorld world = new JMEGraphics3DWorld("testWorld", new JMEGraphics3DAdapter());
+         world.startWithGui();
+         ThreadTools.sleep(2);
+         AssetManager assetManager = (world.getGraphics3DAdapter()).getRenderer().getAssetManager();
+         ModelKey modelKey = new ModelKey("testASCIISTL.STL");
+         UrlAssetInfo urlAssetInfo = UrlAssetInfo.create(assetManager, modelKey, getClass().getClassLoader().getResource("testASCIISTL.STL"));
 
-      JMEGraphics3DWorld world = new JMEGraphics3DWorld("testWorld", new JMEGraphics3DAdapter());
-      world.startWithGui();
-      ThreadTools.sleep(2);
-      AssetManager assetManager = (world.getGraphics3DAdapter()).getRenderer().getAssetManager();
-      ModelKey modelKey = new ModelKey("testASCIISTL.STL");
-      UrlAssetInfo urlAssetInfo = UrlAssetInfo.create(assetManager, modelKey, getClass().getClassLoader().getResource("testASCIISTL.STL"));
+         STLReader reader = STLReaderFactory.create(urlAssetInfo);
+         assertEquals(reader.getClass(), ASCIISTLReader.class);
 
-      STLReader reader = STLReaderFactory.create(urlAssetInfo);
-      assertEquals(reader.getClass(), ASCIISTLReader.class);
-      
-      checkData(reader);
+         checkData(reader);
 
-      ThreadTools.sleep(3);
-      world.stop();
+         ThreadTools.sleep(3);
+         world.stop();
+      });
    }
 
 	@Test// timeout = 30000
    public void testBinaryLoad() throws IOException
    {
+      Assertions.assertTimeoutPreemptively(Duration.ofSeconds(20), () -> {
+         JMEGraphics3DWorld world = new JMEGraphics3DWorld("testWorld", new JMEGraphics3DAdapter());
+         world.startWithGui();
+         ThreadTools.sleep(2);
+         AssetManager assetManager = (world.getGraphics3DAdapter()).getRenderer().getAssetManager();
+         ModelKey modelKey = new ModelKey("testBinarySTL.STL");
+         UrlAssetInfo urlAssetInfo = UrlAssetInfo.create(assetManager, modelKey, getClass().getClassLoader().getResource("testBinarySTL.STL"));
 
-      JMEGraphics3DWorld world = new JMEGraphics3DWorld("testWorld", new JMEGraphics3DAdapter());
-      world.startWithGui();
-      ThreadTools.sleep(2);
-      AssetManager assetManager = (world.getGraphics3DAdapter()).getRenderer().getAssetManager();
-      ModelKey modelKey = new ModelKey("testBinarySTL.STL");
-      UrlAssetInfo urlAssetInfo = UrlAssetInfo.create(assetManager, modelKey, getClass().getClassLoader().getResource("testBinarySTL.STL"));
+         STLReader reader = STLReaderFactory.create(urlAssetInfo);
+         assertEquals(reader.getClass(), BinarySTLReader.class);
 
-      STLReader reader = STLReaderFactory.create(urlAssetInfo);
-      assertEquals(reader.getClass(), BinarySTLReader.class);
-      
-      checkData(reader);
-      
-      ThreadTools.sleep(3);
-      world.stop();
+         checkData(reader);
+
+         ThreadTools.sleep(3);
+         world.stop();
+      });
    }
 
    private void checkData(STLReader reader)
