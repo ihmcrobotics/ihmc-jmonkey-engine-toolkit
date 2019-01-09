@@ -21,6 +21,7 @@ import com.jme3.asset.AssetManager;
 import com.jme3.asset.ModelKey;
 import com.jme3.asset.plugins.UrlAssetInfo;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import us.ihmc.commons.thread.ThreadTools;
@@ -45,6 +46,7 @@ import static us.ihmc.robotics.Assert.assertEquals;
 @Tag("jme")
 public class STLReaderTest
 {
+   @Disabled
 	@Test// timeout = 30000
    public void testASCIILoad() throws IOException
    {
