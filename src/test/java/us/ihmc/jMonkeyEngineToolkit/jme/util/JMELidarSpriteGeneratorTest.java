@@ -22,7 +22,7 @@ import us.ihmc.commons.thread.ThreadTools;
  * Tests for point cloud collision stuff in JMELidarSpriteGenerator 
  *
  */
-@Tag("gui")
+@Tag("jme")
 public class JMELidarSpriteGeneratorTest
 {
 

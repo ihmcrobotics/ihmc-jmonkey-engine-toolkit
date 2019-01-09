@@ -10,7 +10,7 @@ import us.ihmc.graphicsDescription.appearance.YoAppearance;
 import us.ihmc.graphicsDescription.structure.Graphics3DNode;
 import us.ihmc.jMonkeyEngineToolkit.jme.JMEGraphics3DAdapter;
 
-@Tag("gui")
+@Tag("jme")
 public class Graphics3DWorldTest
 {
 

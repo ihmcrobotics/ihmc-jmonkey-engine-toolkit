@@ -23,7 +23,7 @@ import us.ihmc.jMonkeyEngineToolkit.jme.context.PBOAwtPanelsContext;
  
 /** Sample 4 - how to trigger repeating actions from the main update loop.
  * In this example, we make the player character rotate. */
-@Tag("gui")
+@Tag("jme")
 public class AWTPanelsTest extends SimpleApplication {
  
    private static final boolean USE_PBO = true;

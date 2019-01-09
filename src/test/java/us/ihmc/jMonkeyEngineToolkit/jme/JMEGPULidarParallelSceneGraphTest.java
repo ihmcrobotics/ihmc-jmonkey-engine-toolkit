@@ -22,7 +22,7 @@ import us.ihmc.jMonkeyEngineToolkit.jme.lidar.LidarTestScan;
 import us.ihmc.jMonkeyEngineToolkit.jme.util.JMELidarScanVisualizer;
 import us.ihmc.jMonkeyEngineToolkit.utils.FlatHeightMap;
 
-@Tag("gui")
+@Tag("jme")
 public class JMEGPULidarParallelSceneGraphTest
 {
    /**

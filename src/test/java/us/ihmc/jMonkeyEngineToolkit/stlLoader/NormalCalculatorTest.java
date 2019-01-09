@@ -39,7 +39,7 @@ import us.ihmc.jMonkeyEngineToolkit.jme.JMEGraphics3DWorld;
  * @author Jesper Smith
  *
  */
-@Tag("gui")
+@Tag("jme")
 public class NormalCalculatorTest
 {
 
