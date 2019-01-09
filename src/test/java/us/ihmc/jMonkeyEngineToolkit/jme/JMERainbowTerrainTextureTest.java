@@ -10,7 +10,7 @@ import com.jme3.terrain.heightmap.HeightMap;
 import com.jme3.terrain.heightmap.HillHeightMap;
 import org.junit.jupiter.api.Tag;
 
-@Tag("gui")
+@Tag("jme")
 public class JMERainbowTerrainTextureTest extends SimpleApplication
 {
    int counter = 0;

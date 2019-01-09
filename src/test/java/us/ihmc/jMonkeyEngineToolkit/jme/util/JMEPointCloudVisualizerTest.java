@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import us.ihmc.euclid.tools.EuclidCoreRandomTools;
 import us.ihmc.euclid.tuple3D.Point3D32;
 
-@Tag("gui")
+@Tag("jme")
 public class JMEPointCloudVisualizerTest
 {
    public static void main(String[] args)

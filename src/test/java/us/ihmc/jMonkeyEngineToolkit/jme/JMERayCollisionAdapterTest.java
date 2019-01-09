@@ -11,7 +11,7 @@ import us.ihmc.euclid.tuple3D.Vector3D;
 import us.ihmc.graphicsDescription.Graphics3DObject;
 import us.ihmc.graphicsDescription.structure.Graphics3DNode;
 
-@Tag("gui")
+@Tag("jme")
 public class JMERayCollisionAdapterTest
 {
 	@Test// timeout=300000

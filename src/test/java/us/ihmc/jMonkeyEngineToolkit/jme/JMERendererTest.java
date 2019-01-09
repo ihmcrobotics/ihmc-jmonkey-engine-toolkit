@@ -17,7 +17,7 @@ import us.ihmc.jMonkeyEngineToolkit.Graphics3DFrameListener;
 import us.ihmc.jMonkeyEngineToolkit.utils.CoordinateFrameNode;
 import us.ihmc.jMonkeyEngineToolkit.utils.FlatHeightMap;
 
-@Tag("gui")
+@Tag("jme")
 public class JMERendererTest
 {
 

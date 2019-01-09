@@ -19,7 +19,7 @@ import static us.ihmc.robotics.Assert.assertTrue;
  * An internal JME assert fails if you do. Not sure what to do about it,
  * but it'll likely be a difficult problem to solve.
  */
-@Tag("gui")
+@Tag("jme")
 public class JMEGPULidarTest implements LidarTestListener
 {
    private static final boolean TEST_MANUALLY = false;

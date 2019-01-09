@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import us.ihmc.jMonkeyEngineToolkit.examples.Graphics3DAdapterExampleOne;
 
-@Tag("gui")
+@Tag("jme")
 public class JMEGraphics3dAdapterTest
 {
 

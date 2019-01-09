@@ -16,7 +16,7 @@ import us.ihmc.graphicsDescription.structure.Graphics3DNode;
 
 import java.time.Duration;
 
-@Tag("gui")
+@Tag("jme")
 public class JMEGraphics3DWorldTest
 {
 
