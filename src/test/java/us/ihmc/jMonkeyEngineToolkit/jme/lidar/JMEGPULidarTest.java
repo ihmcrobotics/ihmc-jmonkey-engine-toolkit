@@ -1,9 +1,6 @@
 package us.ihmc.jMonkeyEngineToolkit.jme.lidar;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import us.ihmc.jMonkeyEngineToolkit.jme.lidar.manual.JMELidar120FovTest;
 import us.ihmc.jMonkeyEngineToolkit.jme.lidar.manual.JMELidar360FovTest;
 import us.ihmc.jMonkeyEngineToolkit.jme.lidar.manual.JMELidar60FovTest;
@@ -64,6 +61,7 @@ public class JMEGPULidarTest implements LidarTestListener
       doATest(parameters);
    }
 
+   @Disabled
 	@Test// timeout = 30000
    public void test270DegreeFieldOfView()
    {

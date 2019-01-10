@@ -2,6 +2,7 @@ package us.ihmc.jMonkeyEngineToolkit.jme;
 
 import static us.ihmc.robotics.Assert.*;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -14,6 +15,7 @@ import us.ihmc.graphicsDescription.structure.Graphics3DNode;
 @Tag("jme")
 public class JMERayCollisionAdapterTest
 {
+   @Disabled
 	@Test// timeout=300000
    public void testObjectPicking()
    {
