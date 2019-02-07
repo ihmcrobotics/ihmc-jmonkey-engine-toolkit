@@ -54,6 +54,7 @@ public class JMEGPULidarTest implements LidarTestListener
       doATest(parameters);
    }
 
+   @Disabled
 	@Test// timeout = 30000
    public void test360DegreeFieldOfView()
    {
