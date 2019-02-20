@@ -27,6 +27,7 @@ import javax.swing.JComponent;
 import javax.swing.RepaintManager;
 
 import com.google.common.collect.HashBiMap;
+import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.AssetConfig;
 import com.jme3.asset.AssetManager;
@@ -116,12 +117,12 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
    {
       CANVAS, AWTPANELS
    }
-   
+
    public enum SkyboxToUse
    {
       JME_MOUNTAINS, BLUE_SKY, DUSK_SKY;
    }
-   
+
    public static final SkyboxToUse skyboxToUse = SkyboxToUse.BLUE_SKY;
 
    public final static boolean USE_PBO = true;
@@ -153,7 +154,7 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
 
    private HashBiMap<Graphics3DNode, JMEGraphics3DNode> jmeGraphicsNodes = HashBiMap.create();
    private Collection<JMEGraphics3DNode> jmeGraphicsNodesListView = jmeGraphicsNodes.values();
-   
+
    private HashBiMap<Graphics3DSpotLight, JMESpotLight> jmeSpotLights = HashBiMap.create();
    private Collection<JMESpotLight> jmeSpotLightsView = jmeSpotLights.values();
 
@@ -170,7 +171,7 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
    private Node terrain;
    private Node zUpNode;
 
-   private ArrayList<DirectionalLight> lights = new ArrayList<>(); 
+   private ArrayList<DirectionalLight> lights = new ArrayList<>();
    private ArrayList<JMEGPULidar> gpuLidars = new ArrayList<>();
    private ArrayList<PBOAwtPanel> pboAwtPanels;
    private DirectionalLight primaryLight;
@@ -181,12 +182,12 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
    private Spatial sky = null;
    private HeightMap heightMap = null;
    private AppearanceDefinition terrainAppearance = null;
-   
+
    public JMERenderer(RenderType renderType)
    {
       this(renderType, null);
    }
-   
+
    public JMERenderer(RenderType renderType, Mouse3DInterface mouse3dJoystick)
    {
       super();
@@ -215,7 +216,6 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
             throw new RuntimeException("Loading interrupted");
          }
       }
-      
 
    }
 
@@ -317,7 +317,7 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
       }
 
       JMEViewportAdapter newViewport = new JMEViewportAdapter(this, rootNode, isMainViewport, isOffScreen ? ViewportType.OFFSCREEN : ViewportType.CANVAS, false,
-            Color.LIGHT_GRAY, false);
+                                                              Color.LIGHT_GRAY, false);
       notifyRepaint();
 
       return newViewport;
@@ -489,7 +489,7 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
       ambientLight.setColor(ColorRGBA.White.mult(brightness));
       notifyRepaint();
    }
-   
+
    @Override
    public void setAmbientLight(Color ambient)
    {
@@ -510,20 +510,38 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
 
    private void setupLighting()
    {
+      // Note: Something gets transformed, so that z is x, and y is z, and x is y.
+
+      Vector3f fromTheTop = new Vector3f(0.0f, -1.0f, 0.0f).normalizeLocal();
+      Vector3f fromTheFront = new Vector3f(0.0f, 0.0f, -1.0f).normalizeLocal();
+      Vector3f fromTheSide = new Vector3f(-1.0f, 0.0f, 0.0f).normalizeLocal();
+
+      Vector3f fromTheBack = new Vector3f(fromTheFront).negate().normalizeLocal();
+      Vector3f fromTheOtherSide = new Vector3f(fromTheSide).negate().normalizeLocal();
+      Vector3f fromTheBottom = new Vector3f(fromTheTop).negate().normalizeLocal();
+
+      Vector3f fromTheTopFront = fromTheTop.add(fromTheFront).normalizeLocal();
+      Vector3f fromTheFrontSide = fromTheFront.add(fromTheSide).normalizeLocal();
+      Vector3f fromTheBackOtherSide = fromTheBack.add(fromTheOtherSide).normalizeLocal();
+      Vector3f fromTheBackBottom = fromTheBack.add(fromTheBottom).normalizeLocal();
+
       primaryLight = new DirectionalLight();
       primaryLight.setColor(ColorRGBA.White.mult(0.5f));
-      primaryLight.setDirection(new Vector3f(-0.1f, -1.0f, -0.2f).normalizeLocal());
+      primaryLight.setDirection(fromTheTopFront);
       rootNode.addLight(primaryLight);
       lights.add(primaryLight);
 
+      // TODO: Ambient light could be brighter, but OBJ model files seem to just get white in ambient light, rather than their material.
       ambientLight = new AmbientLight();
-      ambientLight.setColor(ColorRGBA.White.mult(.8f)); //1.3f));
+      ambientLight.setColor(ColorRGBA.White.mult(0.2f));
       rootNode.addLight(ambientLight);
 
-      addDirectionalLight(ColorRGBA.White.mult(0.1f), new Vector3f(1.0f, -0.0f, -0.5f).normalizeLocal());
+      addDirectionalLight(ColorRGBA.White.mult(0.35f), fromTheFrontSide);
+      addDirectionalLight(ColorRGBA.White.mult(0.3f), fromTheBackOtherSide);
+      addDirectionalLight(ColorRGBA.White.mult(0.28f), fromTheBackBottom);
+      addDirectionalLight(ColorRGBA.White.mult(0.32f), fromTheOtherSide);
+      addDirectionalLight(ColorRGBA.White.mult(0.35f), fromTheSide);
 
-      addDirectionalLight(ColorRGBA.White.mult(0.4f), new Vector3f(0.0f, -1.0f, 0.0f).normalizeLocal());
-      
       renderManager.setPreferredLightMode(TechniqueDef.LightMode.SinglePass);
 
       rootNode.setShadowMode(ShadowMode.CastAndReceive);
@@ -532,34 +550,33 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
 
    private void addDirectionalLight(ColorRGBA color, Vector3f direction)
    {
-      
-      if(lights.size() > 1)
-      {
-         DirectionalLight light = new DirectionalLight();
-         light.setColor(color);
-         light.setDirection(direction.normalizeLocal());
-         lights.add(light);
-         rootNode.addLight(light);         
-      }
-      else
+
+      if (lights.isEmpty())
       {
          primaryLight.setColor(color);
          primaryLight.setDirection(direction);
          lights.add(primaryLight);
          rootNode.addLight(primaryLight);
       }
+      else
+      {
+         DirectionalLight light = new DirectionalLight();
+         light.setColor(color);
+         light.setDirection(direction.normalizeLocal());
+         lights.add(light);
+         rootNode.addLight(light);
+      }
    }
-
 
    private void deleteSky()
    {
-      if(sky != null)
+      if (sky != null)
       {
          rootNode.detachChild(sky);
          sky = null;
       }
    }
-   
+
    private void updateSky()
    {
       sky.setLocalScale(1000);
@@ -567,7 +584,7 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
       notifyRepaint();
 
    }
-   
+
    public void setupSky(String skyBox)
    {
       enqueue(new Callable<Object>()
@@ -583,10 +600,10 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
          }
       });
    }
-   
+
    public void setupSky(String west, String east, String north, String south, String up, String down)
    {
-      
+
       Texture westTex = assetManager.loadTexture(new TextureKey(west, true));
       Texture eastTex = assetManager.loadTexture(new TextureKey(east, true));
       Texture northTex = assetManager.loadTexture(new TextureKey(north, true));
@@ -601,14 +618,13 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
          {
             deleteSky();
             sky = SkyFactory.createSky(assetManager, westTex, eastTex, northTex, southTex, upTex, downTex);
-       
+
             updateSky();
             return null;
          }
       });
    }
 
-   
    @Override
    public void setupSky()
    {
@@ -618,9 +634,9 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
          {
             String west = "Textures/Sky/Bright/skyboxsun25degtest/skyrender0005.bmp";
             String east = "Textures/Sky/Bright/skyboxsun25degtest/skyrender0002.bmp";
-            String north ="Textures/Sky/Bright/skyboxsun25degtest/skyrender0001.bmp";
-            String south ="Textures/Sky/Bright/skyboxsun25degtest/skyrender0004.bmp";
-            String up =   "Textures/Sky/Bright/skyboxsun25degtest/skyrender0003.bmp";
+            String north = "Textures/Sky/Bright/skyboxsun25degtest/skyrender0001.bmp";
+            String south = "Textures/Sky/Bright/skyboxsun25degtest/skyrender0004.bmp";
+            String up = "Textures/Sky/Bright/skyboxsun25degtest/skyrender0003.bmp";
             String down = "Textures/Sky/Bright/skyboxsun25degtest/skyrender0007.bmp";
             setupSky(west, east, north, south, up, down);
          }
@@ -628,9 +644,9 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
          {
             String west = "Textures/Sky/Bright/skyboxsun45deg/skyrender0005.bmp";
             String east = "Textures/Sky/Bright/skyboxsun45deg/skyrender0002.bmp";
-            String north ="Textures/Sky/Bright/skyboxsun45deg/skyrender0001.bmp";
-            String south ="Textures/Sky/Bright/skyboxsun45deg/skyrender0004.bmp";
-            String up =   "Textures/Sky/Bright/skyboxsun45deg/skyrender0003.bmp";
+            String north = "Textures/Sky/Bright/skyboxsun45deg/skyrender0001.bmp";
+            String south = "Textures/Sky/Bright/skyboxsun45deg/skyrender0004.bmp";
+            String up = "Textures/Sky/Bright/skyboxsun45deg/skyrender0003.bmp";
             String down = "Textures/Sky/Bright/skyboxsun45deg/skyrender0006.bmp";
             setupSky(west, east, north, south, up, down);
          }
@@ -696,9 +712,9 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
          {
             jmeGraphicsNode.update();
          }
-         
+
          updateSpotLights();
-         
+
          updateCameras();
       }
 
@@ -720,14 +736,14 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
    private boolean shouldRepaint()
    {
       // We have to use reflection because JME does not provide a getter
-//      try
-//      {
-//         Field field = Spatial.class.getDeclaredField("refreshFlags");
-//         field.setAccessible(true);
-//         int refresh = field.getInt(rootNode);
-//         return refresh != 0;
-//      }
-//      catch (Exception ex)
+      //      try
+      //      {
+      //         Field field = Spatial.class.getDeclaredField("refreshFlags");
+      //         field.setAccessible(true);
+      //         int refresh = field.getInt(rootNode);
+      //         return refresh != 0;
+      //      }
+      //      catch (Exception ex)
       {
          return true; // In case of exceptions render always
       }
@@ -835,7 +851,7 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
          spotLight.update();
       }
    }
-   
+
    private synchronized void updateCameras()
    {
       if (alreadyClosing)
@@ -902,7 +918,7 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
       notifyRepaint();
 
    }
-   
+
    @Override
    public void setHeightMap(final HeightMap heightMap)
    {
@@ -1342,7 +1358,7 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
    public void setGroundAppearance(AppearanceDefinition app)
    {
       terrainAppearance = app;
-      if(heightMap != null)
+      if (heightMap != null)
       {
          repaintTerrain();
       }
@@ -1461,7 +1477,6 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
          contextManager = null;
       }
 
-
       if (jmeGraphicsNodes != null)
       {
          synchronized (graphicsConch)
@@ -1485,7 +1500,7 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
       mouseListenerHolder = null;
       mouse3DListenerHolder = null;
 
-      if(mouse3DJoystick != null)
+      if (mouse3DJoystick != null)
       {
          mouse3DJoystick.stopPolling();
          mouse3DJoystick = null;
@@ -1524,7 +1539,6 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
    {
       return contextManager;
    }
-
 
    public RenderType getRenderType()
    {
@@ -1610,7 +1624,7 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
    {
       Vector3f jmeDirection = JMEDataTypeUtils.vecMathTuple3dToJMEVector3f(direction);
       JMEGeometryUtils.transformFromZupToJMECoordinates(jmeDirection);
-      
+
       ColorRGBA jmeColor = JMEDataTypeUtils.colorToColorRGBA(color);
       enqueue(new Callable<Object>()
       {
@@ -1633,7 +1647,7 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
          @Override
          public Object call() throws Exception
          {
-            for(Light light : lights)
+            for (Light light : lights)
             {
                rootNode.removeLight(light);
             }
@@ -1652,15 +1666,15 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
          @Override
          public Object call() throws Exception
          {
-            if(jmeSpotLights.containsKey(spotLight))
+            if (jmeSpotLights.containsKey(spotLight))
             {
                throw new RuntimeException("Spotlight is already added to graphic subsystem");
             }
-            
+
             JMESpotLight jmeSpotLight = new JMESpotLight(spotLight);
             jmeSpotLights.put(spotLight, jmeSpotLight);
-            rootNode.addLight(jmeSpotLight); 
-            
+            rootNode.addLight(jmeSpotLight);
+
             return null;
          }
       });
@@ -1676,12 +1690,11 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
          public Object call() throws Exception
          {
             JMESpotLight spotLightToRemove = jmeSpotLights.remove(spotLight);
-            if(spotLightToRemove != null)
+            if (spotLightToRemove != null)
             {
                rootNode.removeLight(spotLightToRemove);
             }
-            
-            
+
             return null;
          }
       });
