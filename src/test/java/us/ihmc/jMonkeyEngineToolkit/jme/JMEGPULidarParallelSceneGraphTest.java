@@ -2,6 +2,8 @@ package us.ihmc.jMonkeyEngineToolkit.jme;
 
 import java.util.concurrent.Callable;
 
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import us.ihmc.euclid.Axis;
@@ -20,12 +22,14 @@ import us.ihmc.jMonkeyEngineToolkit.jme.lidar.LidarTestScan;
 import us.ihmc.jMonkeyEngineToolkit.jme.util.JMELidarScanVisualizer;
 import us.ihmc.jMonkeyEngineToolkit.utils.FlatHeightMap;
 
+@Tag("jme")
 public class JMEGPULidarParallelSceneGraphTest
 {
    /**
     * The blue sphere should not show up in the lidar data.
     */
 
+   @Disabled
 	@Test// timeout = 51000
    public void testGPULidarParallelSceneGraph()
    {

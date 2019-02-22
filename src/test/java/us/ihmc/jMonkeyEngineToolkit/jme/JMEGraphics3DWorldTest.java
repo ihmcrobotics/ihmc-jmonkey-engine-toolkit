@@ -1,7 +1,5 @@
 package us.ihmc.jMonkeyEngineToolkit.jme;
 
-import org.junit.jupiter.api.Test;
-
 import com.jme3.material.Material;
 import com.jme3.material.RenderState.BlendMode;
 import com.jme3.math.ColorRGBA;
@@ -9,11 +7,16 @@ import com.jme3.renderer.queue.RenderQueue.Bucket;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Sphere;
-
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 import us.ihmc.euclid.shape.Sphere3D;
 import us.ihmc.graphicsDescription.Graphics3DObject;
 import us.ihmc.graphicsDescription.structure.Graphics3DNode;
 
+import java.time.Duration;
+
+@Tag("jme")
 public class JMEGraphics3DWorldTest
 {
 
@@ -45,7 +48,7 @@ public class JMEGraphics3DWorldTest
       JMEGraphics3DWorld world = new JMEGraphics3DWorld("testWorld", new JMEGraphics3DAdapter());
       
       world.addChild(new Graphics3DNode("Sphere", new Graphics3DObject(new Sphere3D())));
-      world.startWithoutGui();
+      world.startWithGui();
 
       world.keepAlive(1);
       world.stop();
@@ -56,7 +59,7 @@ public class JMEGraphics3DWorldTest
    {
       JMEGraphics3DWorld world = new JMEGraphics3DWorld("testWorld", new JMEGraphics3DAdapter());
       
-      world.startWithoutGui();
+      world.startWithGui();
       world.addChild(new Graphics3DNode("Sphere", new Graphics3DObject(new Sphere3D())));
 
       world.keepAlive(1);
@@ -79,7 +82,7 @@ public class JMEGraphics3DWorldTest
       jmeSphereNode.attachChild(geometry);
       
       world.addChild(jmeSphereNode);
-      world.startWithoutGui();
+      world.startWithGui();
 
       world.keepAlive(1);
       world.stop();
@@ -88,14 +91,16 @@ public class JMEGraphics3DWorldTest
 	@Test// timeout = 30000
    public void testSetCameraPosition()
    {
-      JMEGraphics3DWorld world = new JMEGraphics3DWorld("testWorld", new JMEGraphics3DAdapter());
-      
-      world.addChild(new Graphics3DNode("Sphere", new Graphics3DObject(new Sphere3D())));
-      world.startWithGui();
-      world.setCameraPosition(5, 5, 5);
+      Assertions.assertTimeoutPreemptively(Duration.ofSeconds(5), () -> {
+         JMEGraphics3DWorld world = new JMEGraphics3DWorld("testWorld", new JMEGraphics3DAdapter());
 
-      world.keepAlive(1);
-      world.stop();
+         world.addChild(new Graphics3DNode("Sphere", new Graphics3DObject(new Sphere3D())));
+         world.startWithGui();
+         world.setCameraPosition(5, 5, 5);
+
+         world.keepAlive(1);
+         world.stop();
+      });
    }
 
 	@Test// timeout = 30000

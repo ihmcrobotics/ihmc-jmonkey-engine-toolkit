@@ -17,11 +17,13 @@ import com.jme3.system.awt.AwtPanel;
 import com.jme3.system.awt.AwtPanelsContext;
 import com.jme3.system.awt.PaintMode;
 
+import org.junit.jupiter.api.Tag;
 import us.ihmc.jMonkeyEngineToolkit.jme.context.PBOAwtPanel;
 import us.ihmc.jMonkeyEngineToolkit.jme.context.PBOAwtPanelsContext;
  
 /** Sample 4 - how to trigger repeating actions from the main update loop.
  * In this example, we make the player character rotate. */
+@Tag("jme")
 public class AWTPanelsTest extends SimpleApplication {
  
    private static final boolean USE_PBO = true;

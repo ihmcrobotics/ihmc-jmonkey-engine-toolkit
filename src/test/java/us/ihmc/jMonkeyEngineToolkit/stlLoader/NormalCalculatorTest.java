@@ -21,9 +21,17 @@ import static us.ihmc.robotics.Assert.*;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 
+import com.jme3.asset.AssetInfo;
+import com.jme3.asset.AssetManager;
+import com.jme3.asset.ModelKey;
+import com.jme3.asset.plugins.UrlAssetInfo;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-
+import us.ihmc.commons.thread.ThreadTools;
+import us.ihmc.jMonkeyEngineToolkit.jme.JMEGraphics3DAdapter;
+import us.ihmc.jMonkeyEngineToolkit.jme.JMEGraphics3DWorld;
 
 /**
  * Test the normal calculation routine based on the normals in the the teapotBinary.STL model.
@@ -31,14 +39,21 @@ import org.junit.jupiter.api.Test;
  * @author Jesper Smith
  *
  */
+@Tag("jme")
 public class NormalCalculatorTest
 {
 
 	@Test// timeout = 30000
    public void testNormalsBasedOnTeapot() throws IOException
    {
-      InputStream stream = getClass().getClassLoader().getResourceAsStream("teapotBinary.STL");
-      STLReader reader = STLReaderFactory.create(stream);
+      JMEGraphics3DWorld world = new JMEGraphics3DWorld("testWorld", new JMEGraphics3DAdapter());
+      world.startWithGui();
+      ThreadTools.sleep(2);
+      AssetManager assetManager = (world.getGraphics3DAdapter()).getRenderer().getAssetManager();
+      ModelKey modelKey = new ModelKey("teapotBinary.STL");
+      UrlAssetInfo urlAssetInfo = UrlAssetInfo.create(assetManager, modelKey, getClass().getClassLoader().getResource("teapotBinary.STL"));
+
+      STLReader reader = STLReaderFactory.create(urlAssetInfo);
 
 
       for(Triangle triangle : reader.getTriangles())
@@ -49,5 +64,8 @@ public class NormalCalculatorTest
          
          assertTrue(NormalCalculator.compareNormal(normal, calculatedNormal, 1e-2f));
       }
+
+      ThreadTools.sleep(3);
+      world.stop();
    }
 }

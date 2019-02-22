@@ -1,18 +1,26 @@
 plugins {
-   id("us.ihmc.ihmc-build") version "0.15.4"
-   id("us.ihmc.ihmc-ci") version "2.4"
-   id("us.ihmc.log-tools") version "0.2.2"
+   id("us.ihmc.ihmc-build") version "0.15.6"
+   id("us.ihmc.ihmc-ci") version "4.9"
+   id("us.ihmc.log-tools") version "0.3.1"
 }
 
 ihmc {
    group = "us.ihmc"
-   version = "0.12.5"
+   version = "0.12.6"
    vcsUrl = "https://github.com/ihmcrobotics/ihmc-jmonkey-engine-toolkit"
    openSource = true
 
    configureDependencyResolution()
    configurePublications()
 }
+
+categories.configure("fast").enableAssertions = false
+def jme = categories.configure("jme")
+jme.enableAssertions = false
+jme.minHeapSizeGB = 2
+jme.maxHeapSizeGB = 6
+jme.forkEvery = 1
+jme.maxParallelForks = 1
 
 mainDependencies {
    compile group: "us.ihmc", name: "euclid", version: "0.11.0"
@@ -32,11 +40,11 @@ mainDependencies {
    compile group: "com.vividsolutions", name: "jts", version: "1.13"
    compile group: "com.google.guava", name: "guava", version: "18.0"
    compile group: "org.boofcv", name: "geo", version: "0.24.1"
-   compile group: "org.apache.commons", name: "commons-lang3", version: "3.7"
-   compile group: "us.ihmc", name: "ihmc-commons", version: "0.25.0"
+   compile group: "org.apache.commons", name: "commons-lang3", version: "3.8.1"
+   compile group: "us.ihmc", name: "ihmc-commons", version: "0.25.4"
    compile group: "us.ihmc", name: "ihmc-graphics-description", version: "0.12.9"
 }
 
 testDependencies {
-   compile group: "us.ihmc", name: "ihmc-commons-testing", version: "0.25.0"
+   compile group: "us.ihmc", name: "ihmc-commons-testing", version: "0.25.4"
 }

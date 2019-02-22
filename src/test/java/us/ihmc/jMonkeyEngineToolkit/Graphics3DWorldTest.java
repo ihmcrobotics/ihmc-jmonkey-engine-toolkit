@@ -1,13 +1,16 @@
 package us.ihmc.jMonkeyEngineToolkit;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+import us.ihmc.commons.thread.ThreadTools;
 import us.ihmc.euclid.shape.Sphere3D;
 import us.ihmc.graphicsDescription.Graphics3DObject;
 import us.ihmc.graphicsDescription.appearance.YoAppearance;
 import us.ihmc.graphicsDescription.structure.Graphics3DNode;
 import us.ihmc.jMonkeyEngineToolkit.jme.JMEGraphics3DAdapter;
 
+@Tag("jme")
 public class Graphics3DWorldTest
 {
 
@@ -33,8 +36,8 @@ public class Graphics3DWorldTest
    public void addASphere()
    {
       Graphics3DWorld world = new Graphics3DWorld("testWorld", new JMEGraphics3DAdapter());
-      world.addChild(new Graphics3DNode("Sphere", new Graphics3DObject(new Sphere3D(), YoAppearance.Glass())));
       world.startWithoutGui();
+      world.addChild(new Graphics3DNode("Sphere", new Graphics3DObject(new Sphere3D(), YoAppearance.Glass())));
       world.keepAlive(1.0);
       world.stop();
    }
@@ -53,8 +56,8 @@ public class Graphics3DWorldTest
    public void testSetCameraPosition()
    {
       Graphics3DWorld world = new Graphics3DWorld("testWorld", new JMEGraphics3DAdapter());
-      world.addChild(new Graphics3DNode("Sphere", new Graphics3DObject(new Sphere3D(), YoAppearance.Glass(0.2))));
       world.startWithGui();
+      world.addChild(new Graphics3DNode("Sphere", new Graphics3DObject(new Sphere3D(), YoAppearance.Glass(0.2))));
       world.setCameraPosition(5, 5, 5);
       world.keepAlive(1.0);
       world.stop();
@@ -66,8 +69,8 @@ public class Graphics3DWorldTest
       Graphics3DWorld world = new Graphics3DWorld("testWorld", new JMEGraphics3DAdapter());
       
       Graphics3DNode sphereNode = new Graphics3DNode("Sphere", new Graphics3DObject(new Sphere3D()));
-      world.addChild(sphereNode);
       world.startWithGui();
+      world.addChild(sphereNode);
       world.setCameraPosition(5, 5, 5);
       world.fixCameraOnNode(sphereNode);
       
