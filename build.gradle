@@ -1,12 +1,12 @@
 plugins {
-   id("us.ihmc.ihmc-build") version "0.15.6"
-   id("us.ihmc.ihmc-ci") version "4.9"
+   id("us.ihmc.ihmc-build") version "0.15.7"
+   id("us.ihmc.ihmc-ci") version "4.23"
    id("us.ihmc.log-tools") version "0.3.1"
 }
 
 ihmc {
    group = "us.ihmc"
-   version = "0.12.6"
+   version = "0.12.7"
    vcsUrl = "https://github.com/ihmcrobotics/ihmc-jmonkey-engine-toolkit"
    openSource = true
 
@@ -42,7 +42,7 @@ mainDependencies {
    compile group: "org.boofcv", name: "geo", version: "0.24.1"
    compile group: "org.apache.commons", name: "commons-lang3", version: "3.8.1"
    compile group: "us.ihmc", name: "ihmc-commons", version: "0.25.4"
-   compile group: "us.ihmc", name: "ihmc-graphics-description", version: "0.12.9"
+   compile group: "us.ihmc", name: "ihmc-graphics-description", version: "0.12.11"
 }
 
 testDependencies {
