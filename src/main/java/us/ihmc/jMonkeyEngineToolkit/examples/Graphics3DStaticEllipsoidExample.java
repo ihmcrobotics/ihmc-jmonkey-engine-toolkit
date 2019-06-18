@@ -3,7 +3,7 @@ package us.ihmc.jMonkeyEngineToolkit.examples;
 import java.util.ArrayList;
 import java.util.Random;
 
-import us.ihmc.euclid.shape.Ellipsoid3D;
+import us.ihmc.euclid.shape.primitives.Ellipsoid3D;
 import us.ihmc.euclid.transform.RigidBodyTransform;
 import us.ihmc.euclid.tuple3D.Point3D;
 import us.ihmc.euclid.tuple3D.Vector3D;
@@ -55,7 +55,7 @@ public class Graphics3DStaticEllipsoidExample
    {
       for (Ellipsoid3D ellipsoid : ellipsoids)
       {
-         if (ellipsoid.isInsideEpsilon(point, epsilon)) return true;
+         if (ellipsoid.isPointInside(point, epsilon)) return true;
       }
 
       return false;
@@ -65,7 +65,7 @@ public class Graphics3DStaticEllipsoidExample
    {
       for (Ellipsoid3D ellipsoid : ellipsoids)
       {
-         if (ellipsoid.isInsideEpsilon(point, epsilon)) return true;
+         if (ellipsoid.isPointInside(point, epsilon)) return true;
       }
 
       return false;

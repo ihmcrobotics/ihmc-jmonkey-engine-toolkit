@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 
 import us.ihmc.commons.thread.ThreadTools;
-import us.ihmc.euclid.shape.Sphere3D;
+import us.ihmc.euclid.shape.primitives.Sphere3D;
 import us.ihmc.euclid.transform.AffineTransform;
 import us.ihmc.euclid.tuple3D.Point3D;
 import us.ihmc.euclid.tuple3D.Vector3D;
