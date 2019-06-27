@@ -526,21 +526,21 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
       Vector3f fromTheBackBottom = fromTheBack.add(fromTheBottom).normalizeLocal();
 
       primaryLight = new DirectionalLight();
-      primaryLight.setColor(ColorRGBA.White.mult(0.5f));
+      float directionalBrightness = 0.3f;
+      primaryLight.setColor(ColorRGBA.White.mult(directionalBrightness));
       primaryLight.setDirection(fromTheTopFront);
       rootNode.addLight(primaryLight);
       lights.add(primaryLight);
 
-      // TODO: Ambient light could be brighter, but OBJ model files seem to just get white in ambient light, rather than their material.
       ambientLight = new AmbientLight();
-      ambientLight.setColor(ColorRGBA.White.mult(0.2f));
+      ambientLight.setColor(ColorRGBA.White.mult(0.7f));
       rootNode.addLight(ambientLight);
 
-      addDirectionalLight(ColorRGBA.White.mult(0.35f), fromTheFrontSide);
-      addDirectionalLight(ColorRGBA.White.mult(0.3f), fromTheBackOtherSide);
-      addDirectionalLight(ColorRGBA.White.mult(0.28f), fromTheBackBottom);
-      addDirectionalLight(ColorRGBA.White.mult(0.32f), fromTheOtherSide);
-      addDirectionalLight(ColorRGBA.White.mult(0.35f), fromTheSide);
+      addDirectionalLight(ColorRGBA.White.mult(directionalBrightness), fromTheFrontSide);
+      addDirectionalLight(ColorRGBA.White.mult(directionalBrightness), fromTheBackOtherSide);
+      addDirectionalLight(ColorRGBA.White.mult(directionalBrightness), fromTheBackBottom);
+      addDirectionalLight(ColorRGBA.White.mult(directionalBrightness), fromTheOtherSide);
+      addDirectionalLight(ColorRGBA.White.mult(directionalBrightness), fromTheSide);
 
       renderManager.setPreferredLightMode(TechniqueDef.LightMode.SinglePass);
 
