@@ -24,28 +24,28 @@ jme.forkEvery = 1
 jme.maxParallelForks = 1
 
 mainDependencies {
-   compile group: "us.ihmc", name: "euclid", version: "0.12.0"
-   compile group: "us.ihmc", name: "euclid-shape", version: "0.12.0"
-   compile group: "org.jmonkeyengine", name: "jme3-core", version: "3.2.0-171208"
-   compile group: "org.jmonkeyengine", name: "jme3-desktop", version: "3.2.0-171208"
-   compile group: "org.jmonkeyengine", name: "jme3-terrain", version: "3.2.0-171208"
-   compile group: "org.jmonkeyengine", name: "jme3-plugins", version: "3.2.0-171208"
-   compile group: "org.jmonkeyengine", name: "jme3-dae", version: "3.2.0-171208"
+   api("us.ihmc:euclid:0.12.0")
+   api("us.ihmc:euclid-shape:0.12.0")
+   api("org.jmonkeyengine:jme3-core:3.2.0-171208")
+   api("org.jmonkeyengine:jme3-desktop:3.2.0-171208")
+   api("org.jmonkeyengine:jme3-terrain:3.2.0-171208")
+   api("org.jmonkeyengine:jme3-plugins:3.2.0-171208")
+   api("org.jmonkeyengine:jme3-dae:3.2.0-171208")
    // Only one version of lwjgl can be used at a time (sealed JARs), we require 2.9.3
    // for Canvas
-   // compile group: "org.jmonkeyengine", name: "jme3-lwjgl3", version: "3.2.0-171208"
+   // api("org.jmonkeyengine:jme3-lwjgl3:3.2.0-171208")
    compile(group: "org.jmonkeyengine", name: "jme3-lwjgl", version: "3.2.0-171208") {
       //Exclude incompatible version of jinput
       exclude group: "net.java.jinput", module: "jinput"
    }
-   compile group: "com.vividsolutions", name: "jts", version: "1.13"
-   compile group: "com.google.guava", name: "guava", version: "18.0"
-   compile group: "org.boofcv", name: "geo", version: "0.24.1"
-   compile group: "org.apache.commons", name: "commons-lang3", version: "3.8.1"
-   compile group: "us.ihmc", name: "ihmc-commons", version: "0.26.6"
-   compile group: "us.ihmc", name: "ihmc-graphics-description", version: "0.12.12"
+   api("com.vividsolutions:jts:1.13")
+   api("com.google.guava:guava:18.0")
+   api("org.boofcv:geo:0.24.1")
+   api("org.apache.commons:commons-lang3:3.8.1")
+   api("us.ihmc:ihmc-commons:0.26.6")
+   api("us.ihmc:ihmc-graphics-description:0.12.12")
 }
 
 testDependencies {
-   compile group: "us.ihmc", name: "ihmc-commons-testing", version: "0.26.6"
+   api("us.ihmc:ihmc-commons-testing:0.26.6")
 }
