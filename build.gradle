@@ -24,8 +24,8 @@ jme.forkEvery = 1
 jme.maxParallelForks = 1
 
 mainDependencies {
-   api("us.ihmc:euclid:0.12.0")
-   api("us.ihmc:euclid-shape:0.12.0")
+   api("us.ihmc:euclid:0.12.1")
+   api("us.ihmc:euclid-shape:0.12.1")
    api("org.jmonkeyengine:jme3-core:3.2.0-171208")
    api("org.jmonkeyengine:jme3-desktop:3.2.0-171208")
    api("org.jmonkeyengine:jme3-terrain:3.2.0-171208")
