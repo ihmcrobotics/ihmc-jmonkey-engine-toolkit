@@ -1,13 +1,13 @@
 plugins {
-   id("us.ihmc.ihmc-build") version "0.15.7"
-   id("us.ihmc.ihmc-ci") version "4.25"
-   id("us.ihmc.ihmc-cd") version "0.1"
+   id("us.ihmc.ihmc-build") version "0.19.7"
+   id("us.ihmc.ihmc-ci") version "5.3"
+   id("us.ihmc.ihmc-cd") version "1.8"
    id("us.ihmc.log-tools") version "0.3.1"
 }
 
 ihmc {
    group = "us.ihmc"
-   version = "0.12.8"
+   version = "0.12.9"
    vcsUrl = "https://github.com/ihmcrobotics/ihmc-jmonkey-engine-toolkit"
    openSource = true
 
@@ -24,28 +24,28 @@ jme.forkEvery = 1
 jme.maxParallelForks = 1
 
 mainDependencies {
-   compile group: "us.ihmc", name: "euclid", version: "0.12.0"
-   compile group: "us.ihmc", name: "euclid-shape", version: "0.12.0"
-   compile group: "org.jmonkeyengine", name: "jme3-core", version: "3.2.0-171208"
-   compile group: "org.jmonkeyengine", name: "jme3-desktop", version: "3.2.0-171208"
-   compile group: "org.jmonkeyengine", name: "jme3-terrain", version: "3.2.0-171208"
-   compile group: "org.jmonkeyengine", name: "jme3-plugins", version: "3.2.0-171208"
-   compile group: "org.jmonkeyengine", name: "jme3-dae", version: "3.2.0-171208"
+   api("us.ihmc:euclid:0.12.1")
+   api("us.ihmc:euclid-shape:0.12.1")
+   api("org.jmonkeyengine:jme3-core:3.2.0-171208")
+   api("org.jmonkeyengine:jme3-desktop:3.2.0-171208")
+   api("org.jmonkeyengine:jme3-terrain:3.2.0-171208")
+   api("org.jmonkeyengine:jme3-plugins:3.2.0-171208")
+   api("org.jmonkeyengine:jme3-dae:3.2.0-171208")
    // Only one version of lwjgl can be used at a time (sealed JARs), we require 2.9.3
    // for Canvas
-   // compile group: "org.jmonkeyengine", name: "jme3-lwjgl3", version: "3.2.0-171208"
+   // api("org.jmonkeyengine:jme3-lwjgl3:3.2.0-171208")
    compile(group: "org.jmonkeyengine", name: "jme3-lwjgl", version: "3.2.0-171208") {
       //Exclude incompatible version of jinput
       exclude group: "net.java.jinput", module: "jinput"
    }
-   compile group: "com.vividsolutions", name: "jts", version: "1.13"
-   compile group: "com.google.guava", name: "guava", version: "18.0"
-   compile group: "org.boofcv", name: "geo", version: "0.24.1"
-   compile group: "org.apache.commons", name: "commons-lang3", version: "3.8.1"
-   compile group: "us.ihmc", name: "ihmc-commons", version: "0.26.3"
-   compile group: "us.ihmc", name: "ihmc-graphics-description", version: "0.12.12"
+   api("com.vividsolutions:jts:1.13")
+   api("com.google.guava:guava:18.0")
+   api("org.boofcv:geo:0.24.1")
+   api("org.apache.commons:commons-lang3:3.9")
+   api("us.ihmc:ihmc-commons:0.26.6")
+   api("us.ihmc:ihmc-graphics-description:0.12.13")
 }
 
 testDependencies {
-   compile group: "us.ihmc", name: "ihmc-commons-testing", version: "0.26.3"
+   api("us.ihmc:ihmc-commons-testing:0.26.6")
 }
