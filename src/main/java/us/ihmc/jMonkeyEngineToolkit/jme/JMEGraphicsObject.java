@@ -209,6 +209,8 @@ public class JMEGraphicsObject extends Graphics3DInstructionExecutor
    {
 
 //      jmeAssetLocator.registerAssetDirectories(graphics3dObjectAddModelFile.getResourceDirectories());
+      if (graphics3dObjectAddModelFile.getResourceClassLoader() != null)
+         assetManager.addClassLoader(graphics3dObjectAddModelFile.getResourceClassLoader());
       Spatial spatial = createGraphics3DObjectFromModel(graphics3dObjectAddModelFile.getFileName(), graphics3dObjectAddModelFile.getSubmesh(),
             graphics3dObjectAddModelFile.centerSubmesh(), graphics3dObjectAddModelFile.getAppearance(), assetManager);
       currentNode.attachChild(spatial);
