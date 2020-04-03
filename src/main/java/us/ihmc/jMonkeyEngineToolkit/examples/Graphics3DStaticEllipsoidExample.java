@@ -30,7 +30,7 @@ public class Graphics3DStaticEllipsoidExample
       {
         Vector3D center = generateRandomVector3d(random, minValues, maxValues);
         RigidBodyTransform transform = new RigidBodyTransform();
-        transform.setTranslation(center);
+        transform.getTranslation().set(center);
         double xRadius = generateRandomDoubleBetween(random, minRadius, maxRadius);
         double yRadius = generateRandomDoubleBetween(random, minRadius, maxRadius);
         double zRadius = generateRandomDoubleBetween(random, minRadius, maxRadius);

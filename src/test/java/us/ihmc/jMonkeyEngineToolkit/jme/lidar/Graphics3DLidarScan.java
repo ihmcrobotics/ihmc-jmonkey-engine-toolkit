@@ -69,7 +69,7 @@ public class Graphics3DLidarScan
                transform.multiply(RayTracingLidar.getSweepTransform(params, i));
                transform.transform(p);
 
-               pointTransform.setTranslation(new Vector3D32(p));
+               pointTransform.getTranslation().set(new Vector3D32(p));
 
                points[i].setTransform(pointTransform);
             }
