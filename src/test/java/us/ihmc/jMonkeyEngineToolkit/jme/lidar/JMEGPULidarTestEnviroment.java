@@ -10,7 +10,7 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Sphere;
 
-import us.ihmc.euclid.Axis;
+import us.ihmc.euclid.Axis3D;
 import us.ihmc.euclid.shape.primitives.Sphere3D;
 import us.ihmc.graphicsDescription.Graphics3DObject;
 import us.ihmc.graphicsDescription.appearance.YoAppearance;
@@ -66,7 +66,7 @@ public class JMEGPULidarTestEnviroment implements Graphics3DFrameListener
 
       wallNode = new Graphics3DNode("wall", new Graphics3DObject());
       wallNode.getGraphics3DObject().addCube(0.01, 10, 10, YoAppearance.Glass());
-      wallNode.rotate(Math.PI / 8, Axis.Z);
+      wallNode.rotate(Math.PI / 8, Axis3D.Z);
       wallNode.translate(5, 0, -5);
 
       Geometry geometry = new Geometry("jmeSphere" + "Geo", new Sphere(200, 200, 5.0f, false, true));
@@ -140,7 +140,7 @@ public class JMEGPULidarTestEnviroment implements Graphics3DFrameListener
          testListener.stop();
       }
 
-      lidarNode.rotate(params.getRotationSpeed() * timePerFrame, Axis.X);
+      lidarNode.rotate(params.getRotationSpeed() * timePerFrame, Axis3D.X);
       gpuLidar.setTransformFromWorld(lidarNode.getTransform(), 0.0);
 
       if ((gpuScan != null) && (traceScan != null) && (testListener != null))

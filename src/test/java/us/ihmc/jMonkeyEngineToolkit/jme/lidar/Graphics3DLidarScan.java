@@ -1,6 +1,6 @@
 package us.ihmc.jMonkeyEngineToolkit.jme.lidar;
 
-import us.ihmc.euclid.Axis;
+import us.ihmc.euclid.Axis3D;
 import us.ihmc.euclid.shape.primitives.Sphere3D;
 import us.ihmc.euclid.transform.AffineTransform;
 import us.ihmc.euclid.transform.RigidBodyTransform;
@@ -105,7 +105,7 @@ public class Graphics3DLidarScan
       for (int i = 0; i < scansPerSweep; i++)
       {
          Graphics3DObject rayObject = new Graphics3DObject();
-         rayObject.rotate(Math.PI / 2, Axis.Y);
+         rayObject.rotate(Math.PI / 2, Axis3D.Y);
          rayObject.addCylinder(1.0, 0.0005, appearance);
 
          rays[i] = new Graphics3DNode(lidarName + "ray" + i, Graphics3DNodeType.VISUALIZATION, rayObject);

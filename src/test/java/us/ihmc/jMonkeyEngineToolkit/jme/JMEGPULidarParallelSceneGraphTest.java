@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import us.ihmc.euclid.Axis;
+import us.ihmc.euclid.Axis3D;
 import us.ihmc.euclid.shape.primitives.Sphere3D;
 import us.ihmc.euclid.transform.RigidBodyTransform;
 import us.ihmc.graphicsDescription.Graphics3DObject;
@@ -75,7 +75,7 @@ public class JMEGPULidarParallelSceneGraphTest
 
       final Graphics3DNode lidarNode = new Graphics3DNode("lidar", Graphics3DNodeType.ROOTJOINT, new Graphics3DObject());
       lidarNode.getGraphics3DObject().addModelFile("models/hokuyo.dae", YoAppearance.Black());
-      lidarNode.translate(0.5, Axis.Z);
+      lidarNode.translate(0.5, Axis3D.Z);
 
       world.addChild(lidarNode);
 
