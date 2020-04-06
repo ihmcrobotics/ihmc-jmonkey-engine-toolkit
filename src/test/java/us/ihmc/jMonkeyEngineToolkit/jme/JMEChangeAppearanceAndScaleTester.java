@@ -7,7 +7,7 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 
-import us.ihmc.euclid.Axis;
+import us.ihmc.euclid.Axis3D;
 import us.ihmc.graphicsDescription.Graphics3DObject;
 import us.ihmc.graphicsDescription.appearance.YoAppearance;
 import us.ihmc.graphicsDescription.instructions.Graphics3DInstruction;
@@ -26,7 +26,7 @@ public class JMEChangeAppearanceAndScaleTester extends SimpleApplication
 
       Graphics3DObject graphics = new Graphics3DObject();
       graphics.setChangeable(true);
-      graphics.rotate(Math.PI / 2.0, Axis.Z);
+      graphics.rotate(Math.PI / 2.0, Axis3D.Z);
       scale = graphics.scale(1.0);
       instruction = graphics.addEllipsoid(1.0, 1.0, 1.0, YoAppearance.Red());
       JMEGraphicsObject graphicsObject = new JMEGraphicsObject(this, assetManager, graphics);

@@ -120,7 +120,7 @@ public class JMEGeometryUtilsTest
       AxisAngle axisAngleTransformed = new AxisAngle();
 
       QuaternionBasics quat4d = new us.ihmc.euclid.tuple4D.Quaternion();
-      transform3D.getRotation(quat4d);
+      quat4d.set(transform3D.getRotation());
       axisAngleTransformed.set(quat4d);
 
       // Unit vector in x

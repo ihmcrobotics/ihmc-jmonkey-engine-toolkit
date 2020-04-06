@@ -3,7 +3,7 @@ package us.ihmc.jMonkeyEngineToolkit;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import us.ihmc.euclid.Axis;
+import us.ihmc.euclid.Axis3D;
 import us.ihmc.graphicsDescription.Graphics3DObject;
 import us.ihmc.graphicsDescription.appearance.YoAppearance;
 import us.ihmc.graphicsDescription.instructions.Graphics3DAddExtrusionInstruction;
@@ -25,7 +25,7 @@ public class Graphics3DTextTest implements Graphics3DFrameListener
 
       Graphics3DObject textObject = new Graphics3DObject();
       textObject.setChangeable(true);
-      textObject.rotate(-Math.PI / 2.0, Axis.Y);
+      textObject.rotate(-Math.PI / 2.0, Axis3D.Y);
       instruction = textObject.addText(text, 20, YoAppearance.Blue());
       Graphics3DNode textNode = new Graphics3DNode("textNode", textObject);
       

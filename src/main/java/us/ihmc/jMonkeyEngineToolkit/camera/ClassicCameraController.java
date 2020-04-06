@@ -1308,8 +1308,8 @@ public class ClassicCameraController implements TrackingDollyCameraController, K
       rotationMatrix.setColumns(xAxis, yAxis, zAxis);
 
       currXform.setRotationAndZeroTranslation(rotationMatrix);
-      currXform.setTranslation(positionOffset);
-      currXform.normalizeRotationPart();
+      currXform.getTranslation().set(positionOffset);
+      currXform.getRotation().normalize();
    }
    
    private boolean shouldAcceptDeviceInput()

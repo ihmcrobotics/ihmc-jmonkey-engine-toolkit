@@ -10,6 +10,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 
 import us.ihmc.euclid.referenceFrame.ReferenceFrame;
+import us.ihmc.euclid.referenceFrame.tools.ReferenceFrameTools;
 import us.ihmc.euclid.transform.RigidBodyTransform;
 import us.ihmc.euclid.tuple3D.Vector3D;
 import us.ihmc.graphicsDescription.structure.Graphics3DNode;
@@ -224,8 +225,8 @@ public class JMEGeometryUtils
 
       RigidBodyTransform aTransform = JMEDataTypeUtils.jmeTransformToTransform3D(a.getWorldTransform());
       RigidBodyTransform bTransform = JMEDataTypeUtils.jmeTransformToTransform3D(b.getWorldTransform());
-      ReferenceFrame frameA = ReferenceFrame.constructFrameWithUnchangingTransformToParent("nodeA", ReferenceFrame.getWorldFrame(), aTransform);
-      ReferenceFrame frameB = ReferenceFrame.constructFrameWithUnchangingTransformToParent("nodeB", ReferenceFrame.getWorldFrame(), bTransform);
+      ReferenceFrame frameA = ReferenceFrameTools.constructFrameWithUnchangingTransformToParent("nodeA", ReferenceFrame.getWorldFrame(), aTransform);
+      ReferenceFrame frameB = ReferenceFrameTools.constructFrameWithUnchangingTransformToParent("nodeB", ReferenceFrame.getWorldFrame(), bTransform);
 
       RigidBodyTransform aToBTransform = frameA.getTransformToDesiredFrame(frameB);
 
