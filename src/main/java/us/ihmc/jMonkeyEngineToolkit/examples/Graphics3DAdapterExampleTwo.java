@@ -33,7 +33,7 @@ public class Graphics3DAdapterExampleTwo
       Graphics3DNode node1 = new Graphics3DNode("node1", Graphics3DNodeType.JOINT);
       
       RigidBodyTransform transform1 = new RigidBodyTransform();
-      transform1.setTranslation(new Vector3D(2.0, 0.0, 0.0));
+      transform1.getTranslation().set(new Vector3D(2.0, 0.0, 0.0));
       node1.setTransform(transform1);
       
       Graphics3DNode node2 = new Graphics3DNode("node2", Graphics3DNodeType.JOINT);
