@@ -1,6 +1,7 @@
 package us.ihmc.jMonkeyEngineToolkit.jme.context;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import com.jme3.input.JoyInput;
 import com.jme3.input.KeyInput;
@@ -15,6 +16,8 @@ import com.jme3.system.JmeContext;
 import com.jme3.system.JmeSystem;
 import com.jme3.system.SystemListener;
 import com.jme3.system.Timer;
+import us.ihmc.commons.thread.Notification;
+import us.ihmc.commons.thread.ThreadTools;
 
 public class PBOAwtPanelsContext implements JmeContext
 {
@@ -231,13 +234,9 @@ public class PBOAwtPanelsContext implements JmeContext
 
       if (needThrottle)
       {
-         try
-         {
-            Thread.sleep(100);
-         }
-         catch (InterruptedException ex)
-         {
-         }
+         Notification doneWaiting = new Notification();
+         ThreadTools.scheduleWithFixedDelayAndIterationLimit("DelayThread", doneWaiting::set, 100, 100, TimeUnit.MILLISECONDS, 1);
+         doneWaiting.blockingPoll();
       }
 
       if (!alreadyDestroying) listener.update();
