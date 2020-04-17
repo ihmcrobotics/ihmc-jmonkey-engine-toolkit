@@ -16,7 +16,7 @@ ihmc {
 }
 
 categories.configure("fast").enableAssertions = false
-def jme = categories.configure("jme")
+val jme = categories.configure("jme")
 jme.enableAssertions = false
 jme.minHeapSizeGB = 2
 jme.maxHeapSizeGB = 6
@@ -32,9 +32,9 @@ mainDependencies {
    // Only one version of lwjgl can be used at a time (sealed JARs), we require 2.9.3
    // for Canvas
    // api("org.jmonkeyengine:jme3-lwjgl3:3.2.0-171208")
-   compile(group: "org.jmonkeyengine", name: "jme3-lwjgl", version: "3.2.0-171208") {
+   api("org.jmonkeyengine:jme3-lwjgl:3.2.0-171208") {
       //Exclude incompatible version of jinput
-      exclude group: "net.java.jinput", module: "jinput"
+      exclude(group = "net.java.jinput", module = "jinput")
    }
    api("com.vividsolutions:jts:1.13")
    api("com.google.guava:guava:18.0")
