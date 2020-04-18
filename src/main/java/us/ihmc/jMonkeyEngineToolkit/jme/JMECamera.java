@@ -40,7 +40,7 @@ public class JMECamera extends Camera implements CameraAdapter
 
    private final RigidBodyTransform cameraTransform = new RigidBodyTransform();
 
-   private float horizontalFoVInRadians = FastMath.PI / 4.0f;
+   private float horizontalFoVInRadians = FastMath.PI;
    private float clipDistanceNear = 0.15f;
    private float clipDistanceFar = 1000.0f;
    private boolean frustrumNeedsUpdating = false;

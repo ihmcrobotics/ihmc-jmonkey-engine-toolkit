@@ -28,6 +28,7 @@ public class OffscreenBufferVideoServer
 
       ClassicCameraController cameraController = new ClassicCameraController(adapter, viewport, cameraTrackingAndDollyPositionHolder);
       cameraController.setConfiguration(cameraConfiguration, mountList);
+      cameraController.setFieldOfView(Math.PI);
       viewport.setCameraController(cameraController);
 
       CameraUpdater cameraUpdater = new CameraUpdater();

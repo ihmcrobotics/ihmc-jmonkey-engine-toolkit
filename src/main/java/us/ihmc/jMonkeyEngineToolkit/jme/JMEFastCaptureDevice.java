@@ -344,7 +344,7 @@ public class JMEFastCaptureDevice extends AbstractAppState implements SceneProce
       public long timeStamp = 0;
       public Point3DReadOnly position = new Point3D();
       public QuaternionReadOnly orientation = new Quaternion();
-      public double fov = Math.PI / 2.0;
+      public double fov = Math.PI;
 
       public void run()
       {

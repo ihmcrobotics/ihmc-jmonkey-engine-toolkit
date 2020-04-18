@@ -99,6 +99,7 @@ public class JMEViewportAdapter extends ViewportAdapter implements InputMapSette
       this.isMainViewport = isMainViewport;
       renderManager = jmeRenderer.getRenderManager();
       jmeCamera = new JMECamera(jmeRenderer.getCamera());
+      jmeCamera.setHorizontalFoVInRadians((float) (Math.PI - 0.1));
       viewPort = renderManager.createMainView("JMEViewport", jmeCamera);
       viewPort.attachScene(rootNode);
       viewPort.setClearFlags(true, true, true);
