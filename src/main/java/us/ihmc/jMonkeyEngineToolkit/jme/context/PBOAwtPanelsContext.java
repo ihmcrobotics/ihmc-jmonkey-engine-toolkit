@@ -1,6 +1,7 @@
 package us.ihmc.jMonkeyEngineToolkit.jme.context;
 
 import java.util.ArrayList;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import com.jme3.input.JoyInput;
@@ -35,6 +36,9 @@ public class PBOAwtPanelsContext implements JmeContext
    private boolean lastThrottleState = false;
 
    private ArrayList<PBOAwtPanelListener> pboAwtPanelListeners = new ArrayList<>();
+
+   private final ScheduledExecutorService throttleDelayExecutor = ThreadTools.newSingleThreadScheduledExecutor("PBODelay");
+   private final Notification throttleDelayNotification = new Notification();
 
    private class AwtPanelsListener implements SystemListener
    {
@@ -234,9 +238,8 @@ public class PBOAwtPanelsContext implements JmeContext
 
       if (needThrottle)
       {
-         Notification doneWaiting = new Notification();
-         ThreadTools.scheduleWithFixedDelayAndIterationLimit("DelayThread", doneWaiting::set, 100, 100, TimeUnit.MILLISECONDS, 1);
-         doneWaiting.blockingPoll();
+         throttleDelayExecutor.schedule(throttleDelayNotification::set, 100, TimeUnit.MILLISECONDS);
+         throttleDelayNotification.blockingPoll();
       }
 
       if (!alreadyDestroying) listener.update();
