@@ -41,10 +41,10 @@ mainDependencies {
    api("org.boofcv:geo:0.24.1")
    api("org.apache.commons:commons-lang3:3.9")
 
-   api("us.ihmc:euclid:0.13.1")
-   api("us.ihmc:euclid-shape:0.13.1")
+   api("us.ihmc:euclid:0.14.0")
+   api("us.ihmc:euclid-shape:0.14.0")
    api("us.ihmc:ihmc-commons:0.28.2")
-   api("us.ihmc:ihmc-graphics-description:0.15.0")
+   api("us.ihmc:ihmc-graphics-description:0.16.0")
 }
 
 testDependencies {
