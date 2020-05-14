@@ -1,7 +1,7 @@
 package us.ihmc.jMonkeyEngineToolkit.jme;
 
 import java.net.URL;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -52,7 +52,7 @@ public class JMEGeneratedHeightMap implements HeightMap
       }
    };
 
-   public JMEGeneratedHeightMap(ArrayList<Graphics3DNode> nodes, int resolution)
+   public JMEGeneratedHeightMap(List<Graphics3DNode> nodes, int resolution)
    {
       Logger.getLogger("").setLevel(Level.WARNING);
       this.resolution = resolution;

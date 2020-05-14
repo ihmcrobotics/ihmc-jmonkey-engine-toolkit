@@ -151,7 +151,7 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
 
    private JMEContextManager contextManager;
 
-   private ArrayList<JMEViewportAdapter> viewportAdapters = new ArrayList<>();
+   private List<JMEViewportAdapter> viewportAdapters = new ArrayList<>();
 
    private HashBiMap<Graphics3DNode, JMEGraphics3DNode> jmeGraphicsNodes = HashBiMap.create();
    private Collection<JMEGraphics3DNode> jmeGraphicsNodesListView = jmeGraphicsNodes.values();
@@ -172,13 +172,13 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
    private Node terrain;
    private Node zUpNode;
 
-   private ArrayList<DirectionalLight> lights = new ArrayList<>();
-   private ArrayList<JMEGPULidar> gpuLidars = new ArrayList<>();
-   private ArrayList<PBOAwtPanel> pboAwtPanels;
+   private List<DirectionalLight> lights = new ArrayList<>();
+   private List<JMEGPULidar> gpuLidars = new ArrayList<>();
+   private List<PBOAwtPanel> pboAwtPanels;
    private DirectionalLight primaryLight;
    private CloseableAndDisposableRegistry closeableAndDisposableRegistry = new CloseableAndDisposableRegistry();
 
-   private ArrayList<Updatable> updatables = new ArrayList<>(); // things we want to move automatically
+   private List<Updatable> updatables = new ArrayList<>(); // things we want to move automatically
 
    private Spatial sky = null;
    private HeightMap heightMap = null;

@@ -4,6 +4,7 @@ import java.awt.Canvas;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 import com.jme3.system.JmeContext;
 import com.jme3.system.awt.AwtPanel;
@@ -18,7 +19,7 @@ import us.ihmc.jMonkeyEngineToolkit.jme.context.PBOAwtPanelsContext;
 public class AWTPanelsContextManager extends JMEContextManager implements MouseListener
 {
    private JMERenderer jmeRenderer;
-   private LinkedHashMap<Canvas, JMEViewportAdapter> panelViewports = new LinkedHashMap<>();
+   private Map<Canvas, JMEViewportAdapter> panelViewports = new LinkedHashMap<>();
 
    public AWTPanelsContextManager(JMERenderer jmeRenderer)
    {

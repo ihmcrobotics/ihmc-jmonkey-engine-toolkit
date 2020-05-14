@@ -28,6 +28,7 @@ import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.jme3.post.SceneProcessor;
@@ -53,8 +54,8 @@ public class PBOAwtPanel extends Canvas implements SceneProcessor
    private BufferedImage bufferedImage;
    private FrameBuffer frameBuffer;
    private RenderManager renderManager;
-   private ArrayList<ViewPort> viewPorts = new ArrayList<>();
-   private ArrayList<PBOAwtPanelListener> pboAwtPanelListeners;
+   private List<ViewPort> viewPorts = new ArrayList<>();
+   private List<PBOAwtPanelListener> pboAwtPanelListeners;
 
    // Visibility/drawing vars
    private BufferStrategy strategy;
@@ -72,7 +73,7 @@ public class PBOAwtPanel extends Canvas implements SceneProcessor
    private int gpuToVram, vramToSys;
    private int dataSize;
 
-   public PBOAwtPanel(ArrayList<PBOAwtPanelListener> pboAwtPanelListeners)
+   public PBOAwtPanel(List<PBOAwtPanelListener> pboAwtPanelListeners)
    {
       this.pboAwtPanelListeners = pboAwtPanelListeners;
 

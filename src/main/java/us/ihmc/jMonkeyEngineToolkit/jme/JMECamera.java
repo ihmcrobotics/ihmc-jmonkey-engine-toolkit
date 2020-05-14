@@ -8,7 +8,7 @@ import com.jme3.renderer.Camera;
 import us.ihmc.euclid.transform.RigidBodyTransform;
 import us.ihmc.euclid.tuple3D.Point3D;
 import us.ihmc.euclid.tuple3D.Vector3D;
-import us.ihmc.euclid.tuple3D.interfaces.Tuple3DBasics;
+import us.ihmc.euclid.tuple3D.interfaces.Tuple3DReadOnly;
 import us.ihmc.euclid.tuple4D.interfaces.QuaternionBasics;
 import us.ihmc.euclid.tuple4D.interfaces.QuaternionReadOnly;
 import us.ihmc.jMonkeyEngineToolkit.CameraAdapter;
@@ -132,7 +132,7 @@ public class JMECamera extends Camera implements CameraAdapter
       return cameraController;
    }
 
-   public void setLocationInZUpCoordinates(Tuple3DBasics cameraPosition)
+   public void setLocationInZUpCoordinates(Tuple3DReadOnly cameraPosition)
    {
       setLocationInZUpCoordinates(JMEDataTypeUtils.vecMathTuple3dToJMEVector3f(cameraPosition));
    }

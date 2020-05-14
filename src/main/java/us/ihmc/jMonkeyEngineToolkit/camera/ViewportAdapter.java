@@ -2,6 +2,7 @@ package us.ihmc.jMonkeyEngineToolkit.camera;
 
 import java.awt.Canvas;
 import java.util.ArrayList;
+import java.util.List;
 
 import us.ihmc.euclid.tuple3D.Point3D;
 import us.ihmc.jMonkeyEngineToolkit.CameraAdapter;
@@ -10,7 +11,7 @@ import us.ihmc.jMonkeyEngineToolkit.Graphics3DFrameListener;
 
 public abstract class ViewportAdapter
 {
-   private ArrayList<Graphics3DFrameListener> frameListeners = new ArrayList<>();
+   private List<Graphics3DFrameListener> frameListeners = new ArrayList<>();
 
    public abstract Canvas getCanvas();
 
@@ -39,7 +40,7 @@ public abstract class ViewportAdapter
       frameListeners.add(frameListener);
    }
 
-   public ArrayList<Graphics3DFrameListener> getFrameListeners()
+   public List<Graphics3DFrameListener> getFrameListeners()
    {
       return frameListeners;
    }

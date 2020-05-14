@@ -1,6 +1,7 @@
 package us.ihmc.jMonkeyEngineToolkit.jme;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
@@ -9,7 +10,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import com.jme3.app.Application;
 import com.jme3.scene.Node;
 
-import us.ihmc.euclid.geometry.Line3D;
+import us.ihmc.euclid.geometry.interfaces.Line3DReadOnly;
 import us.ihmc.tools.TimestampProvider;
 
 public class JMEMultiRayTracer
@@ -39,7 +40,7 @@ public class JMEMultiRayTracer
       this.childrenToIntersect = childrenToIntersect;
    }
 
-   public long scan(TimestampProvider timestampProvider, ArrayList<Line3D> rays, double[] rawRayLengths)
+   public long scan(TimestampProvider timestampProvider, List<? extends Line3DReadOnly> rays, double[] rawRayLengths)
    {
       try
       {
@@ -50,7 +51,7 @@ public class JMEMultiRayTracer
 
          if (childrenToIntersect != null)
          {
-            ArrayList<Node> children = new ArrayList<>();
+            List<Node> children = new ArrayList<>();
             Node child;
             for (int i = 0; i < childrenToIntersect.length; i++)
             {
@@ -88,7 +89,7 @@ public class JMEMultiRayTracer
          System.out.println("JMEMultiRayTracer: elapsed time outside of RenderThread has been " + (System.nanoTime() - time) * 1.0e-9 + " seconds.");
    }
 
-   public void reportDebugTimeToSetupPicking(final ArrayList<Line3D> rays)
+   public void reportDebugTimeToSetupPicking(final List<? extends Line3DReadOnly> rays)
    {
       if (DEBUG)
          System.out.println("JMEMultiRayTracer: elapsed time setting up the scenegraph for picking " + (System.nanoTime() - time) * 1.0e-9 + " seconds.");
@@ -120,7 +121,7 @@ public class JMEMultiRayTracer
       });
    }
 
-   private double getPickDistance(Line3D ray3d, Node rootNode)
+   private double getPickDistance(Line3DReadOnly ray3d, Node rootNode)
    {
       rayCollisionAdapter.setPickingGeometry(ray3d);
       double pickDistance = rayCollisionAdapter.getPickDistance(rootNode);

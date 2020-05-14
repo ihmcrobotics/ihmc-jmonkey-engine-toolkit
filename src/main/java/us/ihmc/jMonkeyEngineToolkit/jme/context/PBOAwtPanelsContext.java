@@ -1,6 +1,7 @@
 package us.ihmc.jMonkeyEngineToolkit.jme.context;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.jme3.input.JoyInput;
 import com.jme3.input.KeyInput;
@@ -23,8 +24,7 @@ public class PBOAwtPanelsContext implements JmeContext
    private JmeContext actualContext;
    private AppSettings settings = new AppSettings(true);
    private SystemListener listener;
-   private ArrayList<PBOAwtPanel> panels = new ArrayList<>();
-   private PBOAwtPanel inputSource;
+   private List<PBOAwtPanel> panels = new ArrayList<>();
 
    private AwtMouseInput mouseInput = new AwtMouseInput();
    private AwtKeyInput keyInput = new AwtKeyInput();
@@ -97,12 +97,11 @@ public class PBOAwtPanelsContext implements JmeContext
       if (!panels.contains(panel))
          throw new IllegalArgumentException();
 
-      inputSource = panel;
       mouseInput.setInputSource(panel);
       keyInput.setInputSource(panel);
    }
 
-   public ArrayList<PBOAwtPanel> getPanelList()
+   public List<PBOAwtPanel> getPanelList()
    {
       return panels;
    }
@@ -273,7 +272,6 @@ public class PBOAwtPanelsContext implements JmeContext
 
       actualContext = null;
       settings = null;
-      inputSource = null;
 
       mouseInput = null;
       keyInput = null;
