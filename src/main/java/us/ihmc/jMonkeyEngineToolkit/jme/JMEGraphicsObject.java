@@ -260,7 +260,6 @@ public class JMEGraphicsObject extends Graphics3DInstructionExecutor
    {
       graphics3dObjectScale.addChangeScaleListener(new ScaleChangedListener()
       {
-
          @Override
          public void setScale(final Vector3D scaleFactor)
          {
