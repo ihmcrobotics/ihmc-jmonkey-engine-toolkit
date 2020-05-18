@@ -51,7 +51,8 @@ public class TransformRayDemo
       PanBackAndForthTrackingAndDollyPositionHolder cameraTrackAndDollyVariablesHolder = new PanBackAndForthTrackingAndDollyPositionHolder(20.0, 20.0, 20.0);
       JMEViewportAdapter viewportAdapter = (JMEViewportAdapter) renderer.createNewViewport(null, false, false);
       ClassicCameraController classicCameraController = ClassicCameraController.createClassicCameraControllerAndAddListeners(viewportAdapter,
-                                                           cameraTrackAndDollyVariablesHolder, renderer);
+                                                                                                                             cameraTrackAndDollyVariablesHolder,
+                                                                                                                             renderer);
       viewportAdapter.setCameraController(classicCameraController);
 
       Canvas canvas = viewportAdapter.getCanvas();
@@ -71,31 +72,33 @@ public class TransformRayDemo
 
       new Thread(new Runnable()
       {
+         @Override
          public void run()
          {
             while (true)
             {
                renderer.enqueue(new Callable<Object>()
                {
+                  @Override
                   public Object call() throws Exception
                   {
                      rayNode.setTransform(generateTransform(rayNode.getTransform()));
 
-//
-//
-//
-//                   Transform3D rotatorZ = new Transform3D();
-////                 rotator.setRotation(new AxisAngle4d(0, 0, 1, Math.PI / 100));
-//                   rotatorZ.rotZ(Math.PI / 16);
-//
-////                 Transform3D rotatorX = new Transform3D(rayNode.getTransform());
-////                 rotatorX.setToRollMatrix(Math.PI / 16);
-//
-//                   // rotatorZ.mul(rotatorX);
-//                   tAct.mul(rotatorZ);
-//                   rotatorZ.mul(tInit, tAct);
-//                   rayNode.setTransform(rotatorZ);
-//                   // rayNode.getTransform().mul(rotatorX);
+                     //
+                     //
+                     //
+                     //                   Transform3D rotatorZ = new Transform3D();
+                     ////                 rotator.setRotation(new AxisAngle4d(0, 0, 1, Math.PI / 100));
+                     //                   rotatorZ.rotZ(Math.PI / 16);
+                     //
+                     ////                 Transform3D rotatorX = new Transform3D(rayNode.getTransform());
+                     ////                 rotatorX.setToRollMatrix(Math.PI / 16);
+                     //
+                     //                   // rotatorZ.mul(rotatorX);
+                     //                   tAct.mul(rotatorZ);
+                     //                   rotatorZ.mul(tInit, tAct);
+                     //                   rayNode.setTransform(rotatorZ);
+                     //                   // rayNode.getTransform().mul(rotatorX);
 
                      return null;
                   }

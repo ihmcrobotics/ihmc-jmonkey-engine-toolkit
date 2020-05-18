@@ -2,11 +2,9 @@ package us.ihmc.jMonkeyEngineToolkit.camera;
 
 import java.util.ArrayList;
 
-
-
 public class CameraConfigurationList
 {
-   private ArrayList<CameraConfiguration> configs = new ArrayList<CameraConfiguration>();
+   private ArrayList<CameraConfiguration> configs = new ArrayList<>();
 
    public CameraConfigurationList()
    {
@@ -24,7 +22,7 @@ public class CameraConfigurationList
 
       for (int i = 0; i < n; i++)
       {
-         ret[i] = (configs.get(i)).getName();
+         ret[i] = configs.get(i).getName();
       }
 
       return ret;
@@ -36,7 +34,7 @@ public class CameraConfigurationList
 
       for (int i = 0; i < n; i++)
       {
-         CameraConfiguration config = (configs.get(i));
+         CameraConfiguration config = configs.get(i);
 
          if (config.getName().equals(name))
             return config;

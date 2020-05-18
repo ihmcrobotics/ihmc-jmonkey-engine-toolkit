@@ -1,13 +1,11 @@
 package us.ihmc.jMonkeyEngineToolkit.camera;
 
-
 import java.util.ArrayList;
-
 
 public class CameraMountList implements java.io.Serializable
 {
    private static final long serialVersionUID = 7819849315544602348L;
-   private ArrayList<CameraMountInterface> mounts = new ArrayList<CameraMountInterface>();
+   private ArrayList<CameraMountInterface> mounts = new ArrayList<>();
 
    public CameraMountList()
    {
@@ -22,7 +20,6 @@ public class CameraMountList implements java.io.Serializable
    {
       mounts.addAll(mountArrayList);
    }
-
 
    public CameraMountInterface getCameraMount(String name)
    {
@@ -44,4 +41,3 @@ public class CameraMountList implements java.io.Serializable
       return mounts;
    }
 }
-

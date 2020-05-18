@@ -1,6 +1,6 @@
 package us.ihmc.jMonkeyEngineToolkit.jme;
 
-import static us.ihmc.robotics.Assert.*;
+import static us.ihmc.robotics.Assert.assertTrue;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -11,7 +11,7 @@ import us.ihmc.jMonkeyEngineToolkit.examples.Graphics3DAdapterExampleOne;
 public class JMEGraphics3dAdapterTest
 {
 
-	@Test// timeout = 31000
+   @Test // timeout = 31000
    public void testSimpleObject()
    {
       JMEGraphics3DAdapter renderer = new JMEGraphics3DAdapter();

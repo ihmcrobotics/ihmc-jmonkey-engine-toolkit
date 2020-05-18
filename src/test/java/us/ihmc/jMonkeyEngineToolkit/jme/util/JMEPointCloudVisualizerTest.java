@@ -17,17 +17,17 @@ public class JMEPointCloudVisualizerTest
       new JMEPointCloudVisualizerTest().testJMEPointCloudVisualizer();
    }
 
-	@Test// timeout = 30000
+   @Test // timeout = 30000
    public void testJMEPointCloudVisualizer()
    {
       JMEPointCloudVisualizer jmePointCloudVisualizer = new JMEPointCloudVisualizer();
-      
+
       Random random = new Random();
-      
+
       Point3D32[] randomPoint3fCloudArray = new Point3D32[10000];
       for (int i = 0; i < randomPoint3fCloudArray.length; i++)
          randomPoint3fCloudArray[i] = new Point3D32(EuclidCoreRandomTools.nextPoint3D(random, 0.0, 0.0, 0.0, 5.0, 5.0, 5.0));
-      
+
       jmePointCloudVisualizer.addPointCloud(Arrays.asList(randomPoint3fCloudArray));
    }
 }

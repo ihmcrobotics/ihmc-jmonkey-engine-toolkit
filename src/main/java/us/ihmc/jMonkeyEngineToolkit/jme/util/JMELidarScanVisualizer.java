@@ -36,7 +36,7 @@ public class JMELidarScanVisualizer extends JMEPointCloudVisualizer
          public Object call() throws Exception
          {
             lidarNode.setTransform(lidarNodeTransform);
-            
+
             return null;
          }
       });
@@ -50,7 +50,7 @@ public class JMELidarScanVisualizer extends JMEPointCloudVisualizer
          public Object call() throws Exception
          {
             lidarNode.setTransform(lidarNodeTransform);
-            
+
             return null;
          }
       });

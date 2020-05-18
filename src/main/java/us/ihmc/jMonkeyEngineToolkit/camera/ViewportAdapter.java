@@ -8,10 +8,9 @@ import us.ihmc.jMonkeyEngineToolkit.CameraAdapter;
 import us.ihmc.jMonkeyEngineToolkit.ContextSwitchedListener;
 import us.ihmc.jMonkeyEngineToolkit.Graphics3DFrameListener;
 
-
 public abstract class ViewportAdapter
 {
-   private ArrayList<Graphics3DFrameListener> frameListeners = new ArrayList<Graphics3DFrameListener>();
+   private ArrayList<Graphics3DFrameListener> frameListeners = new ArrayList<>();
 
    public abstract Canvas getCanvas();
 

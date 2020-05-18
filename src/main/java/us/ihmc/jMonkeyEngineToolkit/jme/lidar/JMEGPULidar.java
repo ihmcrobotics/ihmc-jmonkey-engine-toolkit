@@ -70,12 +70,12 @@ public class JMEGPULidar implements GPULidar, AppState
          throw new RuntimeException("Field of view for LIDAR can not be more than 2 pi radians.");
       }
 
-      if (scansPerSweep != (scansPerSweep / numberOfCameras) * numberOfCameras)
+      if (scansPerSweep != scansPerSweep / numberOfCameras * numberOfCameras)
       {
          throw new RuntimeException("scansPerSweep is not integer divisable by number of cameras " + numberOfCameras);
       }
 
-      this.cameraRotations = createCameraRotations(numberOfCameras, (float) fieldOfView);
+      cameraRotations = createCameraRotations(numberOfCameras, (float) fieldOfView);
 
       float startAngle = -((float) fieldOfView) / 2.0f;
 
@@ -83,16 +83,28 @@ public class JMEGPULidar implements GPULidar, AppState
       LidarMaterial lidarMaterial = new LidarMaterial(jmeRenderer.getAssetManager());
       for (int i = 0; i < numberOfCameras; i++)
       {
-         lidarSceneViewPort[i] = new LidarSceneViewPort(jmeRenderer, lidarMaterial, numberOfCameras, scansPerSweep, scanHeight, (float) fieldOfView,
-                                                        (float) minRange, (float) maxRange);
+         lidarSceneViewPort[i] = new LidarSceneViewPort(jmeRenderer,
+                                                        lidarMaterial,
+                                                        numberOfCameras,
+                                                        scansPerSweep,
+                                                        scanHeight,
+                                                        (float) fieldOfView,
+                                                        (float) minRange,
+                                                        (float) maxRange);
       }
 
-      lidarDistortionProcessor = new LidarDistortionProcessor(jmeRenderer, scansPerSweep, scanHeight, numberOfCameras, startAngle, (float) fieldOfView,
+      lidarDistortionProcessor = new LidarDistortionProcessor(jmeRenderer,
+                                                              scansPerSweep,
+                                                              scanHeight,
+                                                              numberOfCameras,
+                                                              startAngle,
+                                                              (float) fieldOfView,
                                                               lidarSceneViewPort);
 
       jmeRenderer.getStateManager().attach(this);
    }
 
+   @Override
    public void addGPULidarListener(GPULidarListener listener)
    {
       lidarDistortionProcessor.addGPULidarListener(listener);
@@ -140,15 +152,17 @@ public class JMEGPULidar implements GPULidar, AppState
       return cameraRotations;
    }
 
+   @Override
    public void setTransformFromWorld(RigidBodyTransform transformFromWorld, double time)
    {
       synchronized (lidarTransform)
       {
-         this.lidarTransform.set(transformFromWorld);
+         lidarTransform.set(transformFromWorld);
          this.time = time;
       }
    }
 
+   @Override
    public void setTransformFromWorld(AffineTransform transformFromWorld, double time)
    {
       synchronized (lidarTransform)

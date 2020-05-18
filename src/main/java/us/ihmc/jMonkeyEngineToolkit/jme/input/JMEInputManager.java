@@ -58,15 +58,15 @@ public class JMEInputManager implements AnalogListener, ActionListener, Mouse3DL
 
    public JMEInputManager(JMERenderer jmeRenderer, Node rootNode, JMECamera jmeCamera, boolean reverseY)
    {
-      this.jmeGraphicsNodes = jmeRenderer.getJmeGraphicsNodes().inverse();
+      jmeGraphicsNodes = jmeRenderer.getJmeGraphicsNodes().inverse();
       this.jmeCamera = jmeCamera;
       this.rootNode = rootNode;
-      this.inputManager = jmeRenderer.getInputManager();
-      this.selectedListenerHolder = jmeRenderer.getSelectedListenerHolder();
-      this.keyListenerHolder = jmeRenderer.getKeyListenerHolder();
-      this.mouseListenerHolder = jmeRenderer.getMouseListenerHolder();
-      this.mouse3DListenerHolder = jmeRenderer.getMouse3DListenerHolder();
-      this.mouse3DJoystick = jmeRenderer.getMouse3DJoystick();
+      inputManager = jmeRenderer.getInputManager();
+      selectedListenerHolder = jmeRenderer.getSelectedListenerHolder();
+      keyListenerHolder = jmeRenderer.getKeyListenerHolder();
+      mouseListenerHolder = jmeRenderer.getMouseListenerHolder();
+      mouse3DListenerHolder = jmeRenderer.getMouse3DListenerHolder();
+      mouse3DJoystick = jmeRenderer.getMouse3DJoystick();
       this.reverseY = reverseY;
    }
 
@@ -95,13 +95,11 @@ public class JMEInputManager implements AnalogListener, ActionListener, Mouse3DL
                CollisionResults results = new CollisionResults();
 
                Vector2f click2d = inputManager.getCursorPosition();
-               //JJC 140417 reversed y to fix camera click locations. jme canvas y is reversed 
-               if(reverseY) 
-               click2d.y = jmeCamera.getHeight()-click2d.y;
-               Vector3f click3d = jmeCamera.getWorldCoordinates(
-                   new Vector2f(click2d.x, click2d.y), 0f).clone();
-               Vector3f direction = jmeCamera.getWorldCoordinates(
-                   new Vector2f(click2d.x, click2d.y), 1f).subtractLocal(click3d).normalizeLocal();
+               //JJC 140417 reversed y to fix camera click locations. jme canvas y is reversed
+               if (reverseY)
+                  click2d.y = jmeCamera.getHeight() - click2d.y;
+               Vector3f click3d = jmeCamera.getWorldCoordinates(new Vector2f(click2d.x, click2d.y), 0f).clone();
+               Vector3f direction = jmeCamera.getWorldCoordinates(new Vector2f(click2d.x, click2d.y), 1f).subtractLocal(click3d).normalizeLocal();
                Ray ray = new Ray(click3d, direction);
 
                rootNode.collideWith(ray, results);
@@ -234,10 +232,10 @@ public class JMEInputManager implements AnalogListener, ActionListener, Mouse3DL
       inputManager.addMapping("MouseUp", new MouseAxisTrigger(MouseInput.AXIS_Y, true));
       inputManager.addMapping("MouseDown", new MouseAxisTrigger(MouseInput.AXIS_Y, false));
 
-      inputManager.addListener(this, new String[] { "MouseLeft", "MouseRight", "MouseUp", "MouseDown" });
-      inputManager.addListener(this, new String[] { "LeftMouseClick", "MiddleMouseClick", "RightMouseClick" });
+      inputManager.addListener(this, "MouseLeft", "MouseRight", "MouseUp", "MouseDown");
+      inputManager.addListener(this, "LeftMouseClick", "MiddleMouseClick", "RightMouseClick");
 
-      if(mouse3DJoystick != null)
+      if (mouse3DJoystick != null)
       {
          mouse3DJoystick.addMouse3DListener(this);
       }

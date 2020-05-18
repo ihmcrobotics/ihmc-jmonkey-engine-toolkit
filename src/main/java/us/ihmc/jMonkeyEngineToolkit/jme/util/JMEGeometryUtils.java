@@ -1,7 +1,6 @@
 package us.ihmc.jMonkeyEngineToolkit.jme.util;
 
 import com.jme3.app.SimpleApplication;
-import com.jme3.asset.AssetManager;
 import com.jme3.math.Matrix3f;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Ray;
@@ -16,7 +15,6 @@ import us.ihmc.euclid.tuple3D.Vector3D;
 import us.ihmc.graphicsDescription.structure.Graphics3DNode;
 import us.ihmc.graphicsDescription.structure.Graphics3DNodeType;
 import us.ihmc.jMonkeyEngineToolkit.jme.JMEGraphics3DNode;
-import us.ihmc.tools.thread.CloseableAndDisposableRegistry;
 
 public class JMEGeometryUtils
 {
@@ -45,8 +43,8 @@ public class JMEGeometryUtils
    private final static RigidBodyTransform yUpToZupTransform = new RigidBodyTransform(JMEDataTypeUtils.jMEQuaternionToVecMathQuat4d(yUpToZup), new Vector3D());
 
    /*
-    * Be careful with the multLocal and mult functions. The documentation is not
-    * always correct in what arguments are safe to pass
+    * Be careful with the multLocal and mult functions. The documentation is not always correct in what
+    * arguments are safe to pass
     */
 
    public static void transformFromZupToJMECoordinates(Vector3f point)
@@ -109,7 +107,7 @@ public class JMEGeometryUtils
    }
 
    /*
-   * 
+   *
    */
    public static void transform(Transform matrixToModify, Transform transformToApply)
    {
@@ -131,10 +129,9 @@ public class JMEGeometryUtils
    }
 
    /*
-    * public static Transform multiply(Transform a, Transform b) {
-    * RigidBodyTransform A = jmeTransformToTransform3D(a); RigidBodyTransform B
-    * = jmeTransformToTransform3D(b); A.multiply(B); return
-    * j3dTransform3DToJMETransform( A ); }
+    * public static Transform multiply(Transform a, Transform b) { RigidBodyTransform A =
+    * jmeTransformToTransform3D(a); RigidBodyTransform B = jmeTransformToTransform3D(b); A.multiply(B);
+    * return j3dTransform3DToJMETransform( A ); }
     */
 
    // public static Vector2d projectOntoZupXY(Vector3f vector)

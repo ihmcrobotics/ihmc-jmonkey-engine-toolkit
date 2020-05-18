@@ -2,13 +2,12 @@ package us.ihmc.jMonkeyEngineToolkit.camera;
 
 import us.ihmc.euclid.tuple3D.interfaces.Tuple3DBasics;
 
-
 public class CameraConfiguration
 {
-   public static final double DEFAULT_FIELD_OF_VIEW = Math.PI/4.0;
+   public static final double DEFAULT_FIELD_OF_VIEW = Math.PI / 4.0;
    public static final double DEFAULT_CLIP_DISTANCE_NEAR = 0.1;
    public static final double DEFAULT_CLIP_DISTANCE_FAR = 1000.0;
-   
+
    protected String name;
 
    protected String trackXVar = "q_x", trackYVar = "q_y", trackZVar = "q_z";
@@ -39,16 +38,13 @@ public class CameraConfiguration
    }
 
    /*
-    * public void setClipDistances(double clipNear, double clipFar)
-    * {
-    * this.clipNear = clipNear;
-    * this.clipFar = clipFar;
-    * }
+    * public void setClipDistances(double clipNear, double clipFar) { this.clipNear = clipNear;
+    * this.clipFar = clipFar; }
     */
 
    public void setCameraMount(String mountName)
    {
-      this.isMounted = true;
+      isMounted = true;
       this.mountName = mountName;
    }
 
@@ -74,18 +70,18 @@ public class CameraConfiguration
 
    public void setCameraTracking(boolean track, boolean trackX, boolean trackY, boolean trackZ)
    {
-      this.isTracking = track;
-      this.isTrackingX = trackX;
-      this.isTrackingY = trackY;
-      this.isTrackingZ = trackZ;
+      isTracking = track;
+      isTrackingX = trackX;
+      isTrackingY = trackY;
+      isTrackingZ = trackZ;
    }
 
    public void setCameraDolly(boolean dolly, boolean dollyX, boolean dollyY, boolean dollyZ)
    {
-      this.isDolly = dolly;
-      this.isDollyX = dollyX;
-      this.isDollyY = dollyY;
-      this.isDollyZ = dollyZ;
+      isDolly = dolly;
+      isDollyX = dollyX;
+      isDollyY = dollyY;
+      isDollyZ = dollyZ;
    }
 
    public void setCameraTrackingVars(String trackXVar, String trackYVar, String trackZVar)
@@ -139,38 +135,38 @@ public class CameraConfiguration
       this.camY = camY;
       this.camZ = camZ;
    }
-   
+
    public void setClipDistance(double near, double far)
    {
-      this.clipDistanceNear = near;
-      this.clipDistanceFar = far;
+      clipDistanceNear = near;
+      clipDistanceFar = far;
    }
 
    public String getTrackXVar()
    {
       return trackXVar;
    }
-   
+
    public String getTrackYVar()
    {
       return trackYVar;
    }
-   
+
    public String getTrackZVar()
    {
       return trackZVar;
    }
-   
+
    public String getDollyXVar()
    {
       return dollyXVar;
    }
-   
+
    public String getDollyYVar()
    {
       return dollyYVar;
    }
-   
+
    public String getDollyZVar()
    {
       return dollyZVar;
@@ -181,6 +177,7 @@ public class CameraConfiguration
       return fieldOfViewVar;
    }
 
+   @Override
    public String toString()
    {
       return name;

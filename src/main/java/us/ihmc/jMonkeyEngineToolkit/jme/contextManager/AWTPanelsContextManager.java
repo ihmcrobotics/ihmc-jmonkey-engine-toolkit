@@ -18,8 +18,8 @@ import us.ihmc.jMonkeyEngineToolkit.jme.context.PBOAwtPanelsContext;
 public class AWTPanelsContextManager extends JMEContextManager implements MouseListener
 {
    private JMERenderer jmeRenderer;
-   private LinkedHashMap<Canvas, JMEViewportAdapter> panelViewports = new LinkedHashMap<Canvas, JMEViewportAdapter>();
-   
+   private LinkedHashMap<Canvas, JMEViewportAdapter> panelViewports = new LinkedHashMap<>();
+
    public AWTPanelsContextManager(JMERenderer jmeRenderer)
    {
       super(jmeRenderer);
@@ -32,20 +32,23 @@ public class AWTPanelsContextManager extends JMEContextManager implements MouseL
       panelViewports.put(jmeViewportAdapter.getCanvas(), jmeViewportAdapter);
       jmeViewportAdapter.getCanvas().addMouseListener(this);
    }
-   
-   
+
+   @Override
    public void mouseClicked(MouseEvent e)
    {
    }
 
+   @Override
    public void mousePressed(MouseEvent e)
    {
    }
 
+   @Override
    public void mouseReleased(MouseEvent e)
    {
    }
 
+   @Override
    public void mouseEntered(MouseEvent e)
    {
       if (isSwitchingEnabled())
@@ -79,13 +82,14 @@ public class AWTPanelsContextManager extends JMEContextManager implements MouseL
       }
    }
 
+   @Override
    public void mouseExited(MouseEvent e)
    {
       if (isSwitchingEnabled())
       {
          Canvas exitedPanel = (Canvas) e.getComponent();
          JMEViewportAdapter exitedAdapter = panelViewports.get(exitedPanel);
-         
+
          resetViewport(exitedAdapter);
       }
    }
@@ -93,25 +97,26 @@ public class AWTPanelsContextManager extends JMEContextManager implements MouseL
    @Override
    public void focusOnCurrentWindow()
    {
-       getCurrentViewport().getCanvas().requestFocus();
+      getCurrentViewport().getCanvas().requestFocus();
    }
 
    @Override
    public void initialize()
    {
-      
+
    }
-   
+
+   @Override
    public void closeAndDispose()
    {
       super.closeAndDispose();
-      
+
       jmeRenderer = null;
-      
+
       if (panelViewports != null)
       {
          panelViewports.clear();
          panelViewports = null;
-      }      
+      }
    }
 }

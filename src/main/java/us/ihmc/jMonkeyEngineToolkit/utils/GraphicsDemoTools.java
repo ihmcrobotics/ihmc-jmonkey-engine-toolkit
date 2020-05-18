@@ -44,20 +44,23 @@ public class GraphicsDemoTools
       BlinkRunnable blinker = new BlinkRunnable(teapotAppearanceHolder);
       runnables.add(blinker);
    }
-   public static void addJiggle(Graphics3DNode node,Graphics3DAdapter adapter,ArrayList<Runnable> runnables)
+
+   public static void addJiggle(Graphics3DNode node, Graphics3DAdapter adapter, ArrayList<Runnable> runnables)
    {
-//      adapter.removeRootNode(node);
+      //      adapter.removeRootNode(node);
       Graphics3DNode jiggleNode = new Graphics3DNode("jiggle", Graphics3DNodeType.JOINT);
       jiggleNode.addChild(node);
-//      adapter.addRootNode(jiggleNode);
+      //      adapter.addRootNode(jiggleNode);
       RotateAndScaleNodeRunnable jiggler = new RotateAndScaleNodeRunnable(node);
-      runnables.add(jiggler);    
+      runnables.add(jiggler);
    }
+
    public static void addFirstCamera(Graphics3DAdapter graphics3DAdapter, PanBackAndForthTrackingAndDollyPositionHolder cameraTrackAndDollyVariablesHolder)
    {
       ViewportAdapter viewportAdapter = graphics3DAdapter.createNewViewport(null, false, false);
       ClassicCameraController classicCameraController = ClassicCameraController.createClassicCameraControllerAndAddListeners(viewportAdapter,
-                                                           cameraTrackAndDollyVariablesHolder, graphics3DAdapter);
+                                                                                                                             cameraTrackAndDollyVariablesHolder,
+                                                                                                                             graphics3DAdapter);
       viewportAdapter.setCameraController(classicCameraController);
       classicCameraController.setTracking(true, true, false, false);
       Canvas canvas = viewportAdapter.getCanvas();
@@ -78,7 +81,8 @@ public class GraphicsDemoTools
    {
       ViewportAdapter secondCamera = graphics3DAdapter.createNewViewport(null, false, false);
       ClassicCameraController secondController = ClassicCameraController.createClassicCameraControllerAndAddListeners(secondCamera,
-                                                    cameraTrackAndDollyVariablesHolder, graphics3DAdapter);
+                                                                                                                      cameraTrackAndDollyVariablesHolder,
+                                                                                                                      graphics3DAdapter);
       secondCamera.setCameraController(secondController);
       createNewWindow(secondCamera.getCanvas());
    }
@@ -87,6 +91,7 @@ public class GraphicsDemoTools
    {
       SelectedListener selectedListener = new SelectedListener()
       {
+         @Override
          public void selected(Graphics3DNode graphics3dNode, ModifierKeyInterface modifierKeyHolder, Point3DReadOnly location, Point3DReadOnly cameraLocation,
                               QuaternionReadOnly cameraRotation)
          {
@@ -94,7 +99,6 @@ public class GraphicsDemoTools
 
          }
       };
-
 
       graphics3DAdapter.addSelectedListener(selectedListener);
       box.addSelectedListener(selectedListener);
@@ -167,22 +171,22 @@ public class GraphicsDemoTools
 
       switch (selection)
       {
-         case 0 :
+         case 0:
          {
             return createCubeObject(random.nextDouble());
          }
 
-         case 1 :
+         case 1:
          {
             return createSphereObject(random.nextDouble() * 0.5);
          }
 
-         case 2 :
+         case 2:
          {
             return createCylinderObject(random.nextDouble() * 0.5);
          }
 
-         default :
+         default:
          {
             throw new RuntimeException("Should not get here");
          }
@@ -215,7 +219,7 @@ public class GraphicsDemoTools
       jFrame.setVisible(true);
       jFrame.setSize(800, 600);
    }
-   
+
    public static Graphics3DNode createPointCloud(String name, List<Point3D> worldPoints, double pointRadius, AppearanceDefinition appearance)
    {
       // TODO Change to point sprite mesh
@@ -223,13 +227,14 @@ public class GraphicsDemoTools
 
       for (int i = 0; i < worldPoints.size(); i++)
       {
-         Graphics3DNode worldPointNode = new Graphics3DNode(name + "point" + i, Graphics3DNodeType.VISUALIZATION,
-               new Graphics3DObject(new Sphere3D(pointRadius), appearance));
+         Graphics3DNode worldPointNode = new Graphics3DNode(name + "point" + i,
+                                                            Graphics3DNodeType.VISUALIZATION,
+                                                            new Graphics3DObject(new Sphere3D(pointRadius), appearance));
          worldPointNode.translate(worldPoints.get(i).getX(), worldPoints.get(i).getY(), worldPoints.get(i).getZ());
-         
+
          pointCloud.addChild(worldPointNode);
       }
-      
+
       return pointCloud;
    }
 
@@ -261,6 +266,7 @@ public class GraphicsDemoTools
          this.instruction = instruction;
       }
 
+      @Override
       public void run()
       {
          transparency += 0.01;
@@ -274,7 +280,6 @@ public class GraphicsDemoTools
       }
 
    }
-
 
    public static class PanBackAndForthTrackingAndDollyPositionHolder extends SimpleCameraTrackingAndDollyPositionHolder implements Runnable
    {
@@ -290,6 +295,7 @@ public class GraphicsDemoTools
          ThreadTools.startAsDaemon(this, "Pan Tracking & Dolly Daemon");
       }
 
+      @Override
       public void run()
       {
          while (true)
@@ -298,7 +304,7 @@ public class GraphicsDemoTools
             double time = (currentTime - startTime) * 0.001;
 
             double cameraTrackingX = panXOffset + panXAmplitude * Math.sin(2.0 * Math.PI * panXFrequency * time);
-            this.setTrackingX(cameraTrackingX);
+            setTrackingX(cameraTrackingX);
 
             ThreadTools.sleep(100L);
 
@@ -306,9 +312,7 @@ public class GraphicsDemoTools
 
       }
 
-
    }
-
 
    public static class RotateAndScaleNodeRunnable implements Runnable
    {
@@ -317,28 +321,32 @@ public class GraphicsDemoTools
 
       public RotateAndScaleNodeRunnable(Graphics3DNode node)
       {
-         this(node,generateDefaultParameters());
+         this(node, generateDefaultParameters());
       }
-     
-      
+
       public RotateAndScaleNodeRunnable(Graphics3DNode node, RotateScaleParametersHolder parametersHolder)
       {
          this.node = node;
-         this.parametersHolder=parametersHolder;
+         this.parametersHolder = parametersHolder;
       }
-      
-       private static RotateScaleParametersHolder generateDefaultParameters()
+
+      private static RotateScaleParametersHolder generateDefaultParameters()
       {
          SimpleBounceTrajectory xTrajectory = new SimpleBounceTrajectory(0.5, 20, 0.01);
          SimpleBounceTrajectory zRotTrajectory = new SimpleBounceTrajectory(0, 100, 0.01);
          SimpleBounceTrajectory scaleTrajectory = new SimpleBounceTrajectory(0.1, 2.0, 0.01);
          SimpleBounceTrajectory zeroTrajectory = new SimpleBounceTrajectory();
-         ImmutableTriple<SimpleBounceTrajectory, SimpleBounceTrajectory, SimpleBounceTrajectory> translation = new ImmutableTriple<SimpleBounceTrajectory, SimpleBounceTrajectory, SimpleBounceTrajectory>(xTrajectory,zeroTrajectory.copy(),zeroTrajectory.copy());
-         ImmutableTriple<SimpleBounceTrajectory, SimpleBounceTrajectory, SimpleBounceTrajectory> rotation = new ImmutableTriple<SimpleBounceTrajectory, SimpleBounceTrajectory, SimpleBounceTrajectory>(zeroTrajectory.copy(),zeroTrajectory.copy(),zRotTrajectory);
+         ImmutableTriple<SimpleBounceTrajectory, SimpleBounceTrajectory, SimpleBounceTrajectory> translation = new ImmutableTriple<>(xTrajectory,
+                                                                                                                                                                                                           zeroTrajectory.copy(),
+                                                                                                                                                                                                           zeroTrajectory.copy());
+         ImmutableTriple<SimpleBounceTrajectory, SimpleBounceTrajectory, SimpleBounceTrajectory> rotation = new ImmutableTriple<>(zeroTrajectory.copy(),
+                                                                                                                                                                                                        zeroTrajectory.copy(),
+                                                                                                                                                                                                        zRotTrajectory);
 
-         return new RotateScaleParametersHolder(translation,rotation,scaleTrajectory);
+         return new RotateScaleParametersHolder(translation, rotation, scaleTrajectory);
       }
 
+      @Override
       public void run()
       {
          AffineTransform transform = new AffineTransform();
@@ -347,20 +355,23 @@ public class GraphicsDemoTools
          transform.setScale(parametersHolder.getScaleTrajectory().getNextValue());
          node.setTransform(transform);
       }
+
       public static Vector3D nextVector3d(ImmutableTriple<SimpleBounceTrajectory, SimpleBounceTrajectory, SimpleBounceTrajectory> trajectoryVector)
       {
-         return new Vector3D(trajectoryVector.getLeft().getNextValue(),trajectoryVector.getMiddle().getNextValue(),trajectoryVector.getRight().getNextValue());
+         return new Vector3D(trajectoryVector.getLeft().getNextValue(),
+                             trajectoryVector.getMiddle().getNextValue(),
+                             trajectoryVector.getRight().getNextValue());
       }
    }
 
-
    public static class RotateScaleParametersHolder
    {
-      private final ImmutableTriple<SimpleBounceTrajectory,SimpleBounceTrajectory,SimpleBounceTrajectory> rotationTrajectory;
+      private final ImmutableTriple<SimpleBounceTrajectory, SimpleBounceTrajectory, SimpleBounceTrajectory> rotationTrajectory;
       private final SimpleBounceTrajectory scaleTrajectory;
       private final ImmutableTriple<SimpleBounceTrajectory, SimpleBounceTrajectory, SimpleBounceTrajectory> translationTrajectory;
 
-      public RotateScaleParametersHolder(ImmutableTriple<SimpleBounceTrajectory, SimpleBounceTrajectory, SimpleBounceTrajectory> translationTrajectory, ImmutableTriple<SimpleBounceTrajectory, SimpleBounceTrajectory, SimpleBounceTrajectory> rotationTrajectory,
+      public RotateScaleParametersHolder(ImmutableTriple<SimpleBounceTrajectory, SimpleBounceTrajectory, SimpleBounceTrajectory> translationTrajectory,
+                                         ImmutableTriple<SimpleBounceTrajectory, SimpleBounceTrajectory, SimpleBounceTrajectory> rotationTrajectory,
                                          SimpleBounceTrajectory scaleTrajectory)
       {
          this.translationTrajectory = translationTrajectory;
@@ -384,7 +395,6 @@ public class GraphicsDemoTools
       }
 
    }
-
 
    public static class SimpleBounceTrajectory
    {
@@ -410,8 +420,8 @@ public class GraphicsDemoTools
 
       public SimpleBounceTrajectory copy()
       {
-         SimpleBounceTrajectory ret = new SimpleBounceTrajectory(this.min, this.max, this.rate);
-         ret.setCurrent(this.current, this.increasing);
+         SimpleBounceTrajectory ret = new SimpleBounceTrajectory(min, max, rate);
+         ret.setCurrent(current, increasing);
 
          return ret;
       }
@@ -447,7 +457,6 @@ public class GraphicsDemoTools
          this.current = current;
          this.increasing = increasing;
       }
-
 
    }
 

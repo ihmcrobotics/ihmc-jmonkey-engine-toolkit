@@ -18,12 +18,11 @@ import us.ihmc.jMonkeyEngineToolkit.jme.JMEViewportAdapter;
 public class CanvasContextManager extends JMEContextManager implements InputMapSetter, AnalogListener, MouseListener
 {
    private JMERenderer jmeRenderer;
-   
-   
+
    public CanvasContextManager(JMERenderer jmeRenderer)
    {
       super(jmeRenderer);
-      
+
       this.jmeRenderer = jmeRenderer;
       registerInputMapSetter(this);
    }
@@ -39,28 +38,28 @@ public class CanvasContextManager extends JMEContextManager implements InputMapS
    {
    }
 
+   @Override
    public void setDefaultInputMappings()
    {
       jmeRenderer.getInputManager().addMapping("CanvasMouseRight", new MouseAxisTrigger(MouseInput.AXIS_X, false));
       jmeRenderer.getInputManager().addMapping("CanvasMouseLeft", new MouseAxisTrigger(MouseInput.AXIS_X, true));
       jmeRenderer.getInputManager().addMapping("CanvasMouseUp", new MouseAxisTrigger(MouseInput.AXIS_Y, true));
       jmeRenderer.getInputManager().addMapping("CanvasMouseDown", new MouseAxisTrigger(MouseInput.AXIS_Y, false));
-      
-      
-      jmeRenderer.getInputManager().addListener(this, new String[]{"CanvasMouseLeft", "CanvasMouseRight", "CanvasMouseUp", "CanvasMouseDown"});
+
+      jmeRenderer.getInputManager().addListener(this, "CanvasMouseLeft", "CanvasMouseRight", "CanvasMouseUp", "CanvasMouseDown");
    }
-   
+
    private void setViewport()
    {
-      if(isSwitchingEnabled())
+      if (isSwitchingEnabled())
       {
          Vector2f cursorPosition = jmeRenderer.getInputManager().getCursorPosition();
-         
+
          Canvas canvas = jmeRenderer.getCanvas();
          float height = canvas.getHeight();
          float width = canvas.getWidth();
-         
-         for(int i = 0; i < viewports.size(); i++)
+
+         for (int i = 0; i < viewports.size(); i++)
          {
             JMEViewportAdapter viewport = viewports.get(i);
             JMECamera camera = viewport.getCamera();
@@ -68,30 +67,28 @@ public class CanvasContextManager extends JMEContextManager implements InputMapS
             float xEnd = camera.getViewPortRight() * width;
             float yStart = camera.getViewPortBottom() * height;
             float yEnd = camera.getViewPortTop() * height;
-            
-            
-            if(xStart < cursorPosition.x &&
-                xEnd > cursorPosition.x &&
-                yStart < cursorPosition.y && 
-                yEnd > cursorPosition.y)
+
+            if (xStart < cursorPosition.x && xEnd > cursorPosition.x && yStart < cursorPosition.y && yEnd > cursorPosition.y)
             {
-               if(viewport != getCurrentViewport())
+               if (viewport != getCurrentViewport())
                {
                   resetViewport(getCurrentViewport());
                   setCurrentViewport(viewport);
                }
                return;
             }
-            
+
          }
       }
    }
-   
-   public void onAnalog(String name, float value, float tpf) 
+
+   @Override
+   public void onAnalog(String name, float value, float tpf)
    {
       setViewport();
    }
 
+   @Override
    public void reset()
    {
    }
@@ -103,34 +100,39 @@ public class CanvasContextManager extends JMEContextManager implements InputMapS
       jmeRenderer.getCanvas().addMouseListener(this);
    }
 
+   @Override
    public void mouseClicked(MouseEvent e)
    {
    }
 
+   @Override
    public void mousePressed(MouseEvent e)
    {
    }
 
+   @Override
    public void mouseReleased(MouseEvent e)
    {
    }
 
+   @Override
    public void mouseEntered(MouseEvent e)
    {
       setViewport();
    }
 
+   @Override
    public void mouseExited(MouseEvent e)
    {
       resetViewport(getCurrentViewport());
    }
-   
+
+   @Override
    public void closeAndDispose()
    {
       super.closeAndDispose();
-      
+
       jmeRenderer = null;
    }
-
 
 }

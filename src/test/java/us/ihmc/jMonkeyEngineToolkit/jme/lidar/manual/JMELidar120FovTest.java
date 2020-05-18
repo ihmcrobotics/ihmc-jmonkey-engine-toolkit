@@ -20,7 +20,7 @@ public class JMELidar120FovTest extends LidarTestParameters implements LidarTest
       setShowScanRays(false);
       setRotationSpeed(5.0);
       setScansPerSweep(720);
-      setLidarTestRotationAmount((2 * Math.PI));
+      setLidarTestRotationAmount(2 * Math.PI);
       setRotationLimitEnabled(true);
       setPrintDebug(false);
 
@@ -42,10 +42,12 @@ public class JMELidar120FovTest extends LidarTestParameters implements LidarTest
       setLidarSweepEndAngle(Math.PI / 3);
    }
 
+   @Override
    public void notify(LidarTestScan gpuScan, LidarTestScan traceScan)
    {
    }
 
+   @Override
    public void stop()
    {
    }

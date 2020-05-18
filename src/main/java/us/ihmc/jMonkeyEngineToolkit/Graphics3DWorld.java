@@ -5,11 +5,11 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.swing.JFrame;
 
+import us.ihmc.commons.thread.ThreadTools;
 import us.ihmc.euclid.tuple3D.Vector3D;
 import us.ihmc.graphicsDescription.structure.Graphics3DNode;
 import us.ihmc.jMonkeyEngineToolkit.camera.ClassicCameraController;
 import us.ihmc.jMonkeyEngineToolkit.camera.ViewportAdapter;
-import us.ihmc.commons.thread.ThreadTools;
 
 public class Graphics3DWorld implements Graphics3DFrameListener
 {
@@ -44,7 +44,7 @@ public class Graphics3DWorld implements Graphics3DFrameListener
       graphics3dAdapter.addRootNode(rootNode);
 
       viewportAdapter = Graphics3DAdapterTools.createViewport(graphics3dAdapter);
-      
+
       addFrameListener(this);
    }
 
@@ -103,7 +103,10 @@ public class Graphics3DWorld implements Graphics3DFrameListener
 
    public void startWithGui(int windowWidth, int windowHeight)
    {
-      startWithGui(ClassicCameraController.CAMERA_START_X, ClassicCameraController.CAMERA_START_Y, ClassicCameraController.CAMERA_START_Z, windowWidth,
+      startWithGui(ClassicCameraController.CAMERA_START_X,
+                   ClassicCameraController.CAMERA_START_Y,
+                   ClassicCameraController.CAMERA_START_Z,
+                   windowWidth,
                    windowHeight);
    }
 
@@ -121,7 +124,7 @@ public class Graphics3DWorld implements Graphics3DFrameListener
    {
       start();
    }
-   
+
    public void keepAlive(double time)
    {
       ThreadTools.sleepSeconds(time);
@@ -141,7 +144,7 @@ public class Graphics3DWorld implements Graphics3DFrameListener
    public void addFrameListener(Graphics3DFrameListener frameListener)
    {
       checkViewportIsNotNull();
-   
+
       viewportAdapter.addFrameListener(frameListener);
    }
 
@@ -188,7 +191,7 @@ public class Graphics3DWorld implements Graphics3DFrameListener
          graphics3dAdapter.addRootNode(graphics3DNodesToAddPostFrame.poll());
       }
    }
-   
+
    public Container getContentPane()
    {
       return jFrame.getContentPane();

@@ -76,10 +76,10 @@ public class JMEGraphicsObject extends Graphics3DInstructionExecutor
    public JMEGraphicsObject(Application application, AssetManager jmeAssetLocator, Graphics3DObject graphics3dObject)
    {
       this.application = application;
-      this.assetManager = jmeAssetLocator;
+      assetManager = jmeAssetLocator;
       immutable = !graphics3dObject.isChangeable();
 
-      currentNode = this.rootNode;
+      currentNode = rootNode;
       setUpGraphicsFromDefinition(graphics3dObject.getGraphics3DInstructions());
 
       // Optimize geometries. Cannot change geometries on an optimized node.
@@ -104,9 +104,9 @@ public class JMEGraphicsObject extends Graphics3DInstructionExecutor
 
             // The Polaris Ranger had multiple subnodes, which shouldn't be displayed. Two stategies could be useful, taking only the first node or ignoring named nodes. Because terrible documentation, we don't know
             // what Gazebo does. Therefore, we take the first node. Implement ignore named nodes if this breaks things.
-            if(spatial instanceof Node)
+            if (spatial instanceof Node)
             {
-               if(((Node) spatial).getChildren().size() > 1)
+               if (((Node) spatial).getChildren().size() > 1)
                {
                   spatial = ((Node) spatial).getChild(0);
                }
@@ -123,7 +123,7 @@ public class JMEGraphicsObject extends Graphics3DInstructionExecutor
                // Scale things. World scale is ignored when using center(). Therefore, we save the world scale, clone and set the local scale. this works for the Polaris. Might break things.
                Vector3f worldScale = spatial.getWorldScale();
                spatial = spatial.clone();
-//               spatial.scale(worldScale.x, worldScale.y, worldScale.z);
+               //               spatial.scale(worldScale.x, worldScale.y, worldScale.z);
                spatial.setLocalScale(worldScale);
                if (centerSubmesh)
                {
@@ -138,7 +138,7 @@ public class JMEGraphicsObject extends Graphics3DInstructionExecutor
 
          if (appearanceDefinition != null)
          {
-            ArrayList<Geometry> geometries = new ArrayList<Geometry>();
+            ArrayList<Geometry> geometries = new ArrayList<>();
             GeometryBatchFactory.gatherGeoms(spatial, geometries);
             Mesh outMesh = new Mesh();
             GeometryBatchFactory.mergeGeometries(geometries, outMesh);
@@ -208,11 +208,14 @@ public class JMEGraphicsObject extends Graphics3DInstructionExecutor
    protected void doAddModelFileInstruction(Graphics3DAddModelFileInstruction graphics3dObjectAddModelFile)
    {
 
-//      jmeAssetLocator.registerAssetDirectories(graphics3dObjectAddModelFile.getResourceDirectories());
+      //      jmeAssetLocator.registerAssetDirectories(graphics3dObjectAddModelFile.getResourceDirectories());
       if (graphics3dObjectAddModelFile.getResourceClassLoader() != null)
          assetManager.addClassLoader(graphics3dObjectAddModelFile.getResourceClassLoader());
-      Spatial spatial = createGraphics3DObjectFromModel(graphics3dObjectAddModelFile.getFileName(), graphics3dObjectAddModelFile.getSubmesh(),
-            graphics3dObjectAddModelFile.centerSubmesh(), graphics3dObjectAddModelFile.getAppearance(), assetManager);
+      Spatial spatial = createGraphics3DObjectFromModel(graphics3dObjectAddModelFile.getFileName(),
+                                                        graphics3dObjectAddModelFile.getSubmesh(),
+                                                        graphics3dObjectAddModelFile.centerSubmesh(),
+                                                        graphics3dObjectAddModelFile.getAppearance(),
+                                                        assetManager);
       currentNode.attachChild(spatial);
       if (graphics3dObjectAddModelFile.getAppearance() != null)
       {
@@ -223,7 +226,7 @@ public class JMEGraphicsObject extends Graphics3DInstructionExecutor
    @Override
    protected void doIdentityInstruction()
    {
-      currentNode = this.rootNode;
+      currentNode = rootNode;
    }
 
    @Override
@@ -258,12 +261,14 @@ public class JMEGraphicsObject extends Graphics3DInstructionExecutor
       graphics3dObjectScale.addChangeScaleListener(new ScaleChangedListener()
       {
 
+         @Override
          public void setScale(final Vector3D scaleFactor)
          {
             checkIfNotImmutable();
             application.enqueue(new Callable<Object>()
             {
 
+               @Override
                public Object call() throws Exception
                {
                   scale.setLocalScale((float) scaleFactor.getX(), (float) scaleFactor.getY(), (float) scaleFactor.getZ());
@@ -289,24 +294,24 @@ public class JMEGraphicsObject extends Graphics3DInstructionExecutor
 
    private static void setGeometryMaterialBasedOnAppearance(Spatial geometry, AppearanceDefinition appearance, AssetManager jmeAssetLocator)
    {
-	   Material jmeAppearance;
-	   try
-	   {
-		   jmeAppearance = JMEAppearanceMaterial.createMaterial(jmeAssetLocator, appearance);
+      Material jmeAppearance;
+      try
+      {
+         jmeAppearance = JMEAppearanceMaterial.createMaterial(jmeAssetLocator, appearance);
 
-	   }
-	   catch(Exception e)
-	   {
-		   YoAppearanceRGBColor color = new YoAppearanceRGBColor(0.5, 0.5, 0.5, 0.5);
-		   jmeAppearance = JMEAppearanceMaterial.createMaterialFromYoAppearanceRGBColor(jmeAssetLocator, color);
-//		   System.err.println("JMEGraphicsObject: Couldn't load appearance.");
-         if(DEBUG)
+      }
+      catch (Exception e)
+      {
+         YoAppearanceRGBColor color = new YoAppearanceRGBColor(0.5, 0.5, 0.5, 0.5);
+         jmeAppearance = JMEAppearanceMaterial.createMaterialFromYoAppearanceRGBColor(jmeAssetLocator, color);
+         //		   System.err.println("JMEGraphicsObject: Couldn't load appearance.");
+         if (DEBUG)
          {
             StringWriter writer = new StringWriter();
             e.printStackTrace(new PrintWriter(writer));
             printIfDebug("Showing stack trace string:\n" + writer.toString());
          }
-	   }
+      }
 
       geometry.setMaterial(jmeAppearance);
 
@@ -352,6 +357,7 @@ public class JMEGraphicsObject extends Graphics3DInstructionExecutor
       graphics3dObjectAddExtrusion.setTextChangedListener(new ExtrusionChangedListener()
       {
 
+         @Override
          public void extrusionChanged(final BufferedImage newImage, final double thickness)
          {
             checkIfNotImmutable();
@@ -359,6 +365,7 @@ public class JMEGraphicsObject extends Graphics3DInstructionExecutor
             application.enqueue(new Callable<Object>()
             {
 
+               @Override
                public Object call() throws Exception
                {
                   textHolder.detachAllChildren();
@@ -381,7 +388,7 @@ public class JMEGraphicsObject extends Graphics3DInstructionExecutor
       Geometry geometry = ShapeUtilities.createShape(bufferedImage, (float) thickness);
 
       geometry.scale((float) bufferedImage.getWidth() / (float) bufferedImage.getHeight(), 1.0f, 1.0f);
-//      geometry.setLocalRotation(JMEGeometryUtils.getRotationFromJMEToZupCoordinates());
+      //      geometry.setLocalRotation(JMEGeometryUtils.getRotationFromJMEToZupCoordinates());
 
       setGeometryMaterialBasedOnAppearance(geometry, appearance);
 
@@ -396,7 +403,6 @@ public class JMEGraphicsObject extends Graphics3DInstructionExecutor
       HeightMap heightMap = graphics3dObjectAddHeightMap.getHeightMap();
 
       AppearanceDefinition appearanceDefinition = graphics3dObjectAddHeightMap.getAppearance();
-
 
       JMEHeightMapTerrain jmeTerrain = new JMEHeightMapTerrain(heightMap, assetManager, appearanceDefinition);
 
@@ -424,16 +430,17 @@ public class JMEGraphicsObject extends Graphics3DInstructionExecutor
 
       currentNode.attachChild(meshHolder);
 
-
       graphics3dObjectAddMeshData.setMeshChangedListener(new MeshChangedListener()
       {
 
+         @Override
          public void meshChanged(final MeshDataHolder newMesh)
          {
             checkIfNotImmutable();
 
             application.enqueue(new Callable<Object>()
             {
+               @Override
                public Object call() throws Exception
                {
                   meshHolder.detachAllChildren();
@@ -456,6 +463,7 @@ public class JMEGraphicsObject extends Graphics3DInstructionExecutor
       instruction.setAppearanceChangedListener(new AppearanceChangedListener()
       {
 
+         @Override
          public void appearanceChanged(final AppearanceDefinition newAppearance)
          {
             checkIfNotImmutable();
@@ -464,6 +472,7 @@ public class JMEGraphicsObject extends Graphics3DInstructionExecutor
             {
                application.enqueue(new Callable<Object>()
                {
+                  @Override
                   public Material call() throws Exception
                   {
                      setGeometryMaterialBasedOnAppearance(spatial, newAppearance);
@@ -485,7 +494,7 @@ public class JMEGraphicsObject extends Graphics3DInstructionExecutor
 
    private static void printIfDebug(String string)
    {
-      if(DEBUG)
+      if (DEBUG)
       {
          System.out.println(string);
       }
@@ -498,8 +507,11 @@ public class JMEGraphicsObject extends Graphics3DInstructionExecutor
       {
          CubeGraphics3DInstruction cubeInstruction = (CubeGraphics3DInstruction) primitiveInstruction;
 
-         MeshDataHolder meshData = MeshDataGenerator.Cube(cubeInstruction.getLength(), cubeInstruction.getWidth(), cubeInstruction.getHeight(),
-                                                          cubeInstruction.getCenteredInTheCenter(), cubeInstruction.getTextureFaces());
+         MeshDataHolder meshData = MeshDataGenerator.Cube(cubeInstruction.getLength(),
+                                                          cubeInstruction.getWidth(),
+                                                          cubeInstruction.getHeight(),
+                                                          cubeInstruction.getCenteredInTheCenter(),
+                                                          cubeInstruction.getTextureFaces());
          Graphics3DAddMeshDataInstruction meshDataInstruction = Graphics3DObject.createMeshDataInstruction(meshData, cubeInstruction.getAppearance());
 
          doAddMeshDataInstruction(meshDataInstruction);
@@ -507,13 +519,15 @@ public class JMEGraphicsObject extends Graphics3DInstructionExecutor
       else if (primitiveInstruction instanceof SphereGraphics3DInstruction)
       {
          SphereGraphics3DInstruction sphereInstruction = (SphereGraphics3DInstruction) primitiveInstruction;
-         
-         MeshDataHolder meshData = MeshDataGenerator.Sphere(sphereInstruction.getRadius(), sphereInstruction.getResolution(), sphereInstruction.getResolution());
+
+         MeshDataHolder meshData = MeshDataGenerator.Sphere(sphereInstruction.getRadius(),
+                                                            sphereInstruction.getResolution(),
+                                                            sphereInstruction.getResolution());
          Graphics3DAddMeshDataInstruction meshDataInstruction = Graphics3DObject.createMeshDataInstruction(meshData, sphereInstruction.getAppearance());
 
          doAddMeshDataInstruction(meshDataInstruction);
       }
-      else if(primitiveInstruction instanceof WedgeGraphics3DInstruction)
+      else if (primitiveInstruction instanceof WedgeGraphics3DInstruction)
       {
          WedgeGraphics3DInstruction wedgeInstruction = (WedgeGraphics3DInstruction) primitiveInstruction;
 
@@ -526,9 +540,12 @@ public class JMEGraphicsObject extends Graphics3DInstructionExecutor
       {
          CapsuleGraphics3DInstruction capsuleInstruction = (CapsuleGraphics3DInstruction) primitiveInstruction;
 
-         MeshDataHolder meshData = MeshDataGenerator
-               .Capsule(capsuleInstruction.getHeight(), capsuleInstruction.getXRadius(), capsuleInstruction.getYRadius(), capsuleInstruction.getZRadius(),
-                        capsuleInstruction.getResolution(), capsuleInstruction.getResolution());
+         MeshDataHolder meshData = MeshDataGenerator.Capsule(capsuleInstruction.getHeight(),
+                                                             capsuleInstruction.getXRadius(),
+                                                             capsuleInstruction.getYRadius(),
+                                                             capsuleInstruction.getZRadius(),
+                                                             capsuleInstruction.getResolution(),
+                                                             capsuleInstruction.getResolution());
          Graphics3DAddMeshDataInstruction meshDataInstruction = Graphics3DObject.createMeshDataInstruction(meshData, capsuleInstruction.getAppearance());
 
          doAddMeshDataInstruction(meshDataInstruction);
@@ -537,18 +554,21 @@ public class JMEGraphicsObject extends Graphics3DInstructionExecutor
       {
          EllipsoidGraphics3DInstruction ellipsoidInstruction = (EllipsoidGraphics3DInstruction) primitiveInstruction;
 
-         MeshDataHolder meshData = MeshDataGenerator
-               .Ellipsoid(ellipsoidInstruction.getXRadius(), ellipsoidInstruction.getYRadius(), ellipsoidInstruction.getZRadius(),
-                          ellipsoidInstruction.getResolution(), ellipsoidInstruction.getResolution());
+         MeshDataHolder meshData = MeshDataGenerator.Ellipsoid(ellipsoidInstruction.getXRadius(),
+                                                               ellipsoidInstruction.getYRadius(),
+                                                               ellipsoidInstruction.getZRadius(),
+                                                               ellipsoidInstruction.getResolution(),
+                                                               ellipsoidInstruction.getResolution());
          Graphics3DAddMeshDataInstruction meshDataInstruction = Graphics3DObject.createMeshDataInstruction(meshData, ellipsoidInstruction.getAppearance());
          doAddMeshDataInstruction(meshDataInstruction);
       }
-      else if(primitiveInstruction instanceof CylinderGraphics3DInstruction)
+      else if (primitiveInstruction instanceof CylinderGraphics3DInstruction)
       {
          CylinderGraphics3DInstruction cylinderInstruction = (CylinderGraphics3DInstruction) primitiveInstruction;
 
-         MeshDataHolder meshData = MeshDataGenerator
-               .Cylinder(cylinderInstruction.getRadius(), cylinderInstruction.getHeight(), cylinderInstruction.getResolution());
+         MeshDataHolder meshData = MeshDataGenerator.Cylinder(cylinderInstruction.getRadius(),
+                                                              cylinderInstruction.getHeight(),
+                                                              cylinderInstruction.getResolution());
          Graphics3DAddMeshDataInstruction meshDataInstruction = Graphics3DObject.createMeshDataInstruction(meshData, cylinderInstruction.getAppearance());
          doAddMeshDataInstruction(meshDataInstruction);
       }
@@ -564,9 +584,12 @@ public class JMEGraphicsObject extends Graphics3DInstructionExecutor
       {
          TruncatedConeGraphics3DInstruction truncatedConeInstruction = (TruncatedConeGraphics3DInstruction) primitiveInstruction;
 
-         MeshDataHolder meshData = MeshDataGenerator
-               .GenTruncatedCone(truncatedConeInstruction.getHeight(), truncatedConeInstruction.getXBaseRadius(), truncatedConeInstruction.getYBaseRadius(),
-                                 truncatedConeInstruction.getXTopRadius(), truncatedConeInstruction.getYTopRadius(), truncatedConeInstruction.getResolution());
+         MeshDataHolder meshData = MeshDataGenerator.GenTruncatedCone(truncatedConeInstruction.getHeight(),
+                                                                      truncatedConeInstruction.getXBaseRadius(),
+                                                                      truncatedConeInstruction.getYBaseRadius(),
+                                                                      truncatedConeInstruction.getXTopRadius(),
+                                                                      truncatedConeInstruction.getYTopRadius(),
+                                                                      truncatedConeInstruction.getResolution());
          Graphics3DAddMeshDataInstruction meshDataInstruction = Graphics3DObject.createMeshDataInstruction(meshData, truncatedConeInstruction.getAppearance());
          doAddMeshDataInstruction(meshDataInstruction);
       }
@@ -574,29 +597,38 @@ public class JMEGraphicsObject extends Graphics3DInstructionExecutor
       {
          HemiEllipsoidGraphics3DInstruction hemiEllipsoidInstruction = (HemiEllipsoidGraphics3DInstruction) primitiveInstruction;
 
-         MeshDataHolder meshData = MeshDataGenerator
-               .HemiEllipsoid(hemiEllipsoidInstruction.getXRadius(), hemiEllipsoidInstruction.getYRadius(), hemiEllipsoidInstruction.getZRadius(),
-                              hemiEllipsoidInstruction.getResolution(), hemiEllipsoidInstruction.getResolution());
+         MeshDataHolder meshData = MeshDataGenerator.HemiEllipsoid(hemiEllipsoidInstruction.getXRadius(),
+                                                                   hemiEllipsoidInstruction.getYRadius(),
+                                                                   hemiEllipsoidInstruction.getZRadius(),
+                                                                   hemiEllipsoidInstruction.getResolution(),
+                                                                   hemiEllipsoidInstruction.getResolution());
          Graphics3DAddMeshDataInstruction meshDataInstruction = Graphics3DObject.createMeshDataInstruction(meshData, hemiEllipsoidInstruction.getAppearance());
          doAddMeshDataInstruction(meshDataInstruction);
       }
-      else if(primitiveInstruction instanceof ArcTorusGraphics3DInstruction)
+      else if (primitiveInstruction instanceof ArcTorusGraphics3DInstruction)
       {
          ArcTorusGraphics3DInstruction arcTorusInstruction = (ArcTorusGraphics3DInstruction) primitiveInstruction;
 
-         MeshDataHolder meshData = MeshDataGenerator.ArcTorus(arcTorusInstruction.getStartAngle(), arcTorusInstruction.getEndAngle(), arcTorusInstruction.getMajorRadius(), arcTorusInstruction.getMinorRadius(), arcTorusInstruction.getResolution());
+         MeshDataHolder meshData = MeshDataGenerator.ArcTorus(arcTorusInstruction.getStartAngle(),
+                                                              arcTorusInstruction.getEndAngle(),
+                                                              arcTorusInstruction.getMajorRadius(),
+                                                              arcTorusInstruction.getMinorRadius(),
+                                                              arcTorusInstruction.getResolution());
          Graphics3DAddMeshDataInstruction meshDataInstruction = Graphics3DObject.createMeshDataInstruction(meshData, arcTorusInstruction.getAppearance());
          doAddMeshDataInstruction(meshDataInstruction);
       }
-      else if(primitiveInstruction instanceof PyramidCubeGraphics3DInstruction)
+      else if (primitiveInstruction instanceof PyramidCubeGraphics3DInstruction)
       {
          PyramidCubeGraphics3DInstruction pyramidInstruction = (PyramidCubeGraphics3DInstruction) primitiveInstruction;
 
-         MeshDataHolder meshData = MeshDataGenerator.PyramidCube(pyramidInstruction.getLengthX(), pyramidInstruction.getWidthY(), pyramidInstruction.getHeightZ(), pyramidInstruction.getPyramidHeight());
+         MeshDataHolder meshData = MeshDataGenerator.PyramidCube(pyramidInstruction.getLengthX(),
+                                                                 pyramidInstruction.getWidthY(),
+                                                                 pyramidInstruction.getHeightZ(),
+                                                                 pyramidInstruction.getPyramidHeight());
          Graphics3DAddMeshDataInstruction meshDataInstruction = Graphics3DObject.createMeshDataInstruction(meshData, pyramidInstruction.getAppearance());
          doAddMeshDataInstruction(meshDataInstruction);
       }
-      else if(primitiveInstruction instanceof PolygonGraphics3DInstruction)
+      else if (primitiveInstruction instanceof PolygonGraphics3DInstruction)
       {
          PolygonGraphics3DInstruction polygonInstruction = (PolygonGraphics3DInstruction) primitiveInstruction;
 
@@ -604,12 +636,14 @@ public class JMEGraphicsObject extends Graphics3DInstructionExecutor
          Graphics3DAddMeshDataInstruction meshDataInstruction = Graphics3DObject.createMeshDataInstruction(meshData, polygonInstruction.getAppearance());
          doAddMeshDataInstruction(meshDataInstruction);
       }
-      else if(primitiveInstruction instanceof ExtrudedPolygonGraphics3DInstruction)
+      else if (primitiveInstruction instanceof ExtrudedPolygonGraphics3DInstruction)
       {
          ExtrudedPolygonGraphics3DInstruction extrudedPolygonInstruction = (ExtrudedPolygonGraphics3DInstruction) primitiveInstruction;
 
-         MeshDataHolder meshData = MeshDataGenerator.ExtrudedPolygon(extrudedPolygonInstruction.getPolygonPoints(), extrudedPolygonInstruction.getExtrusionHeight());
-         Graphics3DAddMeshDataInstruction meshDataInstruction = Graphics3DObject.createMeshDataInstruction(meshData, extrudedPolygonInstruction.getAppearance());
+         MeshDataHolder meshData = MeshDataGenerator.ExtrudedPolygon(extrudedPolygonInstruction.getPolygonPoints(),
+                                                                     extrudedPolygonInstruction.getExtrusionHeight());
+         Graphics3DAddMeshDataInstruction meshDataInstruction = Graphics3DObject.createMeshDataInstruction(meshData,
+                                                                                                           extrudedPolygonInstruction.getAppearance());
          doAddMeshDataInstruction(meshDataInstruction);
       }
       else

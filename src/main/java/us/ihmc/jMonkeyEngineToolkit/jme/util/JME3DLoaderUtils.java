@@ -8,7 +8,6 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 
 import us.ihmc.graphicsDescription.structure.Graphics3DNodeType;
-import us.ihmc.jMonkeyEngineToolkit.jme.JMEAssetLocator;
 import us.ihmc.jMonkeyEngineToolkit.jme.JMEGraphicsObject;
 
 public class JME3DLoaderUtils
@@ -20,7 +19,7 @@ public class JME3DLoaderUtils
 
    public static ArrayList<Geometry> extractGeometry(Spatial spatial)
    {
-      ArrayList<Geometry> geom = new ArrayList<Geometry>();
+      ArrayList<Geometry> geom = new ArrayList<>();
       getGeometry(spatial, geom);
 
       return geom;
@@ -35,7 +34,7 @@ public class JME3DLoaderUtils
 
    public static Geometry extractFirstGeometry(Spatial spatial)
    {
-      ArrayList<Geometry> geom = new ArrayList<Geometry>();
+      ArrayList<Geometry> geom = new ArrayList<>();
       getGeometry(spatial, geom);
 
       return geom.get(0);

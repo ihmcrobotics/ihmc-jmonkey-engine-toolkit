@@ -22,7 +22,7 @@ public class JMEMultiRayTracer
    private long time;
    private final JMERayCollisionAdapter rayCollisionAdapter;
    private String[] childrenToIntersect = null;
-   
+
    {
       if (DEBUG)
          System.out.println("JMEMultiRayTracer: DEBUG is true");
@@ -31,7 +31,7 @@ public class JMEMultiRayTracer
    public JMEMultiRayTracer(Application application, Node rootNode)
    {
       this.application = application;
-      this.rayCollisionAdapter = new JMERayCollisionAdapter(rootNode);
+      rayCollisionAdapter = new JMERayCollisionAdapter(rootNode);
    }
 
    public void setChildrenToIntersect(String[] childrenToIntersect)
@@ -47,10 +47,10 @@ public class JMEMultiRayTracer
          ImmutablePair<Long, Node> retVal = futureRootNode.get();
          long timestamp = retVal.getLeft();
          Node rootNode = retVal.getRight();
-         
+
          if (childrenToIntersect != null)
          {
-            ArrayList<Node> children = new ArrayList<Node>();
+            ArrayList<Node> children = new ArrayList<>();
             Node child;
             for (int i = 0; i < childrenToIntersect.length; i++)
             {
@@ -60,7 +60,8 @@ public class JMEMultiRayTracer
                }
             }
             rootNode.detachAllChildren();
-            for (Node n : children) {
+            for (Node n : children)
+            {
                rootNode.attachChild(n);
             }
          }
@@ -104,6 +105,7 @@ public class JMEMultiRayTracer
    {
       return application.enqueue(new Callable<ImmutablePair<Long, Node>>()
       {
+         @Override
          public ImmutablePair<Long, Node> call() throws Exception
          {
             long time = System.nanoTime();
@@ -113,7 +115,7 @@ public class JMEMultiRayTracer
             {
                System.out.println("JMEMultiRayTracer: elapsed time in RenderThread has been " + (System.nanoTime() - time) * 1.0e-9 + " seconds.");
             }
-            return new ImmutablePair<Long, Node>(timestamp, newRoot);
+            return new ImmutablePair<>(timestamp, newRoot);
          }
       });
    }

@@ -37,45 +37,45 @@ public class LidarTestParameters
 
    public LidarTestParameters()
    {
-      this.minRange = 0.1;
-      this.maxRange = 30.0;
-      this.rotateWall = true;
-      this.rotationSpeed = 2 * Math.PI / 100.0;
-      this.lidarSweepStartAngle = -Math.PI / 4;
-      this.lidarSweepEndAngle = Math.PI / 4;
-      this.scansPerSweep = 720;
-      this.lidarPitchMinAngle = 0.0;
-      this.lidarPitchMaxAngle = 0.0;
-      this.scanHeight = 1;
-      this.wallDistance = 3.0;
-      this.wallRotation = Math.PI / 6;
-      this.wallThickness = 0.001;
-      this.experimentHeight = 100.0;
-      this.placeLidar = false;
-      this.placeWall = true;
-      this.placeIhmcSphere = false;
-      this.placeJmeSphere = false;
-      this.showWindow = true;
-      this.lidarRotation = 0.0;
-      this.viewWidth = 800;
-      this.viewHeight = 600;
-      this.showSky = true;
-      this.gpuVsTraceTolerance = 1.0;
-      this.lidarTestRotationAmount = 15 * (2 * Math.PI);
-      this.printDebug = false;
-      this.rotationLimitEnabled = false;
-      this.currentRotation = 0.0;
-      this.isStopped = false;
+      minRange = 0.1;
+      maxRange = 30.0;
+      rotateWall = true;
+      rotationSpeed = 2 * Math.PI / 100.0;
+      lidarSweepStartAngle = -Math.PI / 4;
+      lidarSweepEndAngle = Math.PI / 4;
+      scansPerSweep = 720;
+      lidarPitchMinAngle = 0.0;
+      lidarPitchMaxAngle = 0.0;
+      scanHeight = 1;
+      wallDistance = 3.0;
+      wallRotation = Math.PI / 6;
+      wallThickness = 0.001;
+      experimentHeight = 100.0;
+      placeLidar = false;
+      placeWall = true;
+      placeIhmcSphere = false;
+      placeJmeSphere = false;
+      showWindow = true;
+      lidarRotation = 0.0;
+      viewWidth = 800;
+      viewHeight = 600;
+      showSky = true;
+      gpuVsTraceTolerance = 1.0;
+      lidarTestRotationAmount = 15 * (2 * Math.PI);
+      printDebug = false;
+      rotationLimitEnabled = false;
+      currentRotation = 0.0;
+      isStopped = false;
    }
 
    public void rotate(double timePerFrame)
    {
-      currentRotation += rotationSpeed * 0.1;    // Ignores actual CPU time so test is independent of computer speed.
+      currentRotation += rotationSpeed * 0.1; // Ignores actual CPU time so test is independent of computer speed.
    }
 
    public boolean testIsOver()
    {
-      if (rotationLimitEnabled && (currentRotation >= lidarTestRotationAmount))
+      if (rotationLimitEnabled && currentRotation >= lidarTestRotationAmount)
       {
          isStopped = true;
 
@@ -86,7 +86,7 @@ public class LidarTestParameters
          return false;
       }
    }
-   
+
    public double getCurrentRotation()
    {
       return currentRotation;

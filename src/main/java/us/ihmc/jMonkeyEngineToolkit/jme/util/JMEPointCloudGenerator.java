@@ -64,27 +64,25 @@ public class JMEPointCloudGenerator
       mat.setBoolean("PointSprite", true);
       mat.setFloat("Quadratic", size * 100.0f * 4.0f);
 
-      
-//    Material mat = new Material(assetManager, "Terrain/RainbowHeightBoxTerrain.j3md");
-//    Vector2f scale = new Vector2f(1, 1);
-//    mat.setFloat("gridSize", 100);
-//    mat.setVector2("scale", scale);
-//    mat.getAdditionalRenderState().setPointSprite(true);
-//    mat.setFloat("radius", 0.4f);    // brightness
-//    mat.setFloat("minHeight", -0.3f);    // colors
-//    mat.setFloat("maxHeight", 0.5f);    // colors
-//    mat.setFloat("alpha", 1);
-//    mat.setVector3("lineColor", new Vector3f(0f, 0f, 0f));
-//    mat.setFloat("lineWidth", 0.025f);
-//
-//    mat.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
+      //    Material mat = new Material(assetManager, "Terrain/RainbowHeightBoxTerrain.j3md");
+      //    Vector2f scale = new Vector2f(1, 1);
+      //    mat.setFloat("gridSize", 100);
+      //    mat.setVector2("scale", scale);
+      //    mat.getAdditionalRenderState().setPointSprite(true);
+      //    mat.setFloat("radius", 0.4f);    // brightness
+      //    mat.setFloat("minHeight", -0.3f);    // colors
+      //    mat.setFloat("maxHeight", 0.5f);    // colors
+      //    mat.setFloat("alpha", 1);
+      //    mat.setVector3("lineColor", new Vector3f(0f, 0f, 0f));
+      //    mat.setFloat("lineWidth", 0.025f);
+      //
+      //    mat.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
 
-////
-//      mat.setFloat("minHeight", 0.0f);    // colors
-//      mat.setFloat("maxHeight", 0.15f);    // colors
-//      mat.setFloat("radius", 0.5f);    // brightness
+      ////
+      //      mat.setFloat("minHeight", 0.0f);    // colors
+      //      mat.setFloat("maxHeight", 0.15f);    // colors
+      //      mat.setFloat("radius", 0.5f);    // brightness
 
-      
       Mesh m = new Mesh();
       m.setMode(Mode.Points);
       m.setBuffer(VertexBuffer.Type.Position, 3, pointCoordinates3d);
@@ -107,9 +105,9 @@ public class JMEPointCloudGenerator
 
    protected FloatBuffer createColorBuffer(ColorRGBA color, FloatBuffer points)
    {
-      int bufferSize = (points.limit() / 3) * 4;
+      int bufferSize = points.limit() / 3 * 4;
       FloatBuffer result = BufferUtils.createFloatBuffer(bufferSize);
-      for (int i = 0; i < (bufferSize / 4); i++)
+      for (int i = 0; i < bufferSize / 4; i++)
       {
          result.put(color.r).put(color.g).put(color.b).put(color.a);
       }
@@ -131,7 +129,7 @@ public class JMEPointCloudGenerator
 
    public Node generatePointCloudGraph(float[] pointCoordinates3d)
    {
-      if ((pointCoordinates3d.length % 3) != 0)
+      if (pointCoordinates3d.length % 3 != 0)
          System.err.println("Number of point coordinates must be a multiple of 3!");
 
       FloatBuffer coords = BufferUtils.createFloatBuffer(pointCoordinates3d);
@@ -145,16 +143,16 @@ public class JMEPointCloudGenerator
 
       return generatePointCloudGraph(coords, null);
    }
-   
+
    public Node generatePointCloudGraph(Point3D32[] pointCoordinates3d)
    {
       return generatePointCloudGraph(pointCoordinates3d, (ColorRGBA[]) null);
    }
-   
+
    public Node generatePointCloudGraph(Point3D32[] pointCoordinates3d, ColorRGBA[] colorsRGBA)
    {
       Vector3f[] vectorArray = new Vector3f[pointCoordinates3d.length];
-      
+
       for (int i = 0; i < pointCoordinates3d.length; i++)
       {
          vectorArray[i] = new Vector3f(pointCoordinates3d[i].getX32(), pointCoordinates3d[i].getY32(), pointCoordinates3d[i].getZ32());
@@ -162,7 +160,7 @@ public class JMEPointCloudGenerator
 
       return generatePointCloudGraph(vectorArray, colorsRGBA);
    }
-   
+
    public Node generatePointCloudGraph(Vector3f[] pointCoordinates3d)
    {
       FloatBuffer coords = BufferUtils.createFloatBuffer(pointCoordinates3d);
@@ -191,10 +189,10 @@ public class JMEPointCloudGenerator
       if (colorsRGBA == null)
          return generatePointCloudGraph(pointCoordinates3d);
 
-      if ((pointCoordinates3d.length % 3) != 0)
+      if (pointCoordinates3d.length % 3 != 0)
          throw new NumberFormatException("number of point coordinates must be a multiple of 3!");
 
-      if ((colorsRGBA.length % 4) != 0)
+      if (colorsRGBA.length % 4 != 0)
          throw new NumberFormatException("number of color values must be a multiple of 4!");
 
       if (pointCoordinates3d.length / 3 != colorsRGBA.length / 4)
@@ -246,7 +244,7 @@ public class JMEPointCloudGenerator
          throw new Exception("There should be a color value for each point, if colors are used!");
 
       FloatBuffer pointBuffer = BufferUtils.createFloatBuffer(3 * pointCloud.length);
-      for(Point3DReadOnly point : pointCloud)
+      for (Point3DReadOnly point : pointCloud)
       {
          pointBuffer.put(point.getX32());
          pointBuffer.put(point.getY32());
@@ -263,7 +261,7 @@ public class JMEPointCloudGenerator
 
       return generatePointCloudGraph(pointBuffer, colorBuffer);
    }
-   
+
    public Node generatePointCloudGraph(Point3DReadOnly[] pointCloud, ColorRGBA[] colorsRGBA) throws Exception
    {
       if (colorsRGBA == null)
@@ -273,7 +271,7 @@ public class JMEPointCloudGenerator
          throw new Exception("There should be a color value for each point, if colors are used!");
 
       FloatBuffer pointBuffer = BufferUtils.createFloatBuffer(3 * pointCloud.length);
-      for(Point3DReadOnly point : pointCloud)
+      for (Point3DReadOnly point : pointCloud)
       {
          pointBuffer.put(point.getX32());
          pointBuffer.put(point.getY32());

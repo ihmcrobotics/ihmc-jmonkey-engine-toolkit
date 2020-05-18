@@ -10,7 +10,7 @@ import us.ihmc.jMonkeyEngineToolkit.Graphics3DAdapter;
 import us.ihmc.log.LogTools;
 import us.ihmc.tools.TimestampProvider;
 
-public class OffscreenBufferVideoServer   
+public class OffscreenBufferVideoServer
 {
    private final ImageCallback imageCallback;
 
@@ -19,8 +19,8 @@ public class OffscreenBufferVideoServer
    private final TimestampProvider timestampProvider;
 
    public OffscreenBufferVideoServer(Graphics3DAdapter adapter, CameraMountList mountList, CameraConfiguration cameraConfiguration,
-         CameraTrackingAndDollyPositionHolder cameraTrackingAndDollyPositionHolder, int width, int height, ImageCallback imageCallback, 
-         TimestampProvider timestampProvider, int framesPerSecond)
+                                     CameraTrackingAndDollyPositionHolder cameraTrackingAndDollyPositionHolder, int width, int height,
+                                     ImageCallback imageCallback, TimestampProvider timestampProvider, int framesPerSecond)
    {
       ViewportAdapter viewport = adapter.createNewViewport(null, false, true);
       camera = viewport.getCamera();
@@ -48,7 +48,7 @@ public class OffscreenBufferVideoServer
       @Override
       public void updateImage(BufferedImage bufferedImage, long timeStamp, Point3DReadOnly cameraPosition, QuaternionReadOnly cameraOrientation, double fov)
       {
-         
+
          imageCallback.onNewImage(bufferedImage, timeStamp, cameraPosition, cameraOrientation, fov);
       }
 

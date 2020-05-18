@@ -105,9 +105,10 @@ import us.ihmc.tools.thread.CloseableAndDisposableRegistry;
 public class JMERenderer extends SimpleApplication implements Graphics3DAdapter, PBOAwtPanelListener
 {
    /**
-    * Some bullshit because JME is flooding the JAVA logger and has no option to deactivate it rather than changing the logger level.
-    * It is not desirable to change the level the root logger though, it'll prevent other loggers to display useful information.
-    * The annoyance here is to find all JME loggers to keep a reference to each of them so any changes will remain permanent.
+    * Some bullshit because JME is flooding the JAVA logger and has no option to deactivate it rather
+    * than changing the logger level. It is not desirable to change the level the root logger though,
+    * it'll prevent other loggers to display useful information. The annoyance here is to find all JME
+    * loggers to keep a reference to each of them so any changes will remain permanent.
     */
    private final Logger[] jmeLoggers = new Logger[] {Logger.getLogger(FXBumpMaterialGenerator.class.getName()),
          Logger.getLogger(ColladaDocumentV14.class.getName()), Logger.getLogger(GLRenderer.class.getName()), Logger.getLogger(AssetConfig.class.getName()),
@@ -150,7 +151,7 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
 
    private JMEContextManager contextManager;
 
-   private ArrayList<JMEViewportAdapter> viewportAdapters = new ArrayList<JMEViewportAdapter>();
+   private ArrayList<JMEViewportAdapter> viewportAdapters = new ArrayList<>();
 
    private HashBiMap<Graphics3DNode, JMEGraphics3DNode> jmeGraphicsNodes = HashBiMap.create();
    private Collection<JMEGraphics3DNode> jmeGraphicsNodesListView = jmeGraphicsNodes.values();
@@ -177,7 +178,7 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
    private DirectionalLight primaryLight;
    private CloseableAndDisposableRegistry closeableAndDisposableRegistry = new CloseableAndDisposableRegistry();
 
-   private ArrayList<Updatable> updatables = new ArrayList<Updatable>(); // things we want to move automatically
+   private ArrayList<Updatable> updatables = new ArrayList<>(); // things we want to move automatically
 
    private Spatial sky = null;
    private HeightMap heightMap = null;
@@ -192,7 +193,7 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
    {
       super();
       this.renderType = renderType;
-      this.mouse3DJoystick = mouse3dJoystick;
+      mouse3DJoystick = mouse3dJoystick;
 
       changeJMELoggerLevelToSevere();
 
@@ -316,8 +317,13 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
          }
       }
 
-      JMEViewportAdapter newViewport = new JMEViewportAdapter(this, rootNode, isMainViewport, isOffScreen ? ViewportType.OFFSCREEN : ViewportType.CANVAS, false,
-                                                              Color.LIGHT_GRAY, false);
+      JMEViewportAdapter newViewport = new JMEViewportAdapter(this,
+                                                              rootNode,
+                                                              isMainViewport,
+                                                              isOffScreen ? ViewportType.OFFSCREEN : ViewportType.CANVAS,
+                                                              false,
+                                                              Color.LIGHT_GRAY,
+                                                              false);
       notifyRepaint();
 
       return newViewport;
@@ -391,14 +397,12 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
       /**
        * Extracts natives due bug described in
        * http://jmonkeyengine.org/forum/topic/setting-audio-renderer-to-null-results-in-a-failure-to-load-lwjgl-native-library
-       *
        * Remove when loading native libraries is fixed by JMonkeyEngine upstream
        */
 
       /*
-       * try { Natives.extractNativeLibs(JmeSystem.getPlatform(), appSettings);
-       * } catch (IOException e) { throw new
-       * RuntimeException("Cannot load native libs"); }
+       * try { Natives.extractNativeLibs(JmeSystem.getPlatform(), appSettings); } catch (IOException e) {
+       * throw new RuntimeException("Cannot load native libs"); }
        */
       appSettings.setAudioRenderer(null);
       appSettings.setFrameRate(30);
@@ -585,6 +589,7 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
 
    }
 
+   @Override
    public void setupSky(String skyBox)
    {
       enqueue(new Callable<Object>()
@@ -601,6 +606,7 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
       });
    }
 
+   @Override
    public void setupSky(String west, String east, String north, String south, String up, String down)
    {
 
@@ -729,8 +735,9 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
    }
 
    /**
-    * Checks refreshFlags of the root node. If there is no need to refresh the scene,
-    * no rendering is performed in lazy rendering mode.
+    * Checks refreshFlags of the root node. If there is no need to refresh the scene, no rendering is
+    * performed in lazy rendering mode.
+    * 
     * @return true if the scene needs re-rendering
     */
    private boolean shouldRepaint()
@@ -810,8 +817,8 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
    }
 
    /**
-    * This is copied verbatim from {@link Application#update()} because we override
-    * the {@link #update()} method and this is the only way to call the original code.
+    * This is copied verbatim from {@link Application#update()} because we override the
+    * {@link #update()} method and this is the only way to call the original code.
     */
    public void applicationUpdate()
    {
@@ -934,7 +941,7 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
    @Override
    public void addSelectedListener(SelectedListener selectedListener)
    {
-      this.selectedListenerHolder.addSelectedListener(selectedListener);
+      selectedListenerHolder.addSelectedListener(selectedListener);
    }
 
    public Node getZUpNode()
@@ -1101,7 +1108,7 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
          {
             // TODO: Something is messed up with reseting the repaintManager. Someone should look into
             // what is going on here and clean this up.
-            // My sense right now is that every time we make a new JMERenderer, it recursively makes 
+            // My sense right now is that every time we make a new JMERenderer, it recursively makes
             // a new repaint manager...
             //            RepaintManager.setCurrentManager(oldManager);
             //            oldManager = null;
@@ -1340,7 +1347,7 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
       //            {
       //               viewportAdapter.getViewPort().setBackgroundColor(new ColorRGBA(color.x, color.y, color.z, 1.0f));
       //            }
-      //            
+      //
       //            return null;
       //         }
       //      });
@@ -1574,13 +1581,13 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
    public void play()
    {
       notifyRepaint();
-      this.lazyRendering = false;
+      lazyRendering = false;
    }
 
    @Override
    public void pause()
    {
-      this.lazyRendering = true;
+      lazyRendering = true;
    }
 
    protected synchronized void updateGraphics(float tpf)

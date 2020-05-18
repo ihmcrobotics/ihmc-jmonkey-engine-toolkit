@@ -30,7 +30,7 @@ public class JMEGPULidarParallelSceneGraphTest
     */
 
    @Disabled
-	@Test// timeout = 51000
+   @Test // timeout = 51000
    public void testGPULidarParallelSceneGraph()
    {
       JMEGraphics3DWorld world = new JMEGraphics3DWorld(getClass().getSimpleName(), new JMEGraphics3DAdapter(true));
@@ -52,7 +52,7 @@ public class JMEGPULidarParallelSceneGraphTest
       invisibleSphereNode.translate(1.5, 1.0, 1.0);
 
       world.addChild(invisibleSphereNode);
-      
+
       AppearanceDefinition visibleSphereAppearance = YoAppearance.Red();
       invisibleSphereAppearance.setTransparency(0.5);
       Graphics3DObject visibleSphereObject = new Graphics3DObject(new Sphere3D(0.5), visibleSphereAppearance);
@@ -79,7 +79,11 @@ public class JMEGPULidarParallelSceneGraphTest
 
       world.addChild(lidarNode);
 
-      final JMEGPULidar gpuLidar = renderer.createGPULidar(scanParameters.getScansPerSweep(), scanParameters.getScanHeight(), scanParameters.getFieldOfView(), scanParameters.getMinRange(), scanParameters.getMaxRange());
+      final JMEGPULidar gpuLidar = renderer.createGPULidar(scanParameters.getScansPerSweep(),
+                                                           scanParameters.getScanHeight(),
+                                                           scanParameters.getFieldOfView(),
+                                                           scanParameters.getMinRange(),
+                                                           scanParameters.getMaxRange());
       gpuLidar.setTransformFromWorld(lidarNode.getTransform(), 0.0);
       gpuLidar.addGPULidarListener(new GPULidarListener()
       {
@@ -111,30 +115,30 @@ public class JMEGPULidarParallelSceneGraphTest
       });
 
       world.startWithGui();
-      
+
       world.addFrameListener(new Graphics3DFrameListener()
       {
          double time = 0.0;
          double speed = 0.2;
-         
+
          @Override
          public void postFrame(double timePerFrame)
          {
             // Spin spheres around
-            
+
             time += timePerFrame;
-            
+
             double invisibleY = Math.cos(time * speed); // Starts at 1.0
             double invisibleZ = -Math.sin(time * speed) + 1.0;
-            
+
             double visibleY = Math.cos(time * speed + Math.PI); // Starts at -1.0
             double visibleZ = Math.sin(time * speed) + 1.0;
-            
+
             invisibleSphereNode.translateTo(1.5, invisibleY, invisibleZ);
             visibleSphereNode.translateTo(1.5, visibleY, visibleZ);
          }
       });
-      
+
       double keepAlive = 5;
 
       world.keepAlive(keepAlive);

@@ -5,17 +5,16 @@ import java.util.ArrayList;
 import us.ihmc.jMonkeyEngineToolkit.ContextManager;
 
 /**
- * User: Matt
- * Date: 1/11/13
+ * User: Matt Date: 1/11/13
  */
 public abstract class JMEContextManager implements ContextManager
 {
    private JMERenderer jmeRenderer;
 
    private boolean enableSwitching = true;
-   private ArrayList<InputMapSetter> inputMapSetters = new ArrayList<InputMapSetter>();
+   private ArrayList<InputMapSetter> inputMapSetters = new ArrayList<>();
 
-   protected ArrayList<JMEViewportAdapter> viewports = new ArrayList<JMEViewportAdapter>();
+   protected ArrayList<JMEViewportAdapter> viewports = new ArrayList<>();
    private JMEViewportAdapter currentViewport;
 
    public JMEContextManager(JMERenderer jmeRenderer)
@@ -33,6 +32,7 @@ public abstract class JMEContextManager implements ContextManager
       inputMapSetters.add(inputMapSetter);
    }
 
+   @Override
    public JMEViewportAdapter getCurrentViewport()
    {
       return currentViewport;
@@ -83,7 +83,7 @@ public abstract class JMEContextManager implements ContextManager
 
    public void closeAndDispose()
    {
-      this.jmeRenderer = null;
+      jmeRenderer = null;
 
       if (inputMapSetters != null)
       {

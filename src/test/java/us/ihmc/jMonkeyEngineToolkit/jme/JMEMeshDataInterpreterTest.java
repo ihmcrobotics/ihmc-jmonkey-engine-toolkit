@@ -1,6 +1,6 @@
 package us.ihmc.jMonkeyEngineToolkit.jme;
 
-import static us.ihmc.robotics.Assert.*;
+import static us.ihmc.robotics.Assert.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
@@ -15,15 +15,10 @@ import us.ihmc.graphicsDescription.MeshDataHolder;
 public class JMEMeshDataInterpreterTest
 {
 
-   @Test// timeout = 30000
+   @Test // timeout = 30000
    public void testForASingleTriangle()
    {
-      Point3D32[] vertices =
-         {
-               new Point3D32(0.1f, -1.0f, 0.2f),
-               new Point3D32(0.8f, -0.3f, 0.2f),
-               new Point3D32(-0.4f, 0.6f, 0.2f)
-         };
+      Point3D32[] vertices = {new Point3D32(0.1f, -1.0f, 0.2f), new Point3D32(0.8f, -0.3f, 0.2f), new Point3D32(-0.4f, 0.6f, 0.2f)};
       MeshDataHolder meshData = MeshDataGenerator.Polygon(vertices);
       Mesh interpretMeshData = JMEMeshDataInterpreter.interpretMeshData(meshData);
 
@@ -40,7 +35,7 @@ public class JMEMeshDataInterpreterTest
       assertJMEVectorEqualsPoint(triangle.get3(), vertices[2]);
    }
 
-   @Test// timeout = 30000
+   @Test // timeout = 30000
    public void testForASimpleCube()
    {
       MeshDataHolder meshData = MeshDataGenerator.Cube(1.0f, 1.0f, 1.0f, true, null);
@@ -75,7 +70,7 @@ public class JMEMeshDataInterpreterTest
 
    private void assertJMEVectorsEqual(Vector3f vectorOne, Vector3f vectorTwo)
    {
-      assertEquals(0.0, (double) vectorOne.distance(vectorTwo), 1e-7);
+      assertEquals(0.0, vectorOne.distance(vectorTwo), 1e-7);
    }
 
 }

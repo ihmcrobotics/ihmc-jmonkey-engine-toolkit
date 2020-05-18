@@ -16,14 +16,14 @@ import us.ihmc.graphicsDescription.input.mouse.MouseListener;
 import us.ihmc.graphicsDescription.structure.Graphics3DNode;
 import us.ihmc.jMonkeyEngineToolkit.camera.ViewportAdapter;
 
-public interface Graphics3DAdapter 
+public interface Graphics3DAdapter
 {
    public void setupSky();
-   
+
    public void setupSky(String skyBox);
-   
+
    public void setupSky(String west, String east, String north, String south, String up, String down);
-   
+
    public void addRootNode(Graphics3DNode rootNode);
 
    public void removeRootNode(Graphics3DNode rootNode);
@@ -43,7 +43,7 @@ public interface Graphics3DAdapter
    public void addKeyListener(KeyListener keyListener);
 
    public void addMouseListener(MouseListener mouseListener);
-   
+
    public void addMouse3DListener(Mouse3DListener mouse3DListener);
 
    public void closeAndDispose();
@@ -61,20 +61,19 @@ public interface Graphics3DAdapter
    public GPULidar createGPULidar(int pointsPerSweep, int scanHeight, double fieldOfView, double minRange, double maxRange);
 
    public GPULidar createGPULidar(GPULidarListener listener, int pointsPerSweep, int scanHeight, double fieldOfView, double minRange, double maxRange);
-   
+
    public void play();
 
    public void pause();
-   
+
    public void addSpotLight(Graphics3DSpotLight spotLight);
-   
+
    public void removeSpotLight(Graphics3DSpotLight spotLight);
-   
+
    public void addDirectionalLight(Color color, Vector3D direction);
-   
+
    void clearDirectionalLights();
-   
+
    void setAmbientLight(Color color);
 
-   
 }

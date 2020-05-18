@@ -20,13 +20,14 @@ public class JMEChangeMeshTester extends SimpleApplication
    private Node node;
 
    int counter = 0;
+
    @Override
    public void simpleInitApp()
    {
 
       Graphics3DObject graphics = new Graphics3DObject();
       graphics.setChangeable(true);
-      graphics.rotate(Math.PI/2.0, Axis3D.Z);
+      graphics.rotate(Math.PI / 2.0, Axis3D.Z);
       int resolution = 24;
       instruction = new Graphics3DAddMeshDataInstruction(MeshDataGenerator.Ellipsoid(1.0, 1.0, 1.0, resolution, resolution), YoAppearance.Red());
       JMEGraphicsObject graphicsObject = new JMEGraphicsObject(this, assetManager, graphics);
@@ -37,6 +38,7 @@ public class JMEChangeMeshTester extends SimpleApplication
       flyCam.setDragToRotate(true);
       setupLighting();
    }
+
    private DirectionalLight setupDirectionalLight(Vector3f direction)
    {
       DirectionalLight d2 = new DirectionalLight();
@@ -70,9 +72,9 @@ public class JMEChangeMeshTester extends SimpleApplication
    @Override
    public void simpleUpdate(float tpf)
    {
-      if(counter % 1000 == 0)
+      if (counter % 1000 == 0)
       {
-         instruction.setMesh(MeshDataGenerator.Cube(1.0, 1.0, 1.0,false, null));
+         instruction.setMesh(MeshDataGenerator.Cube(1.0, 1.0, 1.0, false, null));
          instruction.setAppearance(YoAppearance.Yellow());
       }
       else if (counter % 500 == 0)
@@ -89,7 +91,6 @@ public class JMEChangeMeshTester extends SimpleApplication
       AppSettings appSettings = new AppSettings(true);
       appSettings.setResolution(800, 600);
       jmeChangeMeshTester.setSettings(appSettings);
-
 
       jmeChangeMeshTester.setShowSettings(false);
       jmeChangeMeshTester.setPauseOnLostFocus(false);

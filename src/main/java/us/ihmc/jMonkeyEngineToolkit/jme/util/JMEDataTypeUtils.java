@@ -42,10 +42,10 @@ public class JMEDataTypeUtils
    public static float[] quaternionToEuler(Quaternion quat)
    {
       float pitch = (float) Math.atan2(2 * (quat.getW() * quat.getX() + quat.getY() * quat.getZ()),
-            (1 - 2 * (quat.getX() * quat.getX() + quat.getY() * quat.getY())));
+                                       1 - 2 * (quat.getX() * quat.getX() + quat.getY() * quat.getY()));
       float roll = (float) Math.asin(2 * (quat.getW() * quat.getY() - quat.getZ() * quat.getX()));
       float yaw = (float) Math.atan2(2 * (quat.getW() * quat.getZ() + quat.getY() * quat.getX()),
-            (1 - 2 * (quat.getY() * quat.getY() + quat.getZ() * quat.getZ())));
+                                     1 - 2 * (quat.getY() * quat.getY() + quat.getZ() * quat.getZ()));
 
       yaw = yaw * -1;
 
@@ -109,8 +109,8 @@ public class JMEDataTypeUtils
    {
       target.set(original.getX(), original.getY(), original.getZ(), original.getW());
 
-      // do not remove the normalization. 
-      // The conversion from float to double generates very tiny differences which make the 
+      // do not remove the normalization.
+      // The conversion from float to double generates very tiny differences which make the
       // quaternion SLIGHTLY not normal.
 
       target.normalize();

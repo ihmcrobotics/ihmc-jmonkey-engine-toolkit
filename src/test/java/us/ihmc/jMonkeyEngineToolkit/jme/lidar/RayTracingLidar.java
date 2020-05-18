@@ -19,7 +19,7 @@ public class RayTracingLidar
    private final LidarTestParameters params;
    private final int sensorId;
 
-   private ArrayList<String> collisionNodeNames = new ArrayList<String>();
+   private ArrayList<String> collisionNodeNames = new ArrayList<>();
 
    public RayTracingLidar(Graphics3DWorld world, LidarTestParameters params, int sensorId)
    {
@@ -86,7 +86,8 @@ public class RayTracingLidar
    {
       if (i >= params.getScansPerSweep() * params.getScanHeight())
       {
-         throw new IndexOutOfBoundsException("Index " + i + " greater than or equal to pointsPerSweep " + params.getScansPerSweep() + " * scanHeight " + params.getScanHeight());
+         throw new IndexOutOfBoundsException("Index " + i + " greater than or equal to pointsPerSweep " + params.getScansPerSweep() + " * scanHeight "
+               + params.getScanHeight());
       }
 
       double yawPerIndex = (params.getLidarSweepEndAngle() - params.getLidarSweepStartAngle()) / (params.getScansPerSweep() - 1);

@@ -31,7 +31,7 @@ public class JMERayCollisionAdapter
       if (DEBUG)
       {
          System.out.println("Adding root node with " + rootNode.getChildren().size() + " children.");
-         
+
          for (Spatial child : rootNode.getChildren())
          {
             System.out.println("Child: " + child.getName());

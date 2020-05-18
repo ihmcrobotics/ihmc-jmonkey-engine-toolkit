@@ -10,16 +10,17 @@ import us.ihmc.tools.inputDevices.keyboard.ModifierKeyInterface;
 
 public class SelectedListenerHolder
 {
-   private final ArrayList<SelectedListener> selectedListeners = new ArrayList<SelectedListener>();
-   
+   private final ArrayList<SelectedListener> selectedListeners = new ArrayList<>();
+
    public void addSelectedListener(SelectedListener listener)
    {
       selectedListeners.add(listener);
    }
 
-   public void selected(Graphics3DNode graphics3dNode, ModifierKeyInterface modifierKeyInterface, Point3DReadOnly location, Point3DReadOnly cameraLocation, QuaternionReadOnly cameraRotation)
+   public void selected(Graphics3DNode graphics3dNode, ModifierKeyInterface modifierKeyInterface, Point3DReadOnly location, Point3DReadOnly cameraLocation,
+                        QuaternionReadOnly cameraRotation)
    {
-      for(SelectedListener selectedListener : selectedListeners)
+      for (SelectedListener selectedListener : selectedListeners)
       {
          selectedListener.selected(graphics3dNode, modifierKeyInterface, location, cameraLocation, cameraRotation);
       }

@@ -30,7 +30,7 @@ public class JMEStereoSpriteGenerator extends Node implements Updatable
    protected ColorRGBA defaultColor;
    protected boolean newCloudAvailable = false;
    protected JMEPointCloudGenerator pointCloudGenerator;
-   protected ArrayList<ColorRGBA> colorList = new ArrayList<ColorRGBA>();
+   protected ArrayList<ColorRGBA> colorList = new ArrayList<>();
    private Random random = new Random();
 
    protected final AtomicReference<Point3D32[]> pointSource = new AtomicReference<>();
@@ -54,6 +54,7 @@ public class JMEStereoSpriteGenerator extends Node implements Updatable
    {
       jmeRenderer.enqueue(new Callable<Object>()
       {
+         @Override
          public Object call() throws Exception
          {
             thisObject.detachAllChildren();
@@ -73,11 +74,11 @@ public class JMEStereoSpriteGenerator extends Node implements Updatable
       for (Point3D32 current : points)
       {
          calcDistance = (float) ORIGIN.distance(current);
-         c = Color.HSBtoRGB((calcDistance % distance) / distance, 1.0f, 1.0f);
+         c = Color.HSBtoRGB(calcDistance % distance / distance, 1.0f, 1.0f);
 
          if (defaultColor == null)
          {
-            colorList.add(new ColorRGBA(((c >> 16) & 0xFF) / 256.0f, ((c >> 8) & 0xFF) / 256.0f, ((c >> 0) & 0xFF) / 256.0f, 1.0f));
+            colorList.add(new ColorRGBA((c >> 16 & 0xFF) / 256.0f, (c >> 8 & 0xFF) / 256.0f, (c >> 0 & 0xFF) / 256.0f, 1.0f));
          }
          else
          {
@@ -95,7 +96,7 @@ public class JMEStereoSpriteGenerator extends Node implements Updatable
 
    public ArrayList<ColorRGBA> generateColors(int numberOfPoints)
    {
-      colorList = new ArrayList<ColorRGBA>();
+      colorList = new ArrayList<>();
 
       for (int i = 0; i < numberOfPoints; i++)
       {
@@ -112,7 +113,7 @@ public class JMEStereoSpriteGenerator extends Node implements Updatable
 
    public void updatePoints(Point3D32[] points, Color[] colors)
    {
-      this.pointSource.set(points);
+      pointSource.set(points);
       this.colors = colors;
 
       newCloudAvailable = true;
@@ -138,7 +139,10 @@ public class JMEStereoSpriteGenerator extends Node implements Updatable
          ColorRGBA[] rgbaColors = new ColorRGBA[colors.length];
          for (int i = 0; i < colors.length; i++)
          {
-            rgbaColors[i] = new ColorRGBA((float)(colors[i].getRed()/255.0f), (float)(colors[i].getGreen()/255.0f), (float)(colors[i].getBlue()/255.0f), (float)(colors[i].getAlpha()/255.0f));
+            rgbaColors[i] = new ColorRGBA(colors[i].getRed() / 255.0f,
+                                          colors[i].getGreen() / 255.0f,
+                                          colors[i].getBlue() / 255.0f,
+                                          colors[i].getAlpha() / 255.0f);
          }
          //         if (pointSource.length % 10000 <= 200)
          //            System.out.println(pointSource.length);
@@ -148,7 +152,7 @@ public class JMEStereoSpriteGenerator extends Node implements Updatable
             // System.out.println("making graph");
             Node pointCloud = pointCloudGenerator.generatePointCloudGraph(pointSource, rgbaColors);
 
-            pointCloudGeometry = (pointCloud.getChildren().size() > 0) ? (Geometry) pointCloud.getChild(0) : null;
+            pointCloudGeometry = pointCloud.getChildren().size() > 0 ? (Geometry) pointCloud.getChild(0) : null;
             //            pointCloud.setShadowMode(ShadowMode.CastAndReceive);
 
             newPointCloud.set(pointCloud);
@@ -168,7 +172,7 @@ public class JMEStereoSpriteGenerator extends Node implements Updatable
 
       if ((newCloud = newPointCloud.getAndSet(null)) != null)
       {
-         if (this.getParent() != null)
+         if (getParent() != null)
          {
             thisObject.detachAllChildren();
             thisObject.attachChild(newCloud);
@@ -184,8 +188,9 @@ public class JMEStereoSpriteGenerator extends Node implements Updatable
    }
 
    /**
-    * Whether or not to allow collisions with the LIDAR point cloud.
-    * Default set to true, child classes can override.
+    * Whether or not to allow collisions with the LIDAR point cloud. Default set to true, child classes
+    * can override.
+    * 
     * @return whether point cloud collisions are allowed
     */
    protected boolean allowPointCloudCollisions()
@@ -208,18 +213,20 @@ public class JMEStereoSpriteGenerator extends Node implements Updatable
       }
 
       // Perform a collision with the point cloud first, if no hit, move on
-      if ((other instanceof Ray) && (geom != null))
+      if (other instanceof Ray && geom != null)
       {
          Ray ray = (Ray) other;
-         if ((ray.direction != null) && (ray.origin != null) && (ray.direction.lengthSquared() != 0))
+         if (ray.direction != null && ray.origin != null && ray.direction.lengthSquared() != 0)
          {
             Point3D32 origin = new Point3D32(ray.getOrigin().x, ray.getOrigin().y, ray.getOrigin().z);
             Vector3D32 dir = new Vector3D32(ray.getDirection().x, ray.getDirection().y, ray.getDirection().z);
             Point3D32 nearest = getNearestIntersection(origin, dir, getLidarResolution(), geom.getWorldTransform());
             if (nearest != null)
             {
-               CollisionResult collRes = new CollisionResult(geom, new com.jme3.math.Vector3f(nearest.getX32(), nearest.getY32(), nearest.getZ32()),
-                                                             (float) origin.distance(nearest), 0);
+               CollisionResult collRes = new CollisionResult(geom,
+                                                             new com.jme3.math.Vector3f(nearest.getX32(), nearest.getY32(), nearest.getZ32()),
+                                                             (float) origin.distance(nearest),
+                                                             0);
                collRes.setContactNormal(new com.jme3.math.Vector3f(0, 0, 1));
                results.addCollision(collRes);
 
@@ -237,8 +244,9 @@ public class JMEStereoSpriteGenerator extends Node implements Updatable
 
    /**
     * Find the nearest point along the ray that is also closest to the ray origin.
-    * @param origin ray origin
-    * @param direction ray direction
+    * 
+    * @param origin     ray origin
+    * @param direction  ray direction
     * @param resolution lidar resolution
     * @return closest point or null if the ray did not hit any lidar point
     */
@@ -267,7 +275,7 @@ public class JMEStereoSpriteGenerator extends Node implements Updatable
          dy = dy - dot * direction.getY32();
          dz = dz - dot * direction.getZ32();
 
-         distanceToLine = (dx * dx + dy * dy + dz * dz);
+         distanceToLine = dx * dx + dy * dy + dz * dz;
 
          Point3D32 curpt = new Point3D32(p.x, p.y, p.z);
 

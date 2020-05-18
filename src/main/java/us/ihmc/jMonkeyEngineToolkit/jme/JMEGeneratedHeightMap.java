@@ -28,7 +28,7 @@ public class JMEGeneratedHeightMap implements HeightMap
    private final int resolution;
    private final double elementTestSize;
 
-   //   private final double xMin = -100.0, xMax = 100.0, yMin = -100.0, yMax = 100.0; 
+   //   private final double xMin = -100.0, xMax = 100.0, yMin = -100.0, yMax = 100.0;
    private final double xMin = 0.0, xMax = 0.0, yMin = 0.0, yMax = 0.0; // Disable rendering heightmap
    private final BoundingBox3D boundingBox = new BoundingBox3D(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
 
@@ -38,7 +38,7 @@ public class JMEGeneratedHeightMap implements HeightMap
 
    private final AssetManager assetManager;
 
-   private final SimpleLRUCache<Long, GroundPoint> cache = new SimpleLRUCache<Long, GroundPoint>(cacheSize);
+   private final SimpleLRUCache<Long, GroundPoint> cache = new SimpleLRUCache<>(cacheSize);
 
    private int lookups = 0;
    private int cacheHits = 0;
@@ -56,7 +56,7 @@ public class JMEGeneratedHeightMap implements HeightMap
    {
       Logger.getLogger("").setLevel(Level.WARNING);
       this.resolution = resolution;
-      this.elementTestSize = 1.0 / ((double) resolution) + 1e-12;
+      elementTestSize = 1.0 / resolution + 1e-12;
 
       System.out.println("Generating heightmap tree");
       final URL resource = AssetManager.class.getResource("Desktop.cfg");
@@ -94,7 +94,7 @@ public class JMEGeneratedHeightMap implements HeightMap
       {
          if (lookups % 10000 == 0)
          {
-            System.out.println("Cache hit percentage: " + (((double) cacheHits) / ((double) lookups) * 100.0));
+            System.out.println("Cache hit percentage: " + (double) cacheHits / (double) lookups * 100.0);
          }
       }
 
@@ -125,6 +125,7 @@ public class JMEGeneratedHeightMap implements HeightMap
       return point;
    }
 
+   @Override
    public double heightAt(double x, double y, double z)
    {
       return getGroundPoint(x, y, z).getZ();
@@ -212,6 +213,7 @@ public class JMEGeneratedHeightMap implements HeightMap
 
    }
 
+   @Override
    public BoundingBox3D getBoundingBox()
    {
       return boundingBox;

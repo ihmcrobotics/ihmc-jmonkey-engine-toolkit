@@ -14,12 +14,11 @@ import us.ihmc.euclid.tuple3D.interfaces.Point3DReadOnly;
 import us.ihmc.euclid.tuple4D.Quaternion;
 import us.ihmc.euclid.tuple4D.interfaces.QuaternionReadOnly;
 
-
 public class JPanelCameraStreamer extends JPanel implements CameraStreamer
 {
    private static final long serialVersionUID = -6832977971630763132L;
    private BufferedImage bufferedImage;
-   
+
    public JPanelCameraStreamer()
    {
       super();
@@ -36,16 +35,20 @@ public class JPanelCameraStreamer extends JPanel implements CameraStreamer
 
    }
 
-   public synchronized void updateImage(BufferedImage bufferedImage, Point3DReadOnly cameraPosition, QuaternionReadOnly cameraOrientation, IntrinsicParameters intrinsicParamaters)
-   {
-      updateImage(bufferedImage);
-   }
-   
-   public synchronized void updateImage(BufferedImage bufferedImage, long timeStamp, Point3DReadOnly cameraPosition, QuaternionReadOnly cameraOrientation, double fov)
+   public synchronized void updateImage(BufferedImage bufferedImage, Point3DReadOnly cameraPosition, QuaternionReadOnly cameraOrientation,
+                                        IntrinsicParameters intrinsicParamaters)
    {
       updateImage(bufferedImage);
    }
 
+   @Override
+   public synchronized void updateImage(BufferedImage bufferedImage, long timeStamp, Point3DReadOnly cameraPosition, QuaternionReadOnly cameraOrientation,
+                                        double fov)
+   {
+      updateImage(bufferedImage);
+   }
+
+   @Override
    protected synchronized void paintComponent(Graphics g)
    {
       if (bufferedImage != null)
@@ -66,35 +69,36 @@ public class JPanelCameraStreamer extends JPanel implements CameraStreamer
       contentPane.add("Center", panel);
 
       jFrame.pack();
-      jFrame.setLocationByPlatform(true); 
+      jFrame.setLocationByPlatform(true);
       jFrame.setVisible(true);
       jFrame.setSize(800, 600);
    }
 
-
+   @Override
    public Point3D getCameraPosition()
    {
       return null;
    }
 
-
+   @Override
    public Quaternion getCameraOrientation()
    {
       return null;
    }
 
-
+   @Override
    public double getFieldOfView()
    {
       return 0;
    }
 
-
+   @Override
    public boolean isReadyForNewData()
    {
       return true;
    }
 
+   @Override
    public long getTimeStamp()
    {
       return 0;

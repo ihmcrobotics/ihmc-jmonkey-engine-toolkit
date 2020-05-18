@@ -1,6 +1,6 @@
 package us.ihmc.jMonkeyEngineToolkit.tralala;
 
-/** 
+/**
  * Encapsulation of 2 objects, the key and its value.
  */
 public class Pair<Key, Value>
@@ -42,10 +42,13 @@ public class Pair<Key, Value>
    @Override
    public boolean equals(Object obj)
    {
-      if (obj == null) return false;
-      if (getClass() != obj.getClass()) return false;
+      if (obj == null)
+         return false;
+      if (getClass() != obj.getClass())
+         return false;
       final Pair<Key, Value> other = (Pair<Key, Value>) obj;
-      if (this.key != other.key && (this.key == null || !this.key.equals(other.key))) return false;
+      if (this.key != other.key && (this.key == null || !this.key.equals(other.key)))
+         return false;
       return true;
    }
 
@@ -58,6 +61,6 @@ public class Pair<Key, Value>
    @Override
    public String toString()
    {
-      return "{"+ key + "," + value + '}';
+      return "{" + key + "," + value + '}';
    }
 }
