@@ -1,6 +1,8 @@
 package us.ihmc.jMonkeyEngineToolkit.camera;
 
 import us.ihmc.euclid.tuple3D.Point3D;
+import us.ihmc.euclid.tuple3D.interfaces.Point3DBasics;
+import us.ihmc.euclid.tuple3D.interfaces.Point3DReadOnly;
 
 public class SimpleCameraTrackingAndDollyPositionHolder implements CameraTrackingAndDollyPositionHolder
 {
@@ -9,13 +11,13 @@ public class SimpleCameraTrackingAndDollyPositionHolder implements CameraTrackin
    private double fieldOfView = 1.0;
 
    @Override
-   public void getTrackingPosition(Point3D trackingPositionToPack)
+   public void getTrackingPosition(Point3DBasics trackingPositionToPack)
    {
       trackingPositionToPack.set(trackingPosition);
    }
 
    @Override
-   public void getDollyPosition(Point3D dollyPositionToPack)
+   public void getDollyPosition(Point3DBasics dollyPositionToPack)
    {
       dollyPositionToPack.set(dollyPosition);
    }
@@ -62,12 +64,12 @@ public class SimpleCameraTrackingAndDollyPositionHolder implements CameraTrackin
       return fieldOfView;
    }
 
-   public void setTrackingPosition(Point3D trackingPosition)
+   public void setTrackingPosition(Point3DReadOnly trackingPosition)
    {
       this.trackingPosition.set(trackingPosition);
    }
 
-   public void setDollyPosition(Point3D dollyPosition)
+   public void setDollyPosition(Point3DReadOnly dollyPosition)
    {
       this.dollyPosition.set(dollyPosition);
    }

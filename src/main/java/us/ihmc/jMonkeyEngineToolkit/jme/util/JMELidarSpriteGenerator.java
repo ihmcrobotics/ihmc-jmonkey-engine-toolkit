@@ -2,6 +2,7 @@ package us.ihmc.jMonkeyEngineToolkit.jme.util;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicReference;
@@ -17,7 +18,10 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 
 import us.ihmc.euclid.tuple3D.Point3D32;
+import us.ihmc.euclid.tuple3D.UnitVector3D;
 import us.ihmc.euclid.tuple3D.Vector3D32;
+import us.ihmc.euclid.tuple3D.interfaces.Point3DReadOnly;
+import us.ihmc.euclid.tuple3D.interfaces.Vector3DReadOnly;
 import us.ihmc.jMonkeyEngineToolkit.Updatable;
 
 public class JMELidarSpriteGenerator extends Node implements Updatable
@@ -26,14 +30,14 @@ public class JMELidarSpriteGenerator extends Node implements Updatable
    protected SimpleApplication jmeRenderer;
    protected Node thisObject = this;
    protected Geometry pointCloudGeometry;
-   protected ArrayList<ColorRGBA> colors;
+   protected List<ColorRGBA> colors;
    protected ColorRGBA defaultColor;
    protected boolean newCloudAvailable = false;
    protected JMEPointCloudGenerator pointCloudGenerator;
    protected ArrayList<ColorRGBA> colorList = new ArrayList<>();
    private Random random = new Random();
 
-   protected final AtomicReference<Point3D32[]> pointSource = new AtomicReference<>();
+   protected final AtomicReference<Point3DReadOnly[]> pointSource = new AtomicReference<>();
 
    public JMELidarSpriteGenerator(SimpleApplication jmeRenderer)
    {
@@ -64,14 +68,14 @@ public class JMELidarSpriteGenerator extends Node implements Updatable
       });
    }
 
-   public ArrayList<ColorRGBA> generateColors(Point3D32[] points)
+   public List<ColorRGBA> generateColors(Point3DReadOnly[] points)
    {
       colorList.clear();
       float distance = 3f;
       float calcDistance = 0;
       int c;
 
-      for (Point3D32 current : points)
+      for (Point3DReadOnly current : points)
       {
          calcDistance = (float) ORIGIN.distance(current);
          c = Color.HSBtoRGB(calcDistance % distance / distance, 1.0f, 1.0f);
@@ -94,7 +98,7 @@ public class JMELidarSpriteGenerator extends Node implements Updatable
       defaultColor = color;
    }
 
-   public ArrayList<ColorRGBA> generateColors(int numberOfPoints)
+   public List<ColorRGBA> generateColors(int numberOfPoints)
    {
       colorList = new ArrayList<>();
 
@@ -111,7 +115,7 @@ public class JMELidarSpriteGenerator extends Node implements Updatable
       pointCloudGenerator.setSizeCM(resolution);
    }
 
-   public void updatePoints(Point3D32[] source)
+   public void updatePoints(Point3DReadOnly[] source)
    {
       pointSource.set(source);
       newCloudAvailable = true;
@@ -128,7 +132,7 @@ public class JMELidarSpriteGenerator extends Node implements Updatable
          //System.out.println("test3");
 
          newCloudAvailable = false;
-         Point3D32[] pointSource = this.pointSource.get();
+         Point3DReadOnly[] pointSource = this.pointSource.get();
          if (pointSource == null)
          {
             return;
@@ -242,17 +246,17 @@ public class JMELidarSpriteGenerator extends Node implements Updatable
     * @param resolution lidar resolution
     * @return closest point or null if the ray did not hit any lidar point
     */
-   public Point3D32 getNearestIntersection(Point3D32 origin, Vector3D32 direction, double resolution, Transform pointTransform)
+   public Point3D32 getNearestIntersection(Point3DReadOnly origin, Vector3DReadOnly direction, double resolution, Transform pointTransform)
    {
-      Point3D32[] points = pointSource.get();
-      direction.normalize();
+      Point3DReadOnly[] points = pointSource.get();
+      direction = new UnitVector3D(direction);
       float dx, dy, dz, dot;
       double distanceToLine, distance;
 
       double nearestDistance = Double.POSITIVE_INFINITY;
       Point3D32 nearestPoint = null;
 
-      for (Point3D32 p1 : points)
+      for (Point3DReadOnly p1 : points)
       {
          com.jme3.math.Vector3f p = new com.jme3.math.Vector3f(p1.getX32(), p1.getY32(), p1.getZ32());
          pointTransform.transformVector(p, p);

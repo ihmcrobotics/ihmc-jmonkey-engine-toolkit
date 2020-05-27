@@ -20,6 +20,7 @@ import com.jme3.scene.Spatial;
 
 import jme3tools.optimize.GeometryBatchFactory;
 import us.ihmc.euclid.tuple3D.Vector3D;
+import us.ihmc.euclid.tuple3D.interfaces.Vector3DReadOnly;
 import us.ihmc.euclid.tuple4D.interfaces.QuaternionBasics;
 import us.ihmc.graphicsDescription.Graphics3DObject;
 import us.ihmc.graphicsDescription.HeightMap;
@@ -260,9 +261,8 @@ public class JMEGraphicsObject extends Graphics3DInstructionExecutor
    {
       graphics3dObjectScale.addChangeScaleListener(new ScaleChangedListener()
       {
-
          @Override
-         public void setScale(final Vector3D scaleFactor)
+         public void setScale(final Vector3DReadOnly scaleFactor)
          {
             checkIfNotImmutable();
             application.enqueue(new Callable<Object>()

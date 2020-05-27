@@ -1,6 +1,7 @@
 package us.ihmc.jMonkeyEngineToolkit.jme.util;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.scene.Geometry;
@@ -34,13 +35,13 @@ public class JME3DLoaderUtils
 
    public static Geometry extractFirstGeometry(Spatial spatial)
    {
-      ArrayList<Geometry> geom = new ArrayList<>();
+      List<Geometry> geom = new ArrayList<>();
       getGeometry(spatial, geom);
 
       return geom.get(0);
    }
 
-   private static void getGeometry(Spatial spatial, ArrayList<Geometry> parent)
+   private static void getGeometry(Spatial spatial, List<Geometry> parent)
    {
       if (spatial instanceof Node)
       {

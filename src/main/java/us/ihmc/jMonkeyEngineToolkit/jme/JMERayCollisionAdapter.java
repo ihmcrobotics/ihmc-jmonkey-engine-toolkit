@@ -9,10 +9,13 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 
 import us.ihmc.euclid.geometry.Line3D;
+import us.ihmc.euclid.geometry.interfaces.Line3DReadOnly;
 import us.ihmc.euclid.tuple3D.Point3D;
 import us.ihmc.euclid.tuple3D.Vector3D;
 import us.ihmc.euclid.tuple3D.interfaces.Point3DBasics;
+import us.ihmc.euclid.tuple3D.interfaces.Point3DReadOnly;
 import us.ihmc.euclid.tuple3D.interfaces.Tuple3DBasics;
+import us.ihmc.euclid.tuple3D.interfaces.UnitVector3DReadOnly;
 import us.ihmc.euclid.tuple3D.interfaces.Vector3DBasics;
 import us.ihmc.jMonkeyEngineToolkit.jme.util.JMEDataTypeUtils;
 import us.ihmc.jMonkeyEngineToolkit.jme.util.JMEGeometryUtils;
@@ -54,7 +57,7 @@ public class JMERayCollisionAdapter
       return getPickDistance(rootNode, null, null);
    }
 
-   public double getPickDistance(Node rootNode, Vector3D normalToPack, Point3D closestPoint)
+   public double getPickDistance(Node rootNode, Vector3DBasics normalToPack, Point3DBasics closestPoint)
    {
       results.clear();
       rootNode.collideWith(collidable, results);
@@ -107,10 +110,10 @@ public class JMERayCollisionAdapter
       JMEDataTypeUtils.packJMEVector3fInVecMathTuple3d(vector3f, tuple3d);
    }
 
-   public void setPickingGeometry(Line3D ray3d)
+   public void setPickingGeometry(Line3DReadOnly ray3d)
    {
-      Point3DBasics rayOrigin = ray3d.getPoint();
-      Vector3DBasics rayDirection = ray3d.getDirection();
+      Point3DReadOnly rayOrigin = ray3d.getPoint();
+      UnitVector3DReadOnly rayDirection = ray3d.getDirection();
 
       Vector3f rayOrigin3f = new Vector3f();
       Vector3f rayDirection3f = new Vector3f();

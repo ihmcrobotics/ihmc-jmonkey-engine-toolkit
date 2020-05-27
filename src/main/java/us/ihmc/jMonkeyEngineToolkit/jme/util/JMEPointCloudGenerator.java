@@ -18,7 +18,6 @@ import com.jme3.scene.Node;
 import com.jme3.scene.VertexBuffer;
 import com.jme3.util.BufferUtils;
 
-import us.ihmc.euclid.tuple3D.Point3D32;
 import us.ihmc.euclid.tuple3D.interfaces.Point3DReadOnly;
 import us.ihmc.euclid.tuple3D.interfaces.Tuple3DBasics;
 
@@ -144,12 +143,12 @@ public class JMEPointCloudGenerator
       return generatePointCloudGraph(coords, null);
    }
 
-   public Node generatePointCloudGraph(Point3D32[] pointCoordinates3d)
+   public Node generatePointCloudGraph(Point3DReadOnly[] pointCoordinates3d)
    {
       return generatePointCloudGraph(pointCoordinates3d, (ColorRGBA[]) null);
    }
 
-   public Node generatePointCloudGraph(Point3D32[] pointCoordinates3d, ColorRGBA[] colorsRGBA)
+   public Node generatePointCloudGraph(Point3DReadOnly[] pointCoordinates3d, ColorRGBA[] colorsRGBA)
    {
       Vector3f[] vectorArray = new Vector3f[pointCoordinates3d.length];
 
@@ -253,33 +252,6 @@ public class JMEPointCloudGenerator
       pointBuffer.rewind();
 
       FloatBuffer colorBuffer = BufferUtils.createFloatBuffer(4 * colorsRGBA.size());
-      for (ColorRGBA colorRGBA : colorsRGBA)
-      {
-         colorBuffer.put(colorRGBA.getColorArray());
-      }
-      colorBuffer.rewind();
-
-      return generatePointCloudGraph(pointBuffer, colorBuffer);
-   }
-
-   public Node generatePointCloudGraph(Point3DReadOnly[] pointCloud, ColorRGBA[] colorsRGBA) throws Exception
-   {
-      if (colorsRGBA == null)
-         throw new Exception("point cloud colors must not be null!");
-
-      if (pointCloud.length != colorsRGBA.length)
-         throw new Exception("There should be a color value for each point, if colors are used!");
-
-      FloatBuffer pointBuffer = BufferUtils.createFloatBuffer(3 * pointCloud.length);
-      for (Point3DReadOnly point : pointCloud)
-      {
-         pointBuffer.put(point.getX32());
-         pointBuffer.put(point.getY32());
-         pointBuffer.put(point.getZ32());
-      }
-      pointBuffer.rewind();
-
-      FloatBuffer colorBuffer = BufferUtils.createFloatBuffer(4 * colorsRGBA.length);
       for (ColorRGBA colorRGBA : colorsRGBA)
       {
          colorBuffer.put(colorRGBA.getColorArray());
