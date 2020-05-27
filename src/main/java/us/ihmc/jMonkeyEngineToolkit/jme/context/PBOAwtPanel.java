@@ -1,9 +1,16 @@
 package us.ihmc.jMonkeyEngineToolkit.jme.context;
 
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL12.*;
-import static org.lwjgl.opengl.GL15.*;
-import static org.lwjgl.opengl.GL21.*;
+import static org.lwjgl.opengl.GL11.GL_UNSIGNED_BYTE;
+import static org.lwjgl.opengl.GL11.glReadPixels;
+import static org.lwjgl.opengl.GL12.GL_BGRA;
+import static org.lwjgl.opengl.GL15.GL_READ_ONLY;
+import static org.lwjgl.opengl.GL15.GL_STATIC_READ;
+import static org.lwjgl.opengl.GL15.glBindBuffer;
+import static org.lwjgl.opengl.GL15.glBufferData;
+import static org.lwjgl.opengl.GL15.glGenBuffers;
+import static org.lwjgl.opengl.GL15.glMapBuffer;
+import static org.lwjgl.opengl.GL15.glUnmapBuffer;
+import static org.lwjgl.opengl.GL21.GL_PIXEL_PACK_BUFFER;
 
 import java.awt.AWTException;
 import java.awt.BufferCapabilities;
@@ -21,6 +28,7 @@ import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.jme3.post.SceneProcessor;
@@ -33,9 +41,7 @@ import com.jme3.texture.Image.Format;
 import com.jme3.util.BufferUtils;
 
 /**
- * PBO - Pixel Buffer Object
- *
- * It's more efficient than reading the pixels. @jsmith
+ * PBO - Pixel Buffer Object It's more efficient than reading the pixels. @jsmith
  */
 public class PBOAwtPanel extends Canvas implements SceneProcessor
 {
@@ -48,8 +54,8 @@ public class PBOAwtPanel extends Canvas implements SceneProcessor
    private BufferedImage bufferedImage;
    private FrameBuffer frameBuffer;
    private RenderManager renderManager;
-   private ArrayList<ViewPort> viewPorts = new ArrayList<ViewPort>();
-   private ArrayList<PBOAwtPanelListener> pboAwtPanelListeners;
+   private List<ViewPort> viewPorts = new ArrayList<>();
+   private List<PBOAwtPanelListener> pboAwtPanelListeners;
 
    // Visibility/drawing vars
    private BufferStrategy strategy;
@@ -67,7 +73,7 @@ public class PBOAwtPanel extends Canvas implements SceneProcessor
    private int gpuToVram, vramToSys;
    private int dataSize;
 
-   public PBOAwtPanel(ArrayList<PBOAwtPanelListener> pboAwtPanelListeners)
+   public PBOAwtPanel(List<PBOAwtPanelListener> pboAwtPanelListeners)
    {
       this.pboAwtPanelListeners = pboAwtPanelListeners;
 
@@ -82,7 +88,7 @@ public class PBOAwtPanel extends Canvas implements SceneProcessor
             {
                int newWidth2 = Math.max(getWidth(), 1);
                int newHeight2 = Math.max(getHeight(), 1);
-               if ((newWidth != newWidth2) || (newHeight != newHeight2))
+               if (newWidth != newWidth2 || newHeight != newHeight2)
                {
                   newWidth = newWidth2;
                   newHeight = newHeight2;
@@ -125,7 +131,7 @@ public class PBOAwtPanel extends Canvas implements SceneProcessor
       {
          if (strategy != null)
          {
-//          strategy.dispose();
+            //          strategy.dispose();
             strategy = null;
             printIfDebug(getClass().getSimpleName() + ": Not visible. Destroy strategy.");
          }
@@ -175,13 +181,12 @@ public class PBOAwtPanel extends Canvas implements SceneProcessor
    {
       if (frameBuffer == null)
       {
-         return;    // Framebuffer is not up yet
+         return; // Framebuffer is not up yet
       }
 
       // Select gpuToVram PBO an read pixels from GPU to VRAM
       glBindBuffer(GL_PIXEL_PACK_BUFFER, gpuToVram);
       glReadPixels(0, 0, frameBuffer.getWidth(), frameBuffer.getHeight(), GL_BGRA, GL_UNSIGNED_BYTE, 0);
-
 
       // Select vramToSys PBO, bind it to systemRam and copy the data over
       glBindBuffer(GL_PIXEL_PACK_BUFFER, vramToSys);
@@ -192,14 +197,12 @@ public class PBOAwtPanel extends Canvas implements SceneProcessor
       gpuToVram = vramToSys;
       vramToSys = previousGpuToVram;
 
-
       if (byteBuf == null)
       {
          return;
       }
 
       convertScreenShot2(byteBuf.asIntBuffer(), bufferedImage);
-
 
       // Unmap buffer
       glUnmapBuffer(GL_PIXEL_PACK_BUFFER);
@@ -214,8 +217,10 @@ public class PBOAwtPanel extends Canvas implements SceneProcessor
          {
             try
             {
-               createBufferStrategy(1, new BufferCapabilities(new ImageCapabilities(true), new ImageCapabilities(true),
-                       BufferCapabilities.FlipContents.UNDEFINED));
+               createBufferStrategy(1,
+                                    new BufferCapabilities(new ImageCapabilities(true),
+                                                           new ImageCapabilities(true),
+                                                           BufferCapabilities.FlipContents.UNDEFINED));
             }
             catch (AWTException ex)
             {
@@ -241,7 +246,7 @@ public class PBOAwtPanel extends Canvas implements SceneProcessor
 
                g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
 
-//             g2d.drawImage(img, transformOp, 0, 0);
+               //             g2d.drawImage(img, transformOp, 0, 0);
                g2d.drawImage(bufferedImage, 0, 0, null);
                g2d.dispose();
                strategy.show();
@@ -254,7 +259,8 @@ public class PBOAwtPanel extends Canvas implements SceneProcessor
 
    private void printIfDebug(String string)
    {
-      if (DEBUG) System.out.println(string);      
+      if (DEBUG)
+         System.out.println(string);
    }
 
    public boolean isActiveDrawing()
@@ -277,12 +283,14 @@ public class PBOAwtPanel extends Canvas implements SceneProcessor
       viewPorts.addAll(Arrays.asList(vps));
       viewPorts.get(viewPorts.size() - 1).addProcessor(this);
 
-      this.attachAsMain = overrideMainFramebuffer;
+      attachAsMain = overrideMainFramebuffer;
    }
 
+   @Override
    public void initialize(RenderManager renderManager, ViewPort vp)
    {
-      if (alreadyClosing) return;
+      if (alreadyClosing)
+         return;
 
       if (this.renderManager == null)
       {
@@ -302,7 +310,8 @@ public class PBOAwtPanel extends Canvas implements SceneProcessor
 
    private void reshapeInThread(int width, int height)
    {
-      if (alreadyClosing) return;
+      if (alreadyClosing)
+         return;
 
       frameBuffer = new FrameBuffer(width, height, 1);
       frameBuffer.setDepthBuffer(Format.Depth);
@@ -318,9 +327,7 @@ public class PBOAwtPanel extends Canvas implements SceneProcessor
          bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
       }
 
-
       dataSize = width * height * 4;
-
 
       // Map both PBO buffers, and put the indices in bufferIds
       for (int bufferId : new int[] {gpuToVram, vramToSys})
@@ -350,15 +357,18 @@ public class PBOAwtPanel extends Canvas implements SceneProcessor
       }
    }
 
+   @Override
    public boolean isInitialized()
    {
       return frameBuffer != null;
    }
 
+   @Override
    public void preFrame(float tpf)
    {
    }
 
+   @Override
    public void postQueue(RenderQueue rq)
    {
    }
@@ -370,11 +380,13 @@ public class PBOAwtPanel extends Canvas implements SceneProcessor
       repaintRequest.set(true);
    }
 
+   @Override
    public void postFrame(FrameBuffer out)
    {
-      if (alreadyClosing) return;
-      
-      if (!attachAsMain && (out != frameBuffer))
+      if (alreadyClosing)
+         return;
+
+      if (!attachAsMain && out != frameBuffer)
       {
          throw new IllegalStateException("Why did you change the output framebuffer?");
       }
@@ -394,21 +406,24 @@ public class PBOAwtPanel extends Canvas implements SceneProcessor
       }
    }
 
+   @Override
    public void reshape(ViewPort vp, int w, int h)
    {
    }
 
+   @Override
    public void cleanup()
    {
    }
 
    private boolean alreadyClosing = false;
-   
+
    public void closeAndDispose()
    {
-      if (alreadyClosing) return;
+      if (alreadyClosing)
+         return;
       alreadyClosing = true;
-      
+
       bufferedImage = null;
       frameBuffer = null;
       renderManager = null;
@@ -429,6 +444,6 @@ public class PBOAwtPanel extends Canvas implements SceneProcessor
    @Override
    public void setProfiler(AppProfiler profiler)
    {
-      
+
    }
 }

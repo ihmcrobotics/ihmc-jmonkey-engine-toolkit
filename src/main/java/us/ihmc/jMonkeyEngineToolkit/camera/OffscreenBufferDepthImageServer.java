@@ -9,25 +9,25 @@ import us.ihmc.jMonkeyEngineToolkit.Graphics3DAdapter;
 import us.ihmc.log.LogTools;
 import us.ihmc.tools.TimestampProvider;
 
-public class OffscreenBufferDepthImageServer   
+public class OffscreenBufferDepthImageServer
 {
    private final DepthImageCallback depthImageCallback;
 
    private final CameraAdapter camera;
 
    private final TimestampProvider timestampProvider;
-   
+
    private final double nearClip;
    private final double farClip;
 
    public OffscreenBufferDepthImageServer(Graphics3DAdapter adapter, CameraMountList mountList, CameraConfiguration cameraConfiguration,
-         CameraTrackingAndDollyPositionHolder cameraTrackingAndDollyPositionHolder, int width, int height, double nearClip, double farClip, DepthImageCallback imageCallback, 
-         TimestampProvider timestampProvider, int framesPerSecond)
+                                          CameraTrackingAndDollyPositionHolder cameraTrackingAndDollyPositionHolder, int width, int height, double nearClip,
+                                          double farClip, DepthImageCallback imageCallback, TimestampProvider timestampProvider, int framesPerSecond)
    {
       ViewportAdapter viewport = adapter.createNewViewport(null, false, true);
       camera = viewport.getCamera();
       viewport.setupOffscreenView(width, height);
-      
+
       this.nearClip = nearClip;
       this.farClip = farClip;
 
@@ -36,7 +36,7 @@ public class OffscreenBufferDepthImageServer
       viewport.setCameraController(cameraController);
 
       CameraUpdater cameraUpdater = new CameraUpdater();
-      this.depthImageCallback = imageCallback;
+      depthImageCallback = imageCallback;
       this.timestampProvider = timestampProvider;
       LogTools.info("Starting RGBD stream");
       viewport.getCaptureDevice().streamTo(cameraUpdater, framesPerSecond);
@@ -50,14 +50,13 @@ public class OffscreenBufferDepthImageServer
 
    private class CameraUpdater implements RGBDStreamer
    {
-      
+
       @Override
-      public void updateRBGD(DepthImage image, long timeStamp, Point3DReadOnly cameraPosition,
-                             QuaternionReadOnly cameraOrientation, double fov)
+      public void updateRBGD(DepthImage image, long timeStamp, Point3DReadOnly cameraPosition, QuaternionReadOnly cameraOrientation, double fov)
       {
          depthImageCallback.onNewImage(image, timeStamp, cameraPosition, cameraOrientation, fov);
       }
-      
+
       @Override
       public double getNearClip()
       {
@@ -99,9 +98,6 @@ public class OffscreenBufferDepthImageServer
       {
          return timestampProvider.getTimestamp();
       }
-
-
-
 
    }
 }

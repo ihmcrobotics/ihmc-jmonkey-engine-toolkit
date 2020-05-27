@@ -7,12 +7,12 @@ import us.ihmc.graphicsDescription.HeightMap;
 
 public class CombinedHeightMap implements HeightMap
 {
-   private final ArrayList<HeightMap> heightMaps = new ArrayList<HeightMap>();
+   private final ArrayList<HeightMap> heightMaps = new ArrayList<>();
    private BoundingBox3D boundingBox = null;
 
    public void addHeightMap(HeightMap heightMap)
    {
-      this.heightMaps.add(heightMap);
+      heightMaps.add(heightMap);
 
       if (boundingBox == null)
          boundingBox = heightMap.getBoundingBox();
@@ -20,6 +20,7 @@ public class CombinedHeightMap implements HeightMap
          boundingBox = BoundingBox3D.union(boundingBox, heightMap.getBoundingBox());
    }
 
+   @Override
    public double heightAt(double x, double y, double z)
    {
       Double heightAt = Double.NEGATIVE_INFINITY;
@@ -38,6 +39,7 @@ public class CombinedHeightMap implements HeightMap
       return heightAt;
    }
 
+   @Override
    public BoundingBox3D getBoundingBox()
    {
       return boundingBox;

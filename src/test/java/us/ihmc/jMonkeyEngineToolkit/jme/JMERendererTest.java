@@ -1,6 +1,6 @@
 package us.ihmc.jMonkeyEngineToolkit.jme;
 
-import static us.ihmc.robotics.Assert.*;
+import static us.ihmc.robotics.Assert.assertNotNull;
 
 import java.util.concurrent.Callable;
 
@@ -21,15 +21,15 @@ import us.ihmc.jMonkeyEngineToolkit.utils.FlatHeightMap;
 public class JMERendererTest
 {
 
-	@Test// timeout = 30000
+   @Test // timeout = 30000
    public void testInitialization()
    {
       JMEGraphics3DWorld world = new JMEGraphics3DWorld(new JMEGraphics3DAdapter());
       JMERenderer renderer = world.getGraphics3DAdapter().getRenderer();
-      
+
       world.startWithoutGui();
       assertNotNull(renderer);
-      
+
       world.stop();
    }
 
@@ -37,12 +37,12 @@ public class JMERendererTest
     * Ground should flash on and off a few times.
     */
 
-	@Test// timeout = 30000
+   @Test // timeout = 30000
    public void testSetGroundVisible()
    {
       JMEGraphics3DWorld world = new JMEGraphics3DWorld(new JMEGraphics3DAdapter());
       JMERenderer renderer = world.getGraphics3DAdapter().getRenderer();
-      
+
       world.startWithGui();
 
       renderer.setHeightMap(new FlatHeightMap());
@@ -54,7 +54,7 @@ public class JMERendererTest
          world.keepAlive(0.2);
          renderer.setGroundVisible(false);
       }
-      
+
       world.stop();
    }
 
@@ -63,12 +63,12 @@ public class JMERendererTest
     */
 
    @Disabled
-	@Test// timeout = 30000
+   @Test // timeout = 30000
    public void testFreezeFrame()
    {
       final JMEGraphics3DWorld world = new JMEGraphics3DWorld(new JMEGraphics3DAdapter());
       JMERenderer renderer = world.getGraphics3DAdapter().getRenderer();
-      
+
       world.startWithGui();
 
       final Graphics3DNode sphereNode = new Graphics3DNode("SphereNode", new Graphics3DObject(new Sphere3D(1.0), YoAppearance.Green()));
@@ -115,7 +115,7 @@ public class JMERendererTest
       }
 
       world.keepAlive(0.5);
-      
+
       world.stop();
    }
 }

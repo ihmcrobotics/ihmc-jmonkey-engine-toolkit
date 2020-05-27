@@ -22,33 +22,33 @@ import us.ihmc.graphicsDescription.structure.Graphics3DNode;
 public class JMEGraphics3DWorldTest
 {
 
-	@Test// timeout = 30000
+   @Test // timeout = 30000
    public void testShowGui()
    {
       JMEGraphics3DWorld world = new JMEGraphics3DWorld("testWorld", new JMEGraphics3DAdapter());
-      
+
       world.startWithGui();
-      
+
       world.keepAlive(1);
       world.stop();
    }
 
-	@Test// timeout = 30000
+   @Test // timeout = 30000
    public void testWithoutGui()
    {
       JMEGraphics3DWorld world = new JMEGraphics3DWorld("testWorld", new JMEGraphics3DAdapter());
-      
+
       world.startWithoutGui();
 
       world.keepAlive(1);
       world.stop();
    }
 
-	@Test// timeout = 30000
+   @Test // timeout = 30000
    public void addASphere()
    {
       JMEGraphics3DWorld world = new JMEGraphics3DWorld("testWorld", new JMEGraphics3DAdapter());
-      
+
       world.addChild(new Graphics3DNode("Sphere", new Graphics3DObject(new Sphere3D())));
       world.startWithGui();
 
@@ -56,11 +56,11 @@ public class JMEGraphics3DWorldTest
       world.stop();
    }
 
-	@Test// timeout = 30000
+   @Test // timeout = 30000
    public void addASphereAfterGuiStarted()
    {
       JMEGraphics3DWorld world = new JMEGraphics3DWorld("testWorld", new JMEGraphics3DAdapter());
-      
+
       world.startWithGui();
       world.addChild(new Graphics3DNode("Sphere", new Graphics3DObject(new Sphere3D())));
 
@@ -68,13 +68,13 @@ public class JMEGraphics3DWorldTest
       world.stop();
    }
 
-	@Test// timeout = 30000
+   @Test // timeout = 30000
    public void addAJMESphere()
    {
       JMEGraphics3DWorld world = new JMEGraphics3DWorld("testWorld", new JMEGraphics3DAdapter());
-      
+
       Geometry geometry = new Geometry("jmeSphere" + "Geo", new Sphere(200, 200, 5.0f, false, true));
-      Material material = new Material(((JMEGraphics3DAdapter) world.getGraphics3DAdapter()).getRenderer().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
+      Material material = new Material(world.getGraphics3DAdapter().getRenderer().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
       material.setColor("Color", new ColorRGBA(0, 1, 0, 0.5f));
       material.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
       geometry.setMaterial(material);
@@ -82,7 +82,7 @@ public class JMEGraphics3DWorldTest
       Node jmeSphereNode = new Node("jmeSphereNode");
       jmeSphereNode.move(1.5f, 2.5f, -0.5f);
       jmeSphereNode.attachChild(geometry);
-      
+
       world.addChild(jmeSphereNode);
       world.startWithGui();
 
@@ -90,10 +90,11 @@ public class JMEGraphics3DWorldTest
       world.stop();
    }
 
-	@Test// timeout = 30000
+   @Test // timeout = 30000
    public void testSetCameraPosition()
    {
-      Assertions.assertTimeoutPreemptively(Duration.ofSeconds(5), () -> {
+      Assertions.assertTimeoutPreemptively(Duration.ofSeconds(5), () ->
+      {
          JMEGraphics3DWorld world = new JMEGraphics3DWorld("testWorld", new JMEGraphics3DAdapter());
 
          world.addChild(new Graphics3DNode("Sphere", new Graphics3DObject(new Sphere3D())));
@@ -105,11 +106,11 @@ public class JMEGraphics3DWorldTest
       });
    }
 
-	@Test// timeout = 30000
+   @Test // timeout = 30000
    public void fixCameraOnSphere()
    {
       JMEGraphics3DWorld world = new JMEGraphics3DWorld("testWorld", new JMEGraphics3DAdapter());
-      
+
       Graphics3DNode sphereNode = new Graphics3DNode("Sphere", new Graphics3DObject(new Sphere3D()));
       world.addChild(sphereNode);
       world.startWithGui();

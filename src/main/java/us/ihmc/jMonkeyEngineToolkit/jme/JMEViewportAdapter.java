@@ -58,7 +58,7 @@ public class JMEViewportAdapter extends ViewportAdapter implements InputMapSette
    private ViewportType viewportType;
    private ViewPort viewPort;
    private AssetManager assetManager;
-   private ArrayList<ContextSwitchedListener> contextSwitchedListeners = new ArrayList<ContextSwitchedListener>();
+   private ArrayList<ContextSwitchedListener> contextSwitchedListeners = new ArrayList<>();
 
    private RenderManager renderManager;
 
@@ -83,19 +83,19 @@ public class JMEViewportAdapter extends ViewportAdapter implements InputMapSette
    }
 
    public JMEViewportAdapter(JMERenderer jmeRenderer, Node rootNode, boolean isMainViewport, ViewportType viewportType, boolean addExtraVisuals,
-         Color backgroundColor)
+                             Color backgroundColor)
    {
       this(jmeRenderer, rootNode, isMainViewport, viewportType, addExtraVisuals, backgroundColor, true);
    }
 
    public JMEViewportAdapter(JMERenderer jmeRenderer, Node rootNode, boolean isMainViewport, ViewportType viewportType, boolean addExtraVisuals,
-         Color backgroundColor, boolean flipY)
+                             Color backgroundColor, boolean flipY)
    {
       this.jmeRenderer = jmeRenderer;
-      this.assetManager = jmeRenderer.getAssetManager();
-      this.stateManager = jmeRenderer.getStateManager();
-      this.context = jmeRenderer.getContext();
-      this.primaryLight = jmeRenderer.getPrimaryLight();
+      assetManager = jmeRenderer.getAssetManager();
+      stateManager = jmeRenderer.getStateManager();
+      context = jmeRenderer.getContext();
+      primaryLight = jmeRenderer.getPrimaryLight();
       this.isMainViewport = isMainViewport;
       renderManager = jmeRenderer.getRenderManager();
       jmeCamera = new JMECamera(jmeRenderer.getCamera());
@@ -119,7 +119,7 @@ public class JMEViewportAdapter extends ViewportAdapter implements InputMapSette
       if (viewportType.equals(ViewportType.MULTICAM) || viewportType.equals(ViewportType.CANVAS))
       {
          jmeRenderer.getContextManager().addJMEViewportAdapter(this);
-         this.jmeInputManager = new JMEInputManager(jmeRenderer, rootNode, jmeCamera, flipY);
+         jmeInputManager = new JMEInputManager(jmeRenderer, rootNode, jmeCamera, flipY);
       }
 
       jmeRenderer.registerViewport(this);
@@ -144,6 +144,7 @@ public class JMEViewportAdapter extends ViewportAdapter implements InputMapSette
 
    }
 
+   @Override
    public Canvas getCanvas()
    {
       if (viewportType != ViewportType.CANVAS)
@@ -175,6 +176,7 @@ public class JMEViewportAdapter extends ViewportAdapter implements InputMapSette
       return panel;
    }
 
+   @Override
    public void setupOffscreenView(int width, int height)
    {
       if (viewportType == ViewportType.CANVAS)
@@ -277,11 +279,13 @@ public class JMEViewportAdapter extends ViewportAdapter implements InputMapSette
 
    }
 
+   @Override
    public void setDefaultInputMappings()
    {
       jmeInputManager.registerWithInputManager();
    }
 
+   @Override
    public void reset()
    {
       jmeInputManager.reset();
@@ -296,11 +300,13 @@ public class JMEViewportAdapter extends ViewportAdapter implements InputMapSette
    {
    }
 
+   @Override
    public CameraController getCameraController()
    {
       return jmeCamera.getController();
    }
 
+   @Override
    public CaptureDevice getCaptureDevice()
    {
       return screenShotHelper;
@@ -329,6 +335,7 @@ public class JMEViewportAdapter extends ViewportAdapter implements InputMapSette
       }
    }
 
+   @Override
    public double getFieldOfView()
    {
       return 0;
@@ -339,15 +346,17 @@ public class JMEViewportAdapter extends ViewportAdapter implements InputMapSette
       double dPixels = pixels;
       double dpi = Toolkit.getDefaultToolkit().getScreenResolution();
 
-      return (dPixels / dpi) * 0.0254;
+      return dPixels / dpi * 0.0254;
 
    }
 
+   @Override
    public double getPhysicalWidth()
    {
       return convertToPhysicalDimension(getWidth());
    }
 
+   @Override
    public double getPhysicalHeight()
    {
       return convertToPhysicalDimension(getHeight());
@@ -358,11 +367,13 @@ public class JMEViewportAdapter extends ViewportAdapter implements InputMapSette
       jmeCamera.updateCamera();
    }
 
+   @Override
    public void setCameraController(CameraController cameraController)
    {
       jmeCamera.setCameraController(cameraController);
    }
 
+   @Override
    public JMECamera getCamera()
    {
       return jmeCamera;
@@ -380,6 +391,7 @@ public class JMEViewportAdapter extends ViewportAdapter implements InputMapSette
     * @param y Y coordinate on screen
     * @param z Depth as relative value between near and far frustrum
     */
+   @Override
    public Point3D getWorldCoordinatesFromScreenCoordinates(float x, float y, double z)
    {
       Vector3f worldCoordinates = jmeCamera.getWorldCoordinates(new Vector2f(x, y), (float) z);
@@ -388,6 +400,7 @@ public class JMEViewportAdapter extends ViewportAdapter implements InputMapSette
       return JMEDataTypeUtils.jmeVector3fToJ3DPoint3d(worldCoordinates);
    }
 
+   @Override
    public void addContextSwitchedListener(ContextSwitchedListener contextSwitchedListener)
    {
       contextSwitchedListeners.add(contextSwitchedListener);
@@ -408,31 +421,37 @@ public class JMEViewportAdapter extends ViewportAdapter implements InputMapSette
       viewPort.detachScene(scene);
    }
 
+   @Override
    public void initialize(RenderManager rm, ViewPort vp)
    {
 
    }
 
+   @Override
    public void reshape(ViewPort vp, int w, int h)
    {
 
    }
 
+   @Override
    public boolean isInitialized()
    {
       return false;
    }
 
+   @Override
    public void preFrame(float tpf)
    {
 
    }
 
+   @Override
    public void postQueue(RenderQueue rq)
    {
 
    }
 
+   @Override
    public void postFrame(FrameBuffer out)
    {
       if (alreadyClosing)
@@ -445,6 +464,7 @@ public class JMEViewportAdapter extends ViewportAdapter implements InputMapSette
       }
    }
 
+   @Override
    public void cleanup()
    {
 
@@ -453,6 +473,6 @@ public class JMEViewportAdapter extends ViewportAdapter implements InputMapSette
    @Override
    public void setProfiler(AppProfiler profiler)
    {
-      
+
    }
 }

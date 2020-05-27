@@ -1,6 +1,7 @@
 package us.ihmc.jMonkeyEngineToolkit.jme;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
@@ -9,7 +10,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import com.jme3.app.Application;
 import com.jme3.scene.Node;
 
-import us.ihmc.euclid.geometry.Line3D;
+import us.ihmc.euclid.geometry.interfaces.Line3DReadOnly;
 import us.ihmc.tools.TimestampProvider;
 
 public class JMEMultiRayTracer
@@ -22,7 +23,7 @@ public class JMEMultiRayTracer
    private long time;
    private final JMERayCollisionAdapter rayCollisionAdapter;
    private String[] childrenToIntersect = null;
-   
+
    {
       if (DEBUG)
          System.out.println("JMEMultiRayTracer: DEBUG is true");
@@ -31,7 +32,7 @@ public class JMEMultiRayTracer
    public JMEMultiRayTracer(Application application, Node rootNode)
    {
       this.application = application;
-      this.rayCollisionAdapter = new JMERayCollisionAdapter(rootNode);
+      rayCollisionAdapter = new JMERayCollisionAdapter(rootNode);
    }
 
    public void setChildrenToIntersect(String[] childrenToIntersect)
@@ -39,7 +40,7 @@ public class JMEMultiRayTracer
       this.childrenToIntersect = childrenToIntersect;
    }
 
-   public long scan(TimestampProvider timestampProvider, ArrayList<Line3D> rays, double[] rawRayLengths)
+   public long scan(TimestampProvider timestampProvider, List<? extends Line3DReadOnly> rays, double[] rawRayLengths)
    {
       try
       {
@@ -47,10 +48,10 @@ public class JMEMultiRayTracer
          ImmutablePair<Long, Node> retVal = futureRootNode.get();
          long timestamp = retVal.getLeft();
          Node rootNode = retVal.getRight();
-         
+
          if (childrenToIntersect != null)
          {
-            ArrayList<Node> children = new ArrayList<Node>();
+            List<Node> children = new ArrayList<>();
             Node child;
             for (int i = 0; i < childrenToIntersect.length; i++)
             {
@@ -60,7 +61,8 @@ public class JMEMultiRayTracer
                }
             }
             rootNode.detachAllChildren();
-            for (Node n : children) {
+            for (Node n : children)
+            {
                rootNode.attachChild(n);
             }
          }
@@ -87,7 +89,7 @@ public class JMEMultiRayTracer
          System.out.println("JMEMultiRayTracer: elapsed time outside of RenderThread has been " + (System.nanoTime() - time) * 1.0e-9 + " seconds.");
    }
 
-   public void reportDebugTimeToSetupPicking(final ArrayList<Line3D> rays)
+   public void reportDebugTimeToSetupPicking(final List<? extends Line3DReadOnly> rays)
    {
       if (DEBUG)
          System.out.println("JMEMultiRayTracer: elapsed time setting up the scenegraph for picking " + (System.nanoTime() - time) * 1.0e-9 + " seconds.");
@@ -104,6 +106,7 @@ public class JMEMultiRayTracer
    {
       return application.enqueue(new Callable<ImmutablePair<Long, Node>>()
       {
+         @Override
          public ImmutablePair<Long, Node> call() throws Exception
          {
             long time = System.nanoTime();
@@ -113,12 +116,12 @@ public class JMEMultiRayTracer
             {
                System.out.println("JMEMultiRayTracer: elapsed time in RenderThread has been " + (System.nanoTime() - time) * 1.0e-9 + " seconds.");
             }
-            return new ImmutablePair<Long, Node>(timestamp, newRoot);
+            return new ImmutablePair<>(timestamp, newRoot);
          }
       });
    }
 
-   private double getPickDistance(Line3D ray3d, Node rootNode)
+   private double getPickDistance(Line3DReadOnly ray3d, Node rootNode)
    {
       rayCollisionAdapter.setPickingGeometry(ray3d);
       double pickDistance = rayCollisionAdapter.getPickDistance(rootNode);

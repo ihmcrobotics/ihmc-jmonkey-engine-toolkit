@@ -49,8 +49,8 @@ import jme3tools.optimize.GeometryBatchFactory;
 public final class Utilities
 {
    /**
-    * We force character to not be able to exceed rotation limits. Because it
-    * will turn the world upside down.
+    * We force character to not be able to exceed rotation limits. Because it will turn the world
+    * upside down.
     */
    public static final float MIN_ANGLE_X = -89 * FastMath.DEG_TO_RAD;
    public static final float MAX_ANGLE_X = 89 * FastMath.DEG_TO_RAD;
@@ -69,17 +69,19 @@ public final class Utilities
       sunGeom.addControl(bc);
       return sunGeom;
    }
-   
+
    public static Material getUnshadedMaterial(String texturePath, ColorRGBA color, AssetManager assetManager)
    {
-      return getUnshadedMaterial(assetManager.loadTexture(texturePath),color, BlendMode.Off, assetManager);
+      return getUnshadedMaterial(assetManager.loadTexture(texturePath), color, BlendMode.Off, assetManager);
    }
-   
+
    public static Material getUnshadedMaterial(Texture texture, ColorRGBA color, BlendMode mode, AssetManager assetManager)
    {
       Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-      if (texture != null) mat.setTexture("ColorMap", texture);
-      if (color != null) mat.setColor("Color", color);
+      if (texture != null)
+         mat.setTexture("ColorMap", texture);
+      if (color != null)
+         mat.setColor("Color", color);
       if (mode != BlendMode.Off)
       {
          mat.getAdditionalRenderState().setBlendMode(mode);
@@ -92,9 +94,12 @@ public final class Utilities
    {
       Material mat = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
       mat.setTexture("DiffuseMap", assetManager.loadTexture(texturePath));
-      if (normalPath != null)   mat.setTexture("NormalMap", assetManager.loadTexture(normalPath));
-      if (parallaxPath != null) mat.setTexture("ParallaxMap", assetManager.loadTexture(parallaxPath));
-      if (shiness >= 0) mat.setFloat("Shininess", shiness); // [0,128]
+      if (normalPath != null)
+         mat.setTexture("NormalMap", assetManager.loadTexture(normalPath));
+      if (parallaxPath != null)
+         mat.setTexture("ParallaxMap", assetManager.loadTexture(parallaxPath));
+      if (shiness >= 0)
+         mat.setFloat("Shininess", shiness); // [0,128]
       return mat;
    }
 
@@ -113,17 +118,23 @@ public final class Utilities
       File[] files = file.listFiles();
       for (File f : files)
       {
-         if (f.isFile()) fileList.add(f);
-         else getSubfiles(f, fileList);
+         if (f.isFile())
+            fileList.add(f);
+         else
+            getSubfiles(f, fileList);
       }
       return fileList;
    }
 
    public static boolean isBlank(String str)
    {
-      if (str == null) return true;
-      if (str.isEmpty()) return true;
-      for (char c : str.toCharArray()) if (!Character.isWhitespace(c)) return false;
+      if (str == null)
+         return true;
+      if (str.isEmpty())
+         return true;
+      for (char c : str.toCharArray())
+         if (!Character.isWhitespace(c))
+            return false;
       return true;
    }
 
@@ -184,9 +195,9 @@ public final class Utilities
       return name.substring(0, name.indexOf('.'));
    }
 
-   /* Get the extension of a file.
-    *
-    * Code taken from java tutorial : http://download.oracle.com/javase/tutorial/uiswing/components/filechooser.html#filters
+   /*
+    * Get the extension of a file. Code taken from java tutorial :
+    * http://download.oracle.com/javase/tutorial/uiswing/components/filechooser.html#filters
     */
    public static String getExtension(File f)
    {
@@ -212,11 +223,11 @@ public final class Utilities
    //Converts a file into an array of string
    public static ArrayList<String> readFile(File file, String encoding)
    {
-      ArrayList<String> lines = new ArrayList<String>(50);
+      ArrayList<String> lines = new ArrayList<>(50);
       if (!file.exists())
       {
          throw new IllegalStateException("Unable to find File " + file + " bye");
-      }//if
+      } //if
       String line;
       boolean end = false;
       try
@@ -233,9 +244,9 @@ public final class Utilities
             {
                lines.add(line);
             }
-         }//while
+         } //while
          br.close();
-      }//try
+      } //try
       catch (IOException ioe)
       {
          System.err.println("Unable to open file");
@@ -290,26 +301,26 @@ public final class Utilities
    }
 
    /**
-       * Distance formula from Koen Samyn :
-       * http://knol.google.com/k/plane-equation-in-3d#
-       * <p/>
-       * @param pointToBeMeasured the Point you want to find its distance from
-       * plane.
-       * @param anyPointOfPlane any plane's point e.g plane's origin
-       * @param planeNormal the plane's Normal at the "anyPointOfPlane"
-       */
+    * Distance formula from Koen Samyn : http://knol.google.com/k/plane-equation-in-3d#
+    * <p/>
+    * 
+    * @param pointToBeMeasured the Point you want to find its distance from plane.
+    * @param anyPointOfPlane   any plane's point e.g plane's origin
+    * @param planeNormal       the plane's Normal at the "anyPointOfPlane"
+    */
    public static float getDistanceOfPointFromPlane(Vector3f pointToBeMeasured, Vector3f anyPointOfPlane, Vector3f planeNormal)
    {
       return pointToBeMeasured.subtract(anyPointOfPlane).dot(planeNormal);
    }
 
    /**
-    * Symmetry formula from Koen Samyn :  http://knol.google.com/k/mirroring-a-point-on-a-3d-plane#
-    * Same info on wikipedia : http://en.wikipedia.org/wiki/Reflection_%28mathematics%29
-    * 
+    * Symmetry formula from Koen Samyn : http://knol.google.com/k/mirroring-a-point-on-a-3d-plane# Same
+    * info on wikipedia : http://en.wikipedia.org/wiki/Reflection_%28mathematics%29
+    *
     * @param pointToBeMirrored the Point you want to find its symmetric
-    * @param planeOrigin  the planeOrigin e.g (0,0,0)
-    * @param planeNormal  the planeNormal is a vector that points upward from the plane e.g Vector3f.UNIT_Z
+    * @param planeOrigin       the planeOrigin e.g (0,0,0)
+    * @param planeNormal       the planeNormal is a vector that points upward from the plane e.g
+    *                          Vector3f.UNIT_Z
     */
    public static Vector3f getSummetricPosition(Vector3f pointToBeMirrored, Vector3f planeOrigin, Vector3f planeNormal)
    {
@@ -329,8 +340,10 @@ public final class Utilities
 
    public static float[] merge(float[] f1, float[] f2)
    {
-      if (f1 == null) return f2;
-      if (f2 == null) return f1;
+      if (f1 == null)
+         return f2;
+      if (f2 == null)
+         return f1;
       float[] f = new float[f1.length + f2.length];
       System.arraycopy(f1, 0, f, 0, f1.length);
       System.arraycopy(f2, 0, f, f1.length, f2.length);
@@ -339,8 +352,10 @@ public final class Utilities
 
    public static short[] merge(short[] f1, short[] f2)
    {
-      if (f1 == null) return f2;
-      if (f2 == null) return f1;
+      if (f1 == null)
+         return f2;
+      if (f2 == null)
+         return f1;
       short[] f = new short[f1.length + f2.length];
       System.arraycopy(f1, 0, f, 0, f1.length);
       System.arraycopy(f2, 0, f, f1.length, f2.length);
@@ -349,8 +364,10 @@ public final class Utilities
 
    public static byte[] merge(byte[] f1, byte[] f2)
    {
-      if (f1 == null) return f2;
-      if (f2 == null) return f1;
+      if (f1 == null)
+         return f2;
+      if (f2 == null)
+         return f1;
       byte[] f = new byte[f1.length + f2.length];
       System.arraycopy(f1, 0, f, 0, f1.length);
       System.arraycopy(f2, 0, f, f1.length, f2.length);
@@ -359,15 +376,19 @@ public final class Utilities
 
    public static FloatBuffer merge(FloatBuffer f1, FloatBuffer f2)
    {
-      if (f1 == null) return f2;
-      if (f2 == null) return f1;
+      if (f1 == null)
+         return f2;
+      if (f2 == null)
+         return f1;
       return BufferUtils.createFloatBuffer(merge(BufferUtils.getFloatArray(f1), BufferUtils.getFloatArray(f2)));
    }
 
    public static ShortBuffer merge(ShortBuffer f1, ShortBuffer f2)
    {
-      if (f1 == null) return f2;
-      if (f2 == null) return f1;
+      if (f1 == null)
+         return f2;
+      if (f2 == null)
+         return f1;
       return BufferUtils.createShortBuffer(merge(getShortArray(f1), getShortArray(f2)));
    }
 
@@ -419,7 +440,8 @@ public final class Utilities
    public static Vector2f[] getVector2FromArray(List<Float>[] array, int i)
    {
       Vector2f[] returned = new Vector2f[array.length];
-      for (int j = 0; j < array.length; j++) returned[j] = getVector2FromArray(array[j], i);
+      for (int j = 0; j < array.length; j++)
+         returned[j] = getVector2FromArray(array[j], i);
       return returned;
    }
 
@@ -430,7 +452,7 @@ public final class Utilities
 
    public static ArrayList<Byte> getAsList(byte[] array)
    {
-      ArrayList<Byte> resultArray = new ArrayList<Byte>();
+      ArrayList<Byte> resultArray = new ArrayList<>();
       for (byte s : array)
       {
          resultArray.add(s);
@@ -440,7 +462,7 @@ public final class Utilities
 
    public static ArrayList<Short> getAsList(short[] array)
    {
-      ArrayList<Short> resultArray = new ArrayList<Short>();
+      ArrayList<Short> resultArray = new ArrayList<>();
       for (short s : array)
       {
          resultArray.add(s);
@@ -450,7 +472,7 @@ public final class Utilities
 
    public static ArrayList<Float> getAsList(float[] array)
    {
-      ArrayList<Float> resultArray = new ArrayList<Float>();
+      ArrayList<Float> resultArray = new ArrayList<>();
       for (float f : array)
       {
          resultArray.add(f);
@@ -464,7 +486,7 @@ public final class Utilities
       ArrayList<Float>[] resultArray = new ArrayList[array.length];
       for (int i = 0; i < array.length; i++)
       {
-         resultArray[i] = new ArrayList<Float>();
+         resultArray[i] = new ArrayList<>();
          for (float f : array[i])
          {
             resultArray[i].add(f);
@@ -554,10 +576,10 @@ public final class Utilities
       array[i * 2] = p1.x;
       array[i * 2 + 1] = p1.y;
    }
-   
+
    public static Geometry createPoint(Material mat, Vector3f position)
    {
-      return createLine(mat,position,position.add(new Vector3f(0,0.5f,0)));
+      return createLine(mat, position, position.add(new Vector3f(0, 0.5f, 0)));
    }
 
    public static Plane createPlane(Vector3f planeOrigin, Vector3f planeNormal)
@@ -588,7 +610,7 @@ public final class Utilities
       return lineGeom;
    }
 
-   /**Lower left corner is at (0,0,0) and top right corner is at (x,y,z)*/
+   /** Lower left corner is at (0,0,0) and top right corner is at (x,y,z) */
    public static Box createLowerLeftBox(float x, float y, float z)
    {
       return new Box(new Vector3f(x / 2f, y / 2f, z / 2f), x / 2f, y / 2f, z / 2f);
@@ -597,7 +619,8 @@ public final class Utilities
    public static Geometry createHorizontalQuad(float x, float y, float z, float width, float length)
    {
       Quad quad = IDENTITY_QUAD;
-      if (width != 1 && length != 1) quad = new Quad(width, length);
+      if (width != 1 && length != 1)
+         quad = new Quad(width, length);
 
       Geometry tile = new Geometry("Quad", quad);
       tile.rotate(FastMath.HALF_PI, 0, FastMath.PI);
@@ -613,7 +636,8 @@ public final class Utilities
       float[] vertexArray = BufferUtils.getFloatArray((FloatBuffer) vertex.getData());
 
       VertexBuffer normals = mesh.getBuffer(Type.Normal);
-      if (normals == null) return debugNormals;
+      if (normals == null)
+         return debugNormals;
       float[] normalArray = BufferUtils.getFloatArray((FloatBuffer) normals.getData());
 
       for (int i = 0; i < vertexArray.length; i += 3)
@@ -649,7 +673,7 @@ public final class Utilities
       return createWorldGrid(mat, mat, xi, yi, true);
    }
 
-   /**Debug Lines*/
+   /** Debug Lines */
    public static Node createWorldGrid(Material mat, Material axisMat, int xi, int yi, boolean centered)
    {
       Node worldGrid = new Node();
@@ -658,21 +682,29 @@ public final class Utilities
       //Horizontial Lines
       for (int i = 0; i <= yi; i++)
       {
-         if (i == yi / 2) materialToUse = axisMat;
-         else materialToUse = mat;
+         if (i == yi / 2)
+            materialToUse = axisMat;
+         else
+            materialToUse = mat;
 
-         if (!centered) worldGrid.attachChild(createLine("GridLineX" + i, materialToUse, new Vector3f(0, 0, i), new Vector3f(xi, 0, i)));
-         else worldGrid.attachChild(createLine("GridLineX" + i, materialToUse, new Vector3f(-xi / 2f, 0, -yi / 2f + i), new Vector3f(xi / 2f, 0, -yi / 2f + i)));
+         if (!centered)
+            worldGrid.attachChild(createLine("GridLineX" + i, materialToUse, new Vector3f(0, 0, i), new Vector3f(xi, 0, i)));
+         else
+            worldGrid.attachChild(createLine("GridLineX" + i, materialToUse, new Vector3f(-xi / 2f, 0, -yi / 2f + i), new Vector3f(xi / 2f, 0, -yi / 2f + i)));
       }
 
       //Vertical Lines
       for (int i = 0; i <= xi; i++)
       {
-         if (i == xi / 2) materialToUse = axisMat;
-         else materialToUse = mat;
+         if (i == xi / 2)
+            materialToUse = axisMat;
+         else
+            materialToUse = mat;
 
-         if (!centered) worldGrid.attachChild(createLine("GridLineY" + i, materialToUse, new Vector3f(i, 0, 0), new Vector3f(i, 0, yi)));
-         else worldGrid.attachChild(createLine("GridLineY" + i, materialToUse, new Vector3f(-xi / 2f + i, 0, -yi / 2f), new Vector3f(-xi / 2f + i, 0, yi / 2f)));
+         if (!centered)
+            worldGrid.attachChild(createLine("GridLineY" + i, materialToUse, new Vector3f(i, 0, 0), new Vector3f(i, 0, yi)));
+         else
+            worldGrid.attachChild(createLine("GridLineY" + i, materialToUse, new Vector3f(-xi / 2f + i, 0, -yi / 2f), new Vector3f(-xi / 2f + i, 0, yi / 2f)));
       }
       GeometryBatchFactory.optimize(worldGrid);
 
@@ -680,11 +712,9 @@ public final class Utilities
    }
 
    /**
-    * Create a new short[] array and populate it with the given ShortBuffer's
-    * contents.
+    * Create a new short[] array and populate it with the given ShortBuffer's contents.
     *
-    * @param buff
-    *            the ShortBuffer to read from
+    * @param buff the ShortBuffer to read from
     * @return a new short array populated from the ShortBuffer
     */
    public static short[] getShortArray(ShortBuffer buff)
@@ -701,11 +731,9 @@ public final class Utilities
    }
 
    /**
-    * Create a new byte[] array and populate it with the given ByteBuffer's
-    * contents.
+    * Create a new byte[] array and populate it with the given ByteBuffer's contents.
     *
-    * @param buff
-    *            the ByteBuffer to read from
+    * @param buff the ByteBuffer to read from
     * @return a new byte array populated from the ByteBuffer
     */
    public static byte[] getByteArray(ByteBuffer buff)
@@ -720,14 +748,13 @@ public final class Utilities
       }
       return inds;
    }
-   
-   /** Converts local cordinates "(dx,dy,dz)" to world coordinates based on Vector3D "rotation".
-    * <a href="http://jerome.jouvie.free.fr/OpenGl/Tutorials/Tutorial26.php"> More info : </a>
-    *
-    * This kind of deplacement generaly used for player movement (in shooting game ...).
-    * The x rotation is 'ignored' for the calculation of the deplacement.
-    * This result that if you look upward and you want to move forward,
-    * the deplacement is calculated like if your were parallely to the ground.
+
+   /**
+    * Converts local cordinates "(dx,dy,dz)" to world coordinates based on Vector3D "rotation".
+    * <a href="http://jerome.jouvie.free.fr/OpenGl/Tutorials/Tutorial26.php"> More info : </a> This
+    * kind of deplacement generaly used for player movement (in shooting game ...). The x rotation is
+    * 'ignored' for the calculation of the deplacement. This result that if you look upward and you
+    * want to move forward, the deplacement is calculated like if your were parallely to the ground.
     */
    public static Vector3f localToWorldCoordinatesIgnoreHeight(float dx, float dy, float dz, float rotationX, float rotationY)
    {

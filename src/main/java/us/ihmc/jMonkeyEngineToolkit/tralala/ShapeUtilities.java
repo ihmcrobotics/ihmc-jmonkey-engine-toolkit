@@ -33,10 +33,10 @@ public class ShapeUtilities
 {
    private static final GeometryFactory GEOMETRY_FACTORY = new GeometryFactory(new PrecisionModel());
    private static final int BLACK_COLOR_THRESHOLD = 60;
-   private static final float PIXEL_DISTANCE  = 1;
+   private static final float PIXEL_DISTANCE = 1;
    private static final float SIMPLIFY_AMOUNT = 1;
 
-   /** Reads the colors of first column of an image and creates a gradient texture.*/
+   /** Reads the colors of first column of an image and creates a gradient texture. */
    public static void testMain(SimpleApplication scene)
    {
       String shape = "shapes/public domain/tribal_star.png";
@@ -48,9 +48,12 @@ public class ShapeUtilities
 
       //Get shape.
       com.jme3.scene.Geometry g = createShape(shapeImage, height);
-      g.setMaterial(Utilities.getUnshadedMaterial(scene.getAssetManager().loadTexture("Textures/CobbleStone.png"), null, BlendMode.Off, scene.getAssetManager()));
+      g.setMaterial(Utilities.getUnshadedMaterial(scene.getAssetManager().loadTexture("Textures/CobbleStone.png"),
+                                                  null,
+                                                  BlendMode.Off,
+                                                  scene.getAssetManager()));
       g.scale(10f);
-      g.rotate(FastMath.HALF_PI*3, 0, 0);
+      g.rotate(FastMath.HALF_PI * 3, 0, 0);
 
       scene.getRootNode().attachChild(g);
       scene.getViewPort().setBackgroundColor(new ColorRGBA(0.7f, 0.8f, 1f, 1f));
@@ -65,12 +68,12 @@ public class ShapeUtilities
 
       MeshData mesh = createShape(geom, 0.05f);
       Coordinate center = getCenter(geom);
-      mesh = mesh.translate(new Vector3f( (float)-center.x, 0, (float)-center.y) );
+      mesh = mesh.translate(new Vector3f((float) -center.x, 0, (float) -center.y));
 
       com.jme3.scene.Geometry g = new com.jme3.scene.Geometry("", mesh.createMesh());
       return g;
    }
-   
+
    public static MeshData createShape(Geometry geom, float height)
    {
       Geometry polygon = ShapeUtilities.triangulate(geom);
@@ -94,7 +97,15 @@ public class ShapeUtilities
          Vector3f t3 = t.get3();
 
          //top
-         addTriangle(new Triangle(t1.add(0, height, 0), t2.add(0, height, 0), t3.add(0, height, 0)), Vector3f.UNIT_Y, index, vertexArray, normalArray, uvArray, indexArray);
+         addTriangle(new Triangle(t1.add(0, height, 0),
+                                  t2.add(0, height, 0),
+                                  t3.add(0, height, 0)),
+                     Vector3f.UNIT_Y,
+                     index,
+                     vertexArray,
+                     normalArray,
+                     uvArray,
+                     indexArray);
          index += 3;
 
          //bottom
@@ -125,18 +136,18 @@ public class ShapeUtilities
       return new MeshData(vertexArray, normalArray, uvArray, indexArray).removeDuplicateData();
    }
 
-   /** Creates a point where there is black color.*/
+   /** Creates a point where there is black color. */
    public static Geometry createGeometry(BufferedImage image)
    {
-      ArrayList<Point> points = new ArrayList<Point>(128 * 128);
+      ArrayList<Point> points = new ArrayList<>(128 * 128);
       image = ImageUtilities.rotateImage(image, FastMath.PI);
       for (int i = 0; i < image.getWidth(); i++)
       {
          for (int j = 0; j < image.getHeight(); j++)
          {
             Color color = ImageUtilities.getColor(image, i, j, true);
-            boolean opaque = (color.getAlpha() > BLACK_COLOR_THRESHOLD);
-            boolean black = ((color.getRed() + color.getGreen() + color.getBlue()) / 3 < BLACK_COLOR_THRESHOLD);
+            boolean opaque = color.getAlpha() > BLACK_COLOR_THRESHOLD;
+            boolean black = (color.getRed() + color.getGreen() + color.getBlue()) / 3 < BLACK_COLOR_THRESHOLD;
             if (opaque && black)
             {
                points.add(createPoint(new Coordinate(i, j)));
@@ -163,13 +174,13 @@ public class ShapeUtilities
       return DouglasPeuckerSimplifier.simplify(g, amount);
    }
 
-   /** Converts it into a convexHull shape.*/
+   /** Converts it into a convexHull shape. */
    public static Geometry convertToConvexHull(Geometry g)
    {
       return g.convexHull();
    }
 
-   /** Converts it into a octagonal shape.*/
+   /** Converts it into a octagonal shape. */
    public static Geometry convertToOctagonal(Geometry g)
    {
       OctagonalEnvelope octEnv = new OctagonalEnvelope(g);
@@ -239,9 +250,9 @@ public class ShapeUtilities
 
    public static ArrayList<Triangle> getTriangles(Geometry geom)
    {
-      ArrayList<Triangle> triangles = new ArrayList<Triangle>();
+      ArrayList<Triangle> triangles = new ArrayList<>();
 
-      LinkedList<Geometry> gc = new LinkedList<Geometry>();
+      LinkedList<Geometry> gc = new LinkedList<>();
       gc.add(geom);
 
       while (!gc.isEmpty())
@@ -251,7 +262,8 @@ public class ShapeUtilities
          if (g instanceof GeometryCollection)
          {
             GeometryCollection collection = (GeometryCollection) g;
-            for (int i = 0; i < collection.getNumGeometries(); i++) gc.add(collection.getGeometryN(i));
+            for (int i = 0; i < collection.getNumGeometries(); i++)
+               gc.add(collection.getGeometryN(i));
          }
          else if (g instanceof Polygon)
          {
@@ -262,13 +274,15 @@ public class ShapeUtilities
             if (g.getNumPoints() == 5) //when triangulation failed.
             {
                triangles.add(new Triangle(toVector3f(cords[2]), toVector3f(cords[3]), toVector3f(cords[0])));
-               if (!cords[4].equals2D(cords[0])) triangles.add(new Triangle(toVector3f(cords[3]), toVector3f(cords[4]), toVector3f(cords[0])));
+               if (!cords[4].equals2D(cords[0]))
+                  triangles.add(new Triangle(toVector3f(cords[3]), toVector3f(cords[4]), toVector3f(cords[0])));
             }
             if (g.getNumPoints() == 6)
             {
                triangles.add(new Triangle(toVector3f(cords[2]), toVector3f(cords[3]), toVector3f(cords[4])));
                triangles.add(new Triangle(toVector3f(cords[4]), toVector3f(cords[5]), toVector3f(cords[2])));
-               if (!cords[5].equals2D(cords[0])) triangles.add(new Triangle(toVector3f(cords[5]), toVector3f(cords[0]), toVector3f(cords[2])));
+               if (!cords[5].equals2D(cords[0]))
+                  triangles.add(new Triangle(toVector3f(cords[5]), toVector3f(cords[0]), toVector3f(cords[2])));
             }
          }
       }
@@ -285,22 +299,18 @@ public class ShapeUtilities
       return toVector3f(c.getCoordinate());
    }
 
-   /** Extracts all edges of target geometry.*/
+   /** Extracts all edges of target geometry. */
    public static ArrayList<LineString> getEdges(Geometry geom)
    {
       @SuppressWarnings("unchecked")
       List<LineString> lines = LinearComponentExtracter.getLines(geom);
-      ArrayList<LineString> segments = new ArrayList<LineString>(lines.size());
+      ArrayList<LineString> segments = new ArrayList<>(lines.size());
       for (Iterator<LineString> it = lines.iterator(); it.hasNext();)
       {
          LineString line = it.next();
          for (int i = 1; i < line.getNumPoints(); i++)
          {
-            LineString seg = GEOMETRY_FACTORY.createLineString(
-                    new Coordinate[]
-                    {
-                       line.getCoordinateN(i - 1), line.getCoordinateN(i)
-                    });
+            LineString seg = GEOMETRY_FACTORY.createLineString(new Coordinate[] {line.getCoordinateN(i - 1), line.getCoordinateN(i)});
             segments.add(seg);
          }
       }
@@ -309,11 +319,12 @@ public class ShapeUtilities
 
    private static GeometryCollection componentBuffers(Geometry g, double distance)
    {
-      List<Geometry> bufs = new ArrayList<Geometry>();
+      List<Geometry> bufs = new ArrayList<>();
       for (Iterator it = new GeometryCollectionIterator(g); it.hasNext();)
       {
          Geometry comp = (Geometry) it.next();
-         if (comp instanceof GeometryCollection) continue;
+         if (comp instanceof GeometryCollection)
+            continue;
          bufs.add(comp.buffer(distance));
       }
       return GEOMETRY_FACTORY.createGeometryCollection(GeometryFactory.toGeometryArray(bufs));
@@ -338,6 +349,7 @@ public class ShapeUtilities
    {
       SimpleApplication scene = new SimpleApplication()
       {
+         @Override
          public void simpleInitApp()
          {
             testMain(this);

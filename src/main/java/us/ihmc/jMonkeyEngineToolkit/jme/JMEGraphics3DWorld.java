@@ -10,7 +10,7 @@ import us.ihmc.jMonkeyEngineToolkit.Graphics3DWorld;
 public class JMEGraphics3DWorld extends Graphics3DWorld implements Graphics3DFrameListener
 {
    LinkedBlockingQueue<Node> nodesToAddPostFrame = new LinkedBlockingQueue<>();
-   
+
    public JMEGraphics3DWorld(String worldName, JMEGraphics3DAdapter jmeGraphics3dAdapter)
    {
       super(worldName, jmeGraphics3dAdapter);
@@ -20,26 +20,26 @@ public class JMEGraphics3DWorld extends Graphics3DWorld implements Graphics3DFra
    {
       this(JMEGraphics3DWorld.class.getSimpleName(), jmeGraphics3dAdapter);
    }
-   
+
    @Override
    public JMEGraphics3DAdapter getGraphics3DAdapter()
    {
       return (JMEGraphics3DAdapter) super.getGraphics3DAdapter();
    }
-   
+
    @Override
    protected void start()
    {
       super.start();
-      
+
       addFrameListener(this);
    }
-   
+
    public Node getJMERootNode()
    {
       return getGraphics3DAdapter().getRenderer().getZUpNode();
    }
-   
+
    public void addChild(Node child)
    {
       if (viewportAdapter == null)
@@ -51,12 +51,12 @@ public class JMEGraphics3DWorld extends Graphics3DWorld implements Graphics3DFra
          nodesToAddPostFrame.add(child);
       }
    }
-   
+
    @Override
    public void postFrame(double timePerFrame)
    {
       super.postFrame(timePerFrame);
-      
+
       while (!nodesToAddPostFrame.isEmpty())
       {
          getGraphics3DAdapter().getRenderer().getZUpNode().attachChild(nodesToAddPostFrame.poll());

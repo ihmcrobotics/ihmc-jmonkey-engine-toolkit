@@ -43,6 +43,7 @@ public class JMEZBufferGrabber extends AbstractAppState implements SceneProcesso
       super.initialize(stateManager, app);
    }
 
+   @Override
    public void initialize(RenderManager rm, ViewPort vp)
    {
       renderer = rm.getRenderer();
@@ -55,6 +56,7 @@ public class JMEZBufferGrabber extends AbstractAppState implements SceneProcesso
       return super.isInitialized() && renderer != null;
    }
 
+   @Override
    public void reshape(ViewPort vp, int w, int h)
    {
       outBuf = BufferUtils.createByteBuffer(w * h * 4);
@@ -62,20 +64,23 @@ public class JMEZBufferGrabber extends AbstractAppState implements SceneProcesso
       height = h;
    }
 
+   @Override
    public void preFrame(float tpf)
    {
    }
 
+   @Override
    public void postQueue(RenderQueue rq)
    {
    }
 
+   @Override
    public void postFrame(FrameBuffer out)
    {
 
       //         renderer.readDepthBuffer(out, outBuf, width, height);
 
-      if(out == null)
+      if (out == null)
       {
          return;
       }
@@ -95,6 +100,7 @@ public class JMEZBufferGrabber extends AbstractAppState implements SceneProcesso
       GL11.glReadPixels(0, 0, width, height, GL11.GL_DEPTH_COMPONENT, GL11.GL_FLOAT, outBuf);
    }
 
+   @Override
    public void cleanup()
    {
 
@@ -112,7 +118,7 @@ public class JMEZBufferGrabber extends AbstractAppState implements SceneProcesso
 
    public double[][] getZBuffer()
    {
-      if(outBuf == null)
+      if (outBuf == null)
       {
          return new double[0][0];
       }
@@ -140,7 +146,7 @@ public class JMEZBufferGrabber extends AbstractAppState implements SceneProcesso
    @Override
    public void setProfiler(AppProfiler profiler)
    {
-      
+
    }
 
 }

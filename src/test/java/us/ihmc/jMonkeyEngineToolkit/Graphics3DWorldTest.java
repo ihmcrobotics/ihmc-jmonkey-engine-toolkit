@@ -13,7 +13,7 @@ import us.ihmc.jMonkeyEngineToolkit.jme.JMEGraphics3DAdapter;
 public class Graphics3DWorldTest
 {
 
-	@Test// timeout = 30000
+   @Test // timeout = 30000
    public void testShowGui()
    {
       Graphics3DWorld world = new Graphics3DWorld("testWorld", new JMEGraphics3DAdapter());
@@ -22,7 +22,7 @@ public class Graphics3DWorldTest
       world.stop();
    }
 
-	@Test// timeout = 30000
+   @Test // timeout = 30000
    public void testWithoutGui()
    {
       Graphics3DWorld world = new Graphics3DWorld("testWorld", new JMEGraphics3DAdapter());
@@ -31,7 +31,7 @@ public class Graphics3DWorldTest
       world.stop();
    }
 
-	@Test// timeout = 30000
+   @Test // timeout = 30000
    public void addASphere()
    {
       Graphics3DWorld world = new Graphics3DWorld("testWorld", new JMEGraphics3DAdapter());
@@ -41,7 +41,7 @@ public class Graphics3DWorldTest
       world.stop();
    }
 
-	@Test// timeout = 30000
+   @Test // timeout = 30000
    public void addASphereAfterGuiStarted()
    {
       Graphics3DWorld world = new Graphics3DWorld("testWorld", new JMEGraphics3DAdapter());
@@ -51,7 +51,7 @@ public class Graphics3DWorldTest
       world.stop();
    }
 
-	@Test// timeout = 30000
+   @Test // timeout = 30000
    public void testSetCameraPosition()
    {
       Graphics3DWorld world = new Graphics3DWorld("testWorld", new JMEGraphics3DAdapter());
@@ -62,17 +62,17 @@ public class Graphics3DWorldTest
       world.stop();
    }
 
-	@Test// timeout = 30000
+   @Test // timeout = 30000
    public void fixCameraOnSphere()
    {
       Graphics3DWorld world = new Graphics3DWorld("testWorld", new JMEGraphics3DAdapter());
-      
+
       Graphics3DNode sphereNode = new Graphics3DNode("Sphere", new Graphics3DObject(new Sphere3D()));
       world.startWithGui();
       world.addChild(sphereNode);
       world.setCameraPosition(5, 5, 5);
       world.fixCameraOnNode(sphereNode);
-      
+
       world.keepAlive(1.0);
       world.stop();
    }

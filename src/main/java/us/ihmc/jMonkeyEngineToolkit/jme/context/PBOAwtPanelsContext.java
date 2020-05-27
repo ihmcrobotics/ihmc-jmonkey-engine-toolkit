@@ -1,6 +1,7 @@
 package us.ihmc.jMonkeyEngineToolkit.jme.context;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.jme3.input.JoyInput;
 import com.jme3.input.KeyInput;
@@ -19,12 +20,11 @@ import com.jme3.system.Timer;
 public class PBOAwtPanelsContext implements JmeContext
 {
    private static final boolean DEBUG = false;
-   
+
    private JmeContext actualContext;
    private AppSettings settings = new AppSettings(true);
    private SystemListener listener;
-   private ArrayList<PBOAwtPanel> panels = new ArrayList<>();
-   private PBOAwtPanel inputSource;
+   private List<PBOAwtPanel> panels = new ArrayList<>();
 
    private AwtMouseInput mouseInput = new AwtMouseInput();
    private AwtKeyInput keyInput = new AwtKeyInput();
@@ -87,7 +87,6 @@ public class PBOAwtPanelsContext implements JmeContext
       }
    }
 
-
    public void addPBOAwtPanelListener(PBOAwtPanelListener listener)
    {
       pboAwtPanelListeners.add(listener);
@@ -98,12 +97,11 @@ public class PBOAwtPanelsContext implements JmeContext
       if (!panels.contains(panel))
          throw new IllegalArgumentException();
 
-      inputSource = panel;
       mouseInput.setInputSource(panel);
       keyInput.setInputSource(panel);
    }
 
-   public ArrayList<PBOAwtPanel> getPanelList()
+   public List<PBOAwtPanel> getPanelList()
    {
       return panels;
    }
@@ -165,13 +163,13 @@ public class PBOAwtPanelsContext implements JmeContext
    @Override
    public boolean isCreated()
    {
-      return (actualContext != null) && actualContext.isCreated();
+      return actualContext != null && actualContext.isCreated();
    }
 
    @Override
    public boolean isRenderable()
    {
-      return (actualContext != null) && actualContext.isRenderable();
+      return actualContext != null && actualContext.isRenderable();
    }
 
    public PBOAwtPanelsContext()
@@ -180,7 +178,8 @@ public class PBOAwtPanelsContext implements JmeContext
 
    public PBOAwtPanel createPanel()
    {
-      if (alreadyDestroying) return null;
+      if (alreadyDestroying)
+         return null;
 
       PBOAwtPanel panel = new PBOAwtPanel(pboAwtPanelListeners);
       panels.add(panel);
@@ -200,8 +199,9 @@ public class PBOAwtPanelsContext implements JmeContext
 
    private void updateInThread()
    {
-      if (alreadyDestroying) return;
-      
+      if (alreadyDestroying)
+         return;
+
       // Check if throttle required
       boolean needThrottle = true;
 
@@ -221,11 +221,11 @@ public class PBOAwtPanelsContext implements JmeContext
 
          if (lastThrottleState)
          {
-        	 printIfDebug(getClass().getSimpleName() + ": Throttling update loop.");
+            printIfDebug(getClass().getSimpleName() + ": Throttling update loop.");
          }
          else
          {
-        	 printIfDebug(getClass().getSimpleName() + ": Ceased throttling update loop.");
+            printIfDebug(getClass().getSimpleName() + ": Ceased throttling update loop.");
          }
       }
 
@@ -240,16 +240,18 @@ public class PBOAwtPanelsContext implements JmeContext
          }
       }
 
-      if (!alreadyDestroying) listener.update();
+      if (!alreadyDestroying)
+         listener.update();
    }
 
-boolean alreadyDestroying = false;
-   
+   boolean alreadyDestroying = false;
+
    private void destroyInThread()
    {
-      if (alreadyDestroying) return;
+      if (alreadyDestroying)
+         return;
       alreadyDestroying = true;
-      
+
       listener.destroy();
 
       if (pboAwtPanelListeners != null)
@@ -264,13 +266,12 @@ boolean alreadyDestroying = false;
          {
             pboAwtPanel.closeAndDispose();
          }
-         
+
          panels.clear();
       }
 
       actualContext = null;
       settings = null;
-      inputSource = null;
 
       mouseInput = null;
       keyInput = null;
@@ -328,10 +329,11 @@ boolean alreadyDestroying = false;
    {
       // only relevant if changing pixel format.
    }
-   
-   private void printIfDebug(String string) 
+
+   private void printIfDebug(String string)
    {
-	   if (DEBUG) System.out.println(string);
+      if (DEBUG)
+         System.out.println(string);
    }
 
    @Override

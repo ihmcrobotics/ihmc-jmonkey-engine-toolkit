@@ -7,6 +7,7 @@ import java.awt.Container;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import us.ihmc.commons.thread.ThreadTools;
 import us.ihmc.graphicsDescription.Graphics3DObject;
 import us.ihmc.graphicsDescription.appearance.YoAppearance;
 import us.ihmc.graphicsDescription.structure.Graphics3DNode;
@@ -18,17 +19,16 @@ import us.ihmc.jMonkeyEngineToolkit.camera.JPanelCameraStreamer;
 import us.ihmc.jMonkeyEngineToolkit.camera.SimpleCameraTrackingAndDollyPositionHolder;
 import us.ihmc.jMonkeyEngineToolkit.camera.ViewportAdapter;
 import us.ihmc.jMonkeyEngineToolkit.jme.JMEGraphics3DAdapter;
-import us.ihmc.commons.thread.ThreadTools;
 
 public class Graphics3DAdapterCaptureDeviceTester
 {
    public static void main(String[] args)
    {
-      JMEGraphics3DAdapter adapter =  new JMEGraphics3DAdapter();
+      JMEGraphics3DAdapter adapter = new JMEGraphics3DAdapter();
       Graphics3DAdapterCaptureDeviceTester tester = new Graphics3DAdapterCaptureDeviceTester();
       tester.doExample(adapter);
    }
-   
+
    public void doExample(Graphics3DAdapter graphics3DAdapter)
    {
       Graphics3DNode teapotAndSphereNode = new Graphics3DNode("teaPot", Graphics3DNodeType.JOINT);
@@ -39,7 +39,7 @@ public class Graphics3DAdapterCaptureDeviceTester
       graphics3DAdapter.addRootNode(teapotAndSphereNode);
 
       PanBackAndForthTrackingAndDollyPositionHolder cameraTrackAndDollyVariablesHolder = new PanBackAndForthTrackingAndDollyPositionHolder(0.0, 2.0, 0.2);
-      
+
       ViewportAdapter viewportAdapter = graphics3DAdapter.createNewViewport(null, false, true);
       ClassicCameraController classicCameraController = new ClassicCameraController(graphics3DAdapter, viewportAdapter, cameraTrackAndDollyVariablesHolder);
       classicCameraController.setTracking(true, true, false, false);
@@ -47,13 +47,12 @@ public class Graphics3DAdapterCaptureDeviceTester
       viewportAdapter.setCameraController(classicCameraController);
       viewportAdapter.setupOffscreenView(800, 600);
 
-
       CaptureDevice captureDevice = viewportAdapter.getCaptureDevice();
       JPanelCameraStreamer videoCapture = new JPanelCameraStreamer();
       captureDevice.streamTo(videoCapture, 25);
 
       createNewWindow(videoCapture);
-      
+
       while (true)
       {
          cameraTrackAndDollyVariablesHolder.run();
@@ -67,50 +66,49 @@ public class Graphics3DAdapterCaptureDeviceTester
          }
       }
    }
-   
 
-   
    private class PanBackAndForthTrackingAndDollyPositionHolder extends SimpleCameraTrackingAndDollyPositionHolder implements Runnable
    {
       private long startTime = System.currentTimeMillis();
       private final double panXOffset, panXAmplitude, panXFrequency;
-      
+
       public PanBackAndForthTrackingAndDollyPositionHolder(double panXOffset, double panXAmplitude, double panXFrequency)
       {
          this.panXOffset = panXOffset;
          this.panXAmplitude = panXAmplitude;
          this.panXFrequency = panXFrequency;
-         
+
          Thread thread = new Thread(this);
          thread.start();
       }
 
+      @Override
       public void run()
       {
-         while(true)
+         while (true)
          {
-            long currentTime = System.currentTimeMillis(); 
+            long currentTime = System.currentTimeMillis();
             double time = (currentTime - startTime) * 0.001;
-            
+
             double cameraTrackingX = panXOffset + panXAmplitude * Math.sin(2.0 * Math.PI * panXFrequency * time);
-            this.setTrackingX(cameraTrackingX);
-            
+            setTrackingX(cameraTrackingX);
+
             ThreadTools.sleep(100L);
          }
       }
    }
-   
+
    public void createNewWindow(Component canvas)
    {
       JPanel panel = new JPanel(new BorderLayout());
       panel.add("Center", canvas);
-      
+
       JFrame jFrame = new JFrame("Example One");
       jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       Container contentPane = jFrame.getContentPane();
       contentPane.setLayout(new BorderLayout());
       contentPane.add("Center", panel);
-      
+
       jFrame.pack();
       jFrame.setVisible(true);
       jFrame.setSize(800, 600);

@@ -1,26 +1,26 @@
 /**
- * 
+ *
  */
 package us.ihmc.jMonkeyEngineToolkit.jme.util;
 
-import static us.ihmc.robotics.Assert.*;
+import static us.ihmc.robotics.Assert.assertEquals;
+import static us.ihmc.robotics.Assert.assertTrue;
 
-import org.junit.jupiter.api.Tag;
-import us.ihmc.robotics.Assert;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import com.jme3.collision.CollisionResults;
 import com.jme3.math.Ray;
 import com.jme3.math.Vector3f;
 
+import us.ihmc.commons.thread.ThreadTools;
 import us.ihmc.euclid.tuple3D.Point3D32;
 import us.ihmc.jMonkeyEngineToolkit.jme.JMERenderer;
-import us.ihmc.commons.thread.ThreadTools;
+import us.ihmc.robotics.Assert;
 
 /**
- * Tests for point cloud collision stuff in JMELidarSpriteGenerator 
- *
+ * Tests for point cloud collision stuff in JMELidarSpriteGenerator
  */
 @Tag("jme")
 public class JMELidarSpriteGeneratorTest
@@ -38,13 +38,10 @@ public class JMELidarSpriteGeneratorTest
 
       for (int i = 0; i < data.length; i++)
       {
-         points[i] = new Point3D32(data[i][0],data[i][1], data[i][2]);
+         points[i] = new Point3D32(data[i][0], data[i][1], data[i][2]);
       }
 
-
       result.updatePoints(points);
-
-     
 
       return result;
    }
@@ -57,10 +54,10 @@ public class JMELidarSpriteGeneratorTest
     * Not sure if we actually want this
     */
    @Disabled
-   @Test// timeout = 300000
+   @Test // timeout = 300000
    public void testCollideWithSimple()
    {
-      JMELidarSpriteGenerator generator = createUI(new float[][] { new float[] { 0, 0, 0 } });
+      JMELidarSpriteGenerator generator = createUI(new float[][] {new float[] {0, 0, 0}});
 
       Ray ray = new Ray();
       ray.origin = new Vector3f(1, 1, 1);
@@ -80,7 +77,7 @@ public class JMELidarSpriteGeneratorTest
     * Tests intersection against zero points.
     */
 
-   @Test// timeout = 30000
+   @Test // timeout = 30000
    public void testEmptyCollide()
    {
       JMELidarSpriteGenerator generator = createUI(new float[][] {});
@@ -93,19 +90,20 @@ public class JMELidarSpriteGeneratorTest
     * Tests multiple points lying on the same line - the closest one to the origin should be returned.
     */
 
-	/**
+   /**
     * Not sure if we actually want this
     */
    @Disabled
-   @Test// timeout = 300000
+   @Test // timeout = 300000
    public void testMultiplePointsOneLine()
    {
-      JMELidarSpriteGenerator generator = createUI(new float[][] { new float[] { 0, 0, 0 }, new float[] { -1, -1, -1 }, new float[] { 0.5f, 0.5f, 0.5f }, new float[] { -0.5f, -0.5f, -0.5f } });
+      JMELidarSpriteGenerator generator = createUI(new float[][] {new float[] {0, 0, 0}, new float[] {-1, -1, -1}, new float[] {0.5f, 0.5f, 0.5f},
+            new float[] {-0.5f, -0.5f, -0.5f}});
       Ray ray = new Ray();
       ray.setOrigin(new Vector3f(1, 1, 1));
       ray.setDirection(new Vector3f(-1, -1, -1));
       CollisionResults results = new CollisionResults();
-      
+
       if (generator.collideWith(ray, results) == 0)
          Assert.fail("Collide with failed");
 
@@ -115,14 +113,14 @@ public class JMELidarSpriteGeneratorTest
    }
 
    /**
-    * Tests a case when there is no intersection with the point cloud. 
+    * Tests a case when there is no intersection with the point cloud.
     */
 
-   @Test// timeout = 30000
+   @Test // timeout = 30000
    public void testMultiplePointsNoMatch()
    {
-      JMELidarSpriteGenerator generator = createUI(new float[][] { new float[] { 10, 10, 100 }, new float[] { -100, -10, -10 },
-            new float[] { 0.5f, 5.5f, 0.5f }, new float[] { -0.5f, -0.5f, -50.5f } });
+      JMELidarSpriteGenerator generator = createUI(new float[][] {new float[] {10, 10, 100}, new float[] {-100, -10, -10}, new float[] {0.5f, 5.5f, 0.5f},
+            new float[] {-0.5f, -0.5f, -50.5f}});
 
       Ray ray = new Ray();
       ray.origin = new Vector3f(1, 1, 1);

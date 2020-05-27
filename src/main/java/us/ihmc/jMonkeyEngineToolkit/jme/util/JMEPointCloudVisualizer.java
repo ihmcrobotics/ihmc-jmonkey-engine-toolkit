@@ -15,36 +15,36 @@ public class JMEPointCloudVisualizer extends JMEGraphics3DWorld
 {
    JMEPointCloudGenerator jmePointCloudGenerator;
    LinkedBlockingQueue<Node> nodesToAddPostFrame = new LinkedBlockingQueue<>();
-   
+
    protected JMEPointCloudVisualizer(String name)
    {
       super(name, new JMEGraphics3DAdapter(false));
-      
+
       jmePointCloudGenerator = new JMEPointCloudGenerator(getGraphics3DAdapter().getRenderer().getAssetManager());
-      
-//      startWithGui(1000, 800);
+
+      //      startWithGui(1000, 800);
       startWithoutGui();
-      
+
       addCoordinateFrame();
    }
-   
+
    public JMEPointCloudVisualizer()
    {
       this(JMEPointCloudVisualizer.class.getSimpleName());
    }
-   
+
    public void addCoordinateFrame()
    {
       Graphics3DObject coordinateFrameObject = new Graphics3DObject();
       coordinateFrameObject.addCoordinateSystem(1.0);
-      
+
       addChild(new Graphics3DNode("CoordinateFrameNode", coordinateFrameObject));
    }
-   
+
    public <T extends Tuple3DBasics> void addPointCloud(Collection<T> worldPoints)
    {
       Node pointCloud = jmePointCloudGenerator.generatePointCloudGraph(worldPoints);
-    
+
       addChild(pointCloud);
    }
 }

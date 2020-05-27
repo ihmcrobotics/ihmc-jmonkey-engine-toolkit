@@ -33,14 +33,14 @@ public class LidarSceneViewPort implements SceneProcessor
    private JMERenderer jmeRenderer;
    private RenderManager renderManager;
    private ViewPort viewPort;
-   
+
    public LidarSceneViewPort(JMERenderer jmeRenderer, LidarMaterial lidarMaterial, int numberOfCameras, int scansPerSweep, int scanHeight, float fieldOfView,
                              float minRange, float maxRange)
    {
       this.jmeRenderer = jmeRenderer;
       int cameraScansPerSweep = scansPerSweep / numberOfCameras;
       this.lidarMaterial = lidarMaterial;
-      this.cam = new Camera(cameraScansPerSweep * TEXTURE_TO_SCAN_INTERPOLATION_FACTOR, scanHeight);
+      cam = new Camera(cameraScansPerSweep * TEXTURE_TO_SCAN_INTERPOLATION_FACTOR, scanHeight);
       viewPort = jmeRenderer.getRenderManager().createMainView("LidarViewPort", cam);
 
       setupCamera(numberOfCameras, cameraScansPerSweep, scanHeight, fieldOfView, minRange, maxRange);
@@ -58,7 +58,7 @@ public class LidarSceneViewPort implements SceneProcessor
       viewPort.setOutputFrameBuffer(sceneFrameBuffer);
       viewPort.addProcessor(this);
    }
-   
+
    public void updateScene(final Node sceneToUse)
    {
       jmeRenderer.enqueue(new Callable<Object>()
@@ -68,7 +68,7 @@ public class LidarSceneViewPort implements SceneProcessor
          {
             viewPort.clearScenes();
             viewPort.attachScene(sceneToUse);
-            
+
             return null;
          }
       });
@@ -86,7 +86,7 @@ public class LidarSceneViewPort implements SceneProcessor
 
    private void setupCamera(int numberOfCameras, int cameraScansPerSweep, int scanHeight, float fieldOfView, float minRange, float maxRange)
    {
-      float cameraFoV = fieldOfView / (numberOfCameras);
+      float cameraFoV = fieldOfView / numberOfCameras;
 
       float frustrumX = FastMath.tan(cameraFoV / 2.0f) * minRange;
       float frustrumY = frustrumX / cameraScansPerSweep * scanHeight;
@@ -116,7 +116,7 @@ public class LidarSceneViewPort implements SceneProcessor
    // Debugging values used to measure performance
    Stopwatch timer = new Stopwatch().start();
    long frameNum = 0;
-   
+
    @Override
    public void preFrame(float tpf)
    {
@@ -135,7 +135,7 @@ public class LidarSceneViewPort implements SceneProcessor
             }
          }
       }
-      
+
       renderManager.setForcedMaterial(lidarMaterial);
    }
 
@@ -165,7 +165,7 @@ public class LidarSceneViewPort implements SceneProcessor
    @Override
    public void setProfiler(AppProfiler profiler)
    {
-      
+
    }
 
 }

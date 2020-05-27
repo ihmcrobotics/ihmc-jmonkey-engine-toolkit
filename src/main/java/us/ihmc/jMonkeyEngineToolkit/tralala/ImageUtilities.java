@@ -37,7 +37,7 @@ public class ImageUtilities
       }.start();
    }
 
-   /** Reads the colors of first column of an image and creates a gradient texture.*/
+   /** Reads the colors of first column of an image and creates a gradient texture. */
    public static void test(SimpleApplication scene)
    {
       BufferedImage image = new BufferedImage(512, 512, BufferedImage.TYPE_INT_ARGB);
@@ -47,68 +47,77 @@ public class ImageUtilities
       g2d.setColor(Color.BLACK);
       g2d.drawString("Hello World", 70, 70);
       image = ImageUtilities.rotateImage(image, FastMath.HALF_PI);
-      scene.getRootNode().attachChild(Utilities.createBillboard(Utilities.getUnshadedMaterial(ImageUtilities.createTexture(image,g2d), null, BlendMode.Off, scene.getAssetManager()), 5f));
+      scene.getRootNode()
+           .attachChild(Utilities.createBillboard(Utilities.getUnshadedMaterial(ImageUtilities.createTexture(image, g2d),
+                                                                                null,
+                                                                                BlendMode.Off,
+                                                                                scene.getAssetManager()),
+                                                  5f));
    }
 
    public static BufferedImage symmetrifyX(BufferedImage image, boolean useFirstHalfImage, boolean flipHorizontial)
    {
-      int halfWidth = image.getWidth()/2;
+      int halfWidth = image.getWidth() / 2;
       int startReadPosition = 0;
       int startWritePosition = 0;
-      int endWritePosition = image.getWidth()-1;
+      int endWritePosition = image.getWidth() - 1;
 
-      if (!useFirstHalfImage) startReadPosition = halfWidth;
-      if (!useFirstHalfImage^flipHorizontial)//xor 
+      if (!useFirstHalfImage)
+         startReadPosition = halfWidth;
+      if (!useFirstHalfImage ^ flipHorizontial)//xor
       {
          startWritePosition = halfWidth;
          endWritePosition = halfWidth;
       }
 
       BufferedImage returned = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
-      for(int i=0;i<image.getWidth()/2;i++)
+      for (int i = 0; i < image.getWidth() / 2; i++)
       {
-         for(int j=0;j<image.getHeight();j++)
+         for (int j = 0; j < image.getHeight(); j++)
          {
-            int color = image.getRGB(startReadPosition+i, j);
-            returned.setRGB(startWritePosition+i, j, color);
-            returned.setRGB(endWritePosition-i, j, color);
+            int color = image.getRGB(startReadPosition + i, j);
+            returned.setRGB(startWritePosition + i, j, color);
+            returned.setRGB(endWritePosition - i, j, color);
          }
       }
       return returned;
    }
-   
+
    public static BufferedImage symmetrifyY(BufferedImage image, boolean useFirstHalfImage, boolean flipVertical)
    {
-      int halfWidth = image.getHeight()/2;
+      int halfWidth = image.getHeight() / 2;
       int startReadPosition = 0;
       int startWritePosition = 0;
-      int endWritePosition = image.getHeight()-1;
+      int endWritePosition = image.getHeight() - 1;
 
-      if (!useFirstHalfImage) startReadPosition = halfWidth;
-      if (!useFirstHalfImage^flipVertical)//xor 
+      if (!useFirstHalfImage)
+         startReadPosition = halfWidth;
+      if (!useFirstHalfImage ^ flipVertical)//xor
       {
          startWritePosition = halfWidth;
          endWritePosition = halfWidth;
       }
 
       BufferedImage returned = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
-      for(int i=0;i<image.getWidth();i++)
+      for (int i = 0; i < image.getWidth(); i++)
       {
-         for(int j=0;j<image.getHeight()/2;j++)
+         for (int j = 0; j < image.getHeight() / 2; j++)
          {
-            int color = image.getRGB(i, startReadPosition+j);
-            returned.setRGB(i, startWritePosition+j, color);
-            returned.setRGB(i, endWritePosition-j, color);
+            int color = image.getRGB(i, startReadPosition + j);
+            returned.setRGB(i, startWritePosition + j, color);
+            returned.setRGB(i, endWritePosition - j, color);
          }
       }
       return returned;
    }
 
-   /** the graphic2d changes, must use the new one for future operations. use image.createGraphics(); */
+   /**
+    * the graphic2d changes, must use the new one for future operations. use image.createGraphics();
+    */
    public static BufferedImage flip(BufferedImage image, boolean flipHorizontal, boolean flipVertical)
    {
-      Point scale = new Point(1,1);
-      Point translate = new Point(0,0);
+      Point scale = new Point(1, 1);
+      Point translate = new Point(0, 0);
       if (flipHorizontal)
       {
          scale.x = -1;
@@ -157,10 +166,12 @@ public class ImageUtilities
 
    public static int getAlpha(int color)
    {
-      return (color >> 24) & 0xff;
+      return color >> 24 & 0xff;
    }
 
-   /** the graphic2d changes, must use the new one for future operations. use image.createGraphics(); */
+   /**
+    * the graphic2d changes, must use the new one for future operations. use image.createGraphics();
+    */
    public static BufferedImage rotateImage(BufferedImage image, float angle)
    {
       AffineTransform tx = new AffineTransform();
@@ -181,28 +192,29 @@ public class ImageUtilities
       }
    }
 
-   public static void gradientPaint(Graphics2D g2d, Point2D startPosition, Color startColor, Point2D endPosition, Color endColor, int sx, int sy, int ex, int ey)
+   public static void gradientPaint(Graphics2D g2d, Point2D startPosition, Color startColor, Point2D endPosition, Color endColor, int sx, int sy, int ex,
+                                    int ey)
    {
       GradientPaint gradient = new GradientPaint(startPosition, startColor, endPosition, endColor, true);
       g2d.setPaint(gradient);
       g2d.fillRect(sx, sy, ex, ey);
    }
 
-   /** the graphic2d changes, must use the new one for future operations.*/
+   /** the graphic2d changes, must use the new one for future operations. */
    public static Pair<BufferedImage, Graphics2D> fillBackground(BufferedImage originalImage, Color color)
    {
       BufferedImage modifiedImage = new BufferedImage(originalImage.getWidth(null), originalImage.getHeight(null), BufferedImage.TYPE_INT_RGB);
       Graphics2D g = modifiedImage.createGraphics();
       g.drawImage(originalImage, 0, 0, modifiedImage.getWidth(), modifiedImage.getHeight(), color, null);
 
-      return new Pair<BufferedImage, Graphics2D>(modifiedImage, g);
+      return new Pair<>(modifiedImage, g);
    }
 
    public static InputStream loadFile(String filepath, AssetManager assetManager)
    {
       return assetManager.locateAsset(new AssetKey(filepath)).openStream();
    }
-   
+
    public static BufferedImage loadImage(String url, AssetManager assetManager)
    {
       try
@@ -217,10 +229,11 @@ public class ImageUtilities
       }
    }
 
-   /** this method calls dispose on Graphics2D g*/
+   /** this method calls dispose on Graphics2D g */
    public static Texture2D createTexture(BufferedImage img, Graphics2D g)
    {
-      if (g != null) g.dispose();
+      if (g != null)
+         g.dispose();
       AWTLoader loader = new AWTLoader();
       Texture2D tex = new Texture2D(loader.load(img, true)); //changes to image parameter in buffer, affect the texture.
       tex.setMagFilter(Texture.MagFilter.Nearest);

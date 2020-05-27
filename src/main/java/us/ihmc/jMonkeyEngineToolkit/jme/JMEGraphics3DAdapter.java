@@ -42,72 +42,86 @@ public class JMEGraphics3DAdapter implements Graphics3DAdapter
       }
    }
 
+   @Override
    public void setupSky()
    {
       jmeRenderer.setupSky();
    }
 
+   @Override
    public void addRootNode(Graphics3DNode rootNode)
    {
       jmeRenderer.addRootNode(rootNode);
    }
 
+   @Override
    public void removeRootNode(Graphics3DNode rootNode)
    {
       jmeRenderer.removeRootNode(rootNode);
    }
 
+   @Override
    public Object getGraphicsConch()
    {
       return jmeRenderer.getGraphicsConch();
    }
 
+   @Override
    public void setHeightMap(HeightMap heightMap)
    {
       jmeRenderer.setHeightMap(heightMap);
    }
 
+   @Override
    public void setGroundVisible(boolean isVisible)
    {
       jmeRenderer.setGroundVisible(isVisible);
    }
 
+   @Override
    public void addSelectedListener(SelectedListener selectedListener)
    {
       jmeRenderer.addSelectedListener(selectedListener);
    }
 
+   @Override
    public ViewportAdapter createNewViewport(GraphicsDevice graphicsDevice, boolean isMainViewport, boolean isOffScreen)
    {
       return jmeRenderer.createNewViewport(graphicsDevice, isMainViewport, isOffScreen);
    }
 
+   @Override
    public void closeAndDispose()
    {
       jmeRenderer.closeAndDispose();
       jmeRenderer = null;
    }
 
+   @Override
    public void setBackgroundColor(MutableColor color)
    {
       jmeRenderer.setBackgroundColor(color);
    }
 
+   @Override
    public void setBackgroundImage(URL fileURL, Graphics3DBackgroundScaleMode backgroundScaleMode)
    {
       jmeRenderer.setBackgroundImage(fileURL, backgroundScaleMode);
    }
 
+   @Override
    public void setGroundAppearance(AppearanceDefinition app)
    {
       jmeRenderer.setGroundAppearance(app);
    }
 
+   @Override
    public void addKeyListener(KeyListener keyListener)
    {
       jmeRenderer.addKeyListener(keyListener);
    }
 
+   @Override
    public void addMouseListener(MouseListener mouseListener)
    {
       jmeRenderer.addMouseListener(mouseListener);
@@ -119,16 +133,19 @@ public class JMEGraphics3DAdapter implements Graphics3DAdapter
       jmeRenderer.addMouse3DListener(mouse3DListener);
    }
 
+   @Override
    public void freezeFrame(Graphics3DNode rootJoint)
    {
       jmeRenderer.freezeFrame(rootJoint);
    }
 
+   @Override
    public ContextManager getContextManager()
    {
       return jmeRenderer.getContextManager();
    }
 
+   @Override
    public void closeViewport(ViewportAdapter viewport)
    {
       if (jmeRenderer != null)
@@ -165,7 +182,6 @@ public class JMEGraphics3DAdapter implements Graphics3DAdapter
 
    }
 
-
    public void setAmbientLightBrightness(float brightness)
    {
       jmeRenderer.setAmbientLightBrightness(brightness);
@@ -201,7 +217,7 @@ public class JMEGraphics3DAdapter implements Graphics3DAdapter
       jmeRenderer.setupSky(west, east, north, south, up, down);
 
    }
-   
+
    @Override
    public void addSpotLight(Graphics3DSpotLight spotLight)
    {

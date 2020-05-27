@@ -2,8 +2,6 @@ package us.ihmc.jMonkeyEngineToolkit.holders;
 
 import us.ihmc.jMonkeyEngineToolkit.camera.CameraController;
 
-
-
 public class NavigatingCameraHolder
 {
    private CameraController navigatingCamera;
@@ -14,17 +12,17 @@ public class NavigatingCameraHolder
 
    public void setNavigatingCamera(CameraController j3dCameraController)
    {
-      this.navigatingCamera = j3dCameraController;
+      navigatingCamera = j3dCameraController;
    }
 
    public CameraController getNavigatingCamera()
    {
-      return this.navigatingCamera;
+      return navigatingCamera;
    }
-   
+
    public boolean isThisTheNavigatingCamera(CameraController cameraToCheck)
    {
-      return (this.navigatingCamera == cameraToCheck);
+      return navigatingCamera == cameraToCheck;
    }
-   
+
 }

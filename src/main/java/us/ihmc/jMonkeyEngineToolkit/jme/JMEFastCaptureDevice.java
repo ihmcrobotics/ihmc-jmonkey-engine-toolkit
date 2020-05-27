@@ -87,20 +87,13 @@ import us.ihmc.jMonkeyEngineToolkit.camera.CaptureDevice;
 import us.ihmc.jMonkeyEngineToolkit.camera.RGBDStreamer;
 
 /**
- * Transfer data from GPU to CPU quickly by using two Pixel Buffer Objects (PBO's).
- *
- * Steps taken are
- *
- * First copy the data from the GPU framebuffer to PBO "gpuToVram" (async)
- * Copy the data from PBO "vramToSys" to a byteBuffer
- * Swap  gpuToVram and gpuToVram
- *
- * For more information see
+ * Transfer data from GPU to CPU quickly by using two Pixel Buffer Objects (PBO's). Steps taken are
+ * First copy the data from the GPU framebuffer to PBO "gpuToVram" (async) Copy the data from PBO
+ * "vramToSys" to a byteBuffer Swap gpuToVram and gpuToVram For more information see
  * http://www.songho.ca/opengl/gl_pbo.html
  * http://www.opengl.org/discussion_boards/showthread.php/165780-PBO-glReadPixels-not-so-fast
  *
  * @author jesper
- *
  */
 public class JMEFastCaptureDevice extends AbstractAppState implements SceneProcessor, CaptureDevice
 {
@@ -117,7 +110,7 @@ public class JMEFastCaptureDevice extends AbstractAppState implements SceneProce
 
    private BufferedImage bufferedImage;
    private DepthImage depthImage;
-   
+
    private ByteBuffer systemRam;
    private byte[] cpuArray;
 
@@ -154,10 +147,11 @@ public class JMEFastCaptureDevice extends AbstractAppState implements SceneProce
       super.initialize(stateManager, app);
    }
 
+   @Override
    public void initialize(RenderManager rm, ViewPort vp)
    {
       renderer = rm.getRenderer();
-      this.renderManager = rm;
+      renderManager = rm;
       reshape(vp, vp.getCamera().getWidth(), vp.getCamera().getHeight());
 
    }
@@ -165,41 +159,38 @@ public class JMEFastCaptureDevice extends AbstractAppState implements SceneProce
    @Override
    public boolean isInitialized()
    {
-      return super.isInitialized() && (renderer != null);
+      return super.isInitialized() && renderer != null;
    }
 
+   @Override
    public synchronized void reshape(ViewPort vp, int w, int h)
    {
 
-      if(w == 0 || h == 0)
+      if (w == 0 || h == 0)
       {
          return;
       }
-      
+
       width = w;
       height = h;
 
-      
       if (rgbdStreamer != null)
       {
          dataSize = w * h * 8;
          depthImage = new DepthImage(w, h);
          bufferedImage = null;
          captureDepthMap = true;
-         
-         
+
          // Check if camera is setup correctly
-         
-         if(Math.abs(viewport.getCamera().getViewPortLeft()) > 1e-7f ||
-               Math.abs(viewport.getCamera().getViewPortRight() - 1.0f) > 1e-7f ||
-               Math.abs(viewport.getCamera().getViewPortTop() - 1.0f) > 1e-7f || 
-               Math.abs(viewport.getCamera().getViewPortBottom()) > 1e-7f)
+
+         if (Math.abs(viewport.getCamera().getViewPortLeft()) > 1e-7f || Math.abs(viewport.getCamera().getViewPortRight() - 1.0f) > 1e-7f
+               || Math.abs(viewport.getCamera().getViewPortTop() - 1.0f) > 1e-7f || Math.abs(viewport.getCamera().getViewPortBottom()) > 1e-7f)
          {
             throw new RuntimeException("Camera viewport not setup correctly for depth image capture.");
          }
-               
-         if(Math.abs(viewport.getCamera().getFrustumTop() + viewport.getCamera().getFrustumBottom()) > 1e-7 ||
-               Math.abs(viewport.getCamera().getFrustumLeft() + viewport.getCamera().getFrustumRight()) > 1e-7)
+
+         if (Math.abs(viewport.getCamera().getFrustumTop() + viewport.getCamera().getFrustumBottom()) > 1e-7
+               || Math.abs(viewport.getCamera().getFrustumLeft() + viewport.getCamera().getFrustumRight()) > 1e-7)
          {
             throw new RuntimeException("Camera frustum not symetrical, required for depth image capture");
          }
@@ -239,14 +230,17 @@ public class JMEFastCaptureDevice extends AbstractAppState implements SceneProce
       }
    }
 
+   @Override
    public void preFrame(float tpf)
    {
    }
 
+   @Override
    public void postQueue(RenderQueue rq)
    {
    }
 
+   @Override
    public void postFrame(FrameBuffer out)
    {
       if (alreadyClosing)
@@ -329,6 +323,7 @@ public class JMEFastCaptureDevice extends AbstractAppState implements SceneProce
       }
    }
 
+   @Override
    public void cleanup()
    {
 
@@ -346,6 +341,7 @@ public class JMEFastCaptureDevice extends AbstractAppState implements SceneProce
       public QuaternionReadOnly orientation = new Quaternion();
       public double fov = Math.PI / 2.0;
 
+      @Override
       public void run()
       {
          if (alreadyClosing)
@@ -396,7 +392,7 @@ public class JMEFastCaptureDevice extends AbstractAppState implements SceneProce
          }
          else if (captureDepthMap)
          {
-            convertRGBD((float)rgbdStreamer.getNearClip(), (float)rgbdStreamer.getFarClip());
+            convertRGBD((float) rgbdStreamer.getNearClip(), (float) rgbdStreamer.getFarClip());
             rgbdStreamer.updateRBGD(depthImage, timeStamp, position, orientation, fov);
          }
 
@@ -433,7 +429,7 @@ public class JMEFastCaptureDevice extends AbstractAppState implements SceneProce
          }
       }
    }
-   
+
    public void convertScreenShot()
    {
       if (alreadyClosing)
@@ -469,35 +465,31 @@ public class JMEFastCaptureDevice extends AbstractAppState implements SceneProce
    }
 
    // Formulate derived from perspective transformation on https://en.wikipedia.org/wiki/Z-buffering
-   public float getDepth(float zDepth) {
+   public float getDepth(float zDepth)
+   {
       float far = viewport.getCamera().getFrustumFar();
       float near = viewport.getCamera().getFrustumNear();
-            
+
       zDepth = zDepth * 2f - 1f;
       return 2f * near * far / (far + near - zDepth * (far - near));
-	   
-	   
+
    }
-   
+
    public void convertRGBD(float nearClip, float farClip)
    {
       if (alreadyClosing)
          return;
-      
 
       ByteBuffer imageBuffer = ByteBuffer.wrap(cpuArray);
       imageBuffer.order(ByteOrder.nativeOrder());
       imageBuffer.position(width * height * 4);
       FloatBuffer depthBuffer = imageBuffer.asFloatBuffer();
 
-     
-      float m00 = (viewport.getCamera().getFrustumRight() - viewport.getCamera().getFrustumLeft())  / (2f * viewport.getCamera().getFrustumNear());
+      float m00 = (viewport.getCamera().getFrustumRight() - viewport.getCamera().getFrustumLeft()) / (2f * viewport.getCamera().getFrustumNear());
       float m11 = (viewport.getCamera().getFrustumTop() - viewport.getCamera().getFrustumBottom()) / (2f * viewport.getCamera().getFrustumNear());
-      
-      
+
       depthImage.setTransform2D(m00, m11);
-      
-      
+
       for (int y = 0; y < height; y++)
       {
          for (int x = 0; x < width; x++)
@@ -507,12 +499,10 @@ public class JMEFastCaptureDevice extends AbstractAppState implements SceneProce
             byte b1 = cpuArray[upperHalfPtrAlpha + 0];
             byte g1 = cpuArray[upperHalfPtrAlpha + 1];
             byte r1 = cpuArray[upperHalfPtrAlpha + 2];
-            
 
-            
             float rawDepth = depthBuffer.get();
             float depth = getDepth(rawDepth);
-            if(depth < nearClip)
+            if (depth < nearClip)
             {
                depth = Float.NEGATIVE_INFINITY;
             }
@@ -520,13 +510,14 @@ public class JMEFastCaptureDevice extends AbstractAppState implements SceneProce
             {
                depth = Float.POSITIVE_INFINITY;
             }
-            
+
             depthImage.setPoint(x, y, r1, g1, b1, depth);
-            
+
          }
       }
    }
 
+   @Override
    public BufferedImage exportSnapshotAsBufferedImage()
    {
       checkIfStreaming();
@@ -559,6 +550,7 @@ public class JMEFastCaptureDevice extends AbstractAppState implements SceneProce
       }
    }
 
+   @Override
    public void exportSnapshot(File snapshotFile)
    {
       BufferedImage img = exportSnapshotAsBufferedImage();
@@ -572,21 +564,25 @@ public class JMEFastCaptureDevice extends AbstractAppState implements SceneProce
       }
    }
 
+   @Override
    public int getHeight()
    {
       return height;
    }
 
+   @Override
    public int getWidth()
    {
       return width;
    }
 
+   @Override
    public void setSize(int width, int height)
    {
       // Ignore
    }
 
+   @Override
    public synchronized void streamTo(CameraStreamer cameraStreamer, int framesPerSecond)
    {
       checkIfStreaming();
@@ -600,12 +596,13 @@ public class JMEFastCaptureDevice extends AbstractAppState implements SceneProce
 
    private void checkIfStreaming()
    {
-      if (this.cameraStreamer != null || this.rgbdStreamer != null)
+      if (cameraStreamer != null || rgbdStreamer != null)
       {
          throw new RuntimeException("This capture device is already streaming data");
       }
    }
 
+   @Override
    public synchronized void streamTo(RGBDStreamer rgbdStreamer, int framesPerSecond)
    {
       checkIfStreaming();

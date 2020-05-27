@@ -20,8 +20,8 @@ public class JMELidarSphere270FovTest extends LidarTestParameters implements Lid
       setShowScanRays(false);
       setRotationSpeed(5.0);
       setScansPerSweep(720);
-//      setScanHeight(5);
-      setLidarTestRotationAmount((2 * Math.PI));
+      //      setScanHeight(5);
+      setLidarTestRotationAmount(2 * Math.PI);
       setRotationLimitEnabled(true);
       setPrintDebug(false);
 
@@ -41,14 +41,16 @@ public class JMELidarSphere270FovTest extends LidarTestParameters implements Lid
 
       setLidarSweepStartAngle(-3 * Math.PI / 4);
       setLidarSweepEndAngle(3 * Math.PI / 4);
-//      setLidarPitchMinAngle(-3 * Math.PI / 4);
-//      setLidarPitchMaxAngle(3 * Math.PI / 4);
+      //      setLidarPitchMinAngle(-3 * Math.PI / 4);
+      //      setLidarPitchMaxAngle(3 * Math.PI / 4);
    }
 
+   @Override
    public void notify(LidarTestScan gpuScan, LidarTestScan traceScan)
    {
    }
 
+   @Override
    public void stop()
    {
    }

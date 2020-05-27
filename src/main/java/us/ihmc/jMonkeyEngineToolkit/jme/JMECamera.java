@@ -8,7 +8,7 @@ import com.jme3.renderer.Camera;
 import us.ihmc.euclid.transform.RigidBodyTransform;
 import us.ihmc.euclid.tuple3D.Point3D;
 import us.ihmc.euclid.tuple3D.Vector3D;
-import us.ihmc.euclid.tuple3D.interfaces.Tuple3DBasics;
+import us.ihmc.euclid.tuple3D.interfaces.Tuple3DReadOnly;
 import us.ihmc.euclid.tuple4D.interfaces.QuaternionBasics;
 import us.ihmc.euclid.tuple4D.interfaces.QuaternionReadOnly;
 import us.ihmc.jMonkeyEngineToolkit.CameraAdapter;
@@ -17,12 +17,7 @@ import us.ihmc.jMonkeyEngineToolkit.jme.util.JMEDataTypeUtils;
 import us.ihmc.jMonkeyEngineToolkit.jme.util.JMEGeometryUtils;
 
 /**
- * JMECamera overloads camera and implements the following assumptions
- * 
- * - Z-UP frame
- * - Horizontal FoV
- * 
- *
+ * JMECamera overloads camera and implements the following assumptions - Z-UP frame - Horizontal FoV
  */
 public class JMECamera extends Camera implements CameraAdapter
 {
@@ -57,9 +52,9 @@ public class JMECamera extends Camera implements CameraAdapter
 
    public void setHorizontalFoVInRadians(float fovHorizontalInRadians)
    {
-      if (this.horizontalFoVInRadians != fovHorizontalInRadians)
+      if (horizontalFoVInRadians != fovHorizontalInRadians)
       {
-         this.horizontalFoVInRadians = fovHorizontalInRadians;
+         horizontalFoVInRadians = fovHorizontalInRadians;
          frustrumNeedsUpdating = true;
       }
    }
@@ -82,6 +77,7 @@ public class JMECamera extends Camera implements CameraAdapter
       }
    }
 
+   @Override
    @Deprecated
    public void setFrustumPerspective(float fovY, float aspect, float near, float far)
    {
@@ -95,7 +91,7 @@ public class JMECamera extends Camera implements CameraAdapter
 
       if (windowWidth != previousWindowWidth || windowHeight != previousWindowHeight || frustrumNeedsUpdating)
       {
-         float aspect = ((float) getInternalHeight()) / ((float) getInternalWidth());
+         float aspect = (float) getInternalHeight() / (float) getInternalWidth();
 
          float w = FastMath.tan(horizontalFoVInRadians * .5f) * clipDistanceNear;
          float h = w * aspect;
@@ -125,6 +121,7 @@ public class JMECamera extends Camera implements CameraAdapter
       return clipDistanceFar;
    }
 
+   @Override
    public float getHorizontalFovInRadians()
    {
       return horizontalFoVInRadians;
@@ -135,7 +132,7 @@ public class JMECamera extends Camera implements CameraAdapter
       return cameraController;
    }
 
-   public void setLocationInZUpCoordinates(Tuple3DBasics cameraPosition)
+   public void setLocationInZUpCoordinates(Tuple3DReadOnly cameraPosition)
    {
       setLocationInZUpCoordinates(JMEDataTypeUtils.vecMathTuple3dToJMEVector3f(cameraPosition));
    }
@@ -163,6 +160,7 @@ public class JMECamera extends Camera implements CameraAdapter
    /**
     * @deprecated Use setLocationInZUpCoordinates
     */
+   @Override
    @Deprecated
    public void setLocation(Vector3f location)
    {
@@ -172,6 +170,7 @@ public class JMECamera extends Camera implements CameraAdapter
    /**
     * @deprecated Use setRotationInZUpcoordinates
     */
+   @Override
    @Deprecated
    public void setRotation(Quaternion rotation)
    {
@@ -201,6 +200,7 @@ public class JMECamera extends Camera implements CameraAdapter
       this.cameraController = cameraController;
    }
 
+   @Override
    public QuaternionBasics getCameraRotation()
    {
       Quaternion quat = new Quaternion(getRotation());
@@ -210,6 +210,7 @@ public class JMECamera extends Camera implements CameraAdapter
       return new us.ihmc.euclid.tuple4D.Quaternion(quat.getX(), quat.getY(), quat.getZ(), quat.getW());
    }
 
+   @Override
    public Point3D getCameraPosition()
    {
       Vector3f position = new Vector3f(getLocation());

@@ -1,6 +1,6 @@
 package us.ihmc.jMonkeyEngineToolkit.utils;
 
-import static us.ihmc.robotics.Assert.*;
+import static us.ihmc.robotics.Assert.assertNotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,18 +14,18 @@ import us.ihmc.graphicsDescription.structure.Graphics3DNode;
 public class GraphicsDemoToolsTest
 {
 
-	@Test// timeout = 30000
+   @Test // timeout = 30000
    public void testCreatePointCloud()
    {
-      List<Point3D> worldPoints = new ArrayList<Point3D>();
-      
+      List<Point3D> worldPoints = new ArrayList<>();
+
       for (int i = 0; i < 1000; i++)
       {
          worldPoints.add(new Point3D(1.0, 1.0, 1.0));
       }
-      
+
       Graphics3DNode pointCloudNode = GraphicsDemoTools.createPointCloud("PointCloud", worldPoints, 0.001, YoAppearance.Green());
-      
+
       assertNotNull("Point cloud node is null. ", pointCloudNode);
    }
 }

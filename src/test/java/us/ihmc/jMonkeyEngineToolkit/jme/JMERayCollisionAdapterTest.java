@@ -1,6 +1,6 @@
 package us.ihmc.jMonkeyEngineToolkit.jme;
 
-import static us.ihmc.robotics.Assert.*;
+import static us.ihmc.robotics.Assert.assertEquals;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
@@ -16,10 +16,10 @@ import us.ihmc.graphicsDescription.structure.Graphics3DNode;
 public class JMERayCollisionAdapterTest
 {
    @Disabled
-	@Test// timeout=300000
+   @Test // timeout=300000
    public void testObjectPicking()
    {
-//      ThreadTools.sleep(10000); // Put this in to give me time to attach the debugger to this test.
+      //      ThreadTools.sleep(10000); // Put this in to give me time to attach the debugger to this test.
       JMEGraphics3DWorld world = new JMEGraphics3DWorld(new JMEGraphics3DAdapter());
       world.startWithGui();
 
@@ -34,17 +34,16 @@ public class JMERayCollisionAdapterTest
 
       world.addChild(new Graphics3DNode("CubeNode", cubeGraphics));
 
-
       world.keepAlive(0.1); // Needs to happen so scene graph initializes properly!
-      
+
       Line3D ray3d = new Line3D(new Point3D(0.0, 0.0, 0.0), new Vector3D(1.0, 0.0, 0.0));
 
       JMERayCollisionAdapter rayCollisionAdapter = new JMERayCollisionAdapter(world.getJMERootNode());
       rayCollisionAdapter.setPickingGeometry(ray3d);
       double pickDistance = rayCollisionAdapter.getPickDistance();
-      
+
       assertEquals(EXPECTED_BOX_CONTACT_X, pickDistance, ERROR_TOLERANCE);
-      
+
       world.stop();
    }
 }

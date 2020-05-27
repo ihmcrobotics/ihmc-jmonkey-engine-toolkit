@@ -50,12 +50,12 @@ public class LidarTestScan
       this.params = params;
       setWorldTransforms(start, end);
       this.ranges = ranges;
-      this.sensorId = 0;
+      sensorId = 0;
    }
 
    public ArrayList<Point3D> getAllPoints()
    {
-      ArrayList<Point3D> points = new ArrayList<Point3D>();
+      ArrayList<Point3D> points = new ArrayList<>();
       for (int i = 0; i < ranges.length; i++)
       {
          points.add(getPoint(i, ranges[i]));
@@ -66,7 +66,7 @@ public class LidarTestScan
 
    public ArrayList<Point3D32> getAllPoints3f()
    {
-      ArrayList<Point3D32> points = new ArrayList<Point3D32>();
+      ArrayList<Point3D32> points = new ArrayList<>();
       for (int i = 0; i < ranges.length; i++)
       {
          points.add(getPoint3f(i, ranges[i]));
@@ -96,7 +96,6 @@ public class LidarTestScan
    }
 
    /**
-    *
     * @param index of the point with respect to {@link #getPoint(int)}
     * @return
     */
@@ -138,13 +137,13 @@ public class LidarTestScan
 
    public void setWorldTransforms(RigidBodyTransform start, RigidBodyTransform end)
    {
-      this.worldTransformStart = start;
-      this.worldTransformEnd = end;
+      worldTransformStart = start;
+      worldTransformEnd = end;
       QuaternionBasedTransform start2 = new QuaternionBasedTransform(start);
       QuaternionBasedTransform end2 = new QuaternionBasedTransform(end);
       QuaternionBasedTransform interpolated = new QuaternionBasedTransform();
       interpolated.interpolate(start2, end2, 0.5);
-      this.averageTransform = new RigidBodyTransform(interpolated);
+      averageTransform = new RigidBodyTransform(interpolated);
    }
 
    public LidarTestParameters getScanParameters()
@@ -173,7 +172,6 @@ public class LidarTestScan
 
       return new Line3D(unitSegment.getFirstEndpoint(), unitSegment.getDirection(true));
    }
-
 
    /* PRIVATE/PROTECTED FUNCTIONS */
    protected Point3D getPoint(int index, float range)
@@ -221,7 +219,8 @@ public class LidarTestScan
    {
       if (i >= params.getScansPerSweep() * params.getScanHeight())
       {
-         throw new IndexOutOfBoundsException("Index " + i + " greater than or equal to pointsPerSweep " + params.getScansPerSweep() + " * scanHeight " + params.getScanHeight());
+         throw new IndexOutOfBoundsException("Index " + i + " greater than or equal to pointsPerSweep " + params.getScansPerSweep() + " * scanHeight "
+               + params.getScanHeight());
       }
 
       double yawPerIndex = (params.getLidarSweepEndAngle() - params.getLidarSweepStartAngle()) / (params.getScansPerSweep() - 1);
@@ -243,16 +242,16 @@ public class LidarTestScan
 
    public boolean epsilonEquals(LidarTestScan other, double transformEpsilon, float rangesEpsilon)
    {
-      if (!this.worldTransformStart.epsilonEquals(other.worldTransformStart, transformEpsilon))
+      if (!worldTransformStart.epsilonEquals(other.worldTransformStart, transformEpsilon))
          return false;
-      if (!this.worldTransformEnd.epsilonEquals(other.worldTransformEnd, transformEpsilon))
+      if (!worldTransformEnd.epsilonEquals(other.worldTransformEnd, transformEpsilon))
          return false;
 
-      for (int i = 0; i < this.size() && i < other.size(); i++)
+      for (int i = 0; i < size() && i < other.size(); i++)
       {
-         double value = this.getRange(i);
+         double value = getRange(i);
          double value1 = other.getRange(i);
-         if ((value > 0 && value < Double.POSITIVE_INFINITY) && (value1 > 0 && value1 < Double.POSITIVE_INFINITY))
+         if (value > 0 && value < Double.POSITIVE_INFINITY && value1 > 0 && value1 < Double.POSITIVE_INFINITY)
          {
             if (!EuclidCoreTools.epsilonEquals(ranges[i], other.ranges[i], rangesEpsilon))
                return false;

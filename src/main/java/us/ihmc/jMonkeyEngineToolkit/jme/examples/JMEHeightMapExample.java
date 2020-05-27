@@ -27,7 +27,7 @@ public class JMEHeightMapExample
 
       FlatHeightMap flatHeightMap = new FlatHeightMap();
 
-//      graphicsAdapter.setHeightMap(flatHeightMap);
+      //      graphicsAdapter.setHeightMap(flatHeightMap);
       Vector3D translation = new Vector3D(10.0, 10.0, 0.0);
 
       Graphics3DObject sphereObject = new Graphics3DObject();
@@ -35,18 +35,16 @@ public class JMEHeightMapExample
       sphereObject.translate(translation);
       sphereObject.addSphere(0.5, YoAppearance.Green());
 
-      
       Graphics3DNode sphereNode = new Graphics3DNode("sphere", Graphics3DNodeType.JOINT);
       sphereNode.setGraphicsObject(sphereObject);
       graphicsAdapter.addRootNode(sphereNode);
 
       Graphics3DObject groundObject = new Graphics3DObject();
       groundObject.translate(translation);
-     
 
       groundObject.addHeightMap(flatHeightMap, 100, 100, YoAppearance.Purple());
       Graphics3DNode groundNode = new Graphics3DNode("ground", Graphics3DNodeType.JOINT);
-      
+
       groundNode.setGraphicsObject(groundObject);
       graphicsAdapter.addRootNode(groundNode);
 
@@ -54,13 +52,13 @@ public class JMEHeightMapExample
 
    }
 
-
    private static void createAndShowStandardWindow(JMEGraphics3DAdapter graphicsAdapter)
    {
       SimpleCameraTrackingAndDollyPositionHolder cameraTrackAndDollyVariablesHolder = new SimpleCameraTrackingAndDollyPositionHolder();
       ViewportAdapter camera = graphicsAdapter.createNewViewport(null, false, false);
       ClassicCameraController classicCameraController = ClassicCameraController.createClassicCameraControllerAndAddListeners(camera,
-                                                           cameraTrackAndDollyVariablesHolder, graphicsAdapter);
+                                                                                                                             cameraTrackAndDollyVariablesHolder,
+                                                                                                                             graphicsAdapter);
       camera.setCameraController(classicCameraController);
       Canvas canvas = camera.getCanvas();
       JPanel panel = new JPanel(new BorderLayout());
@@ -76,16 +74,17 @@ public class JMEHeightMapExample
       jFrame.setSize(800, 600);
    }
 
-
    private static class FlatHeightMap implements HeightMap
    {
       private final BoundingBox3D boundingBox = new BoundingBox3D(-1.0, -2.0, Double.MIN_VALUE, 2.0, 5.0, 0.0);
 
+      @Override
       public double heightAt(double x, double y, double z)
       {
          return 0.0;
       }
 
+      @Override
       public BoundingBox3D getBoundingBox()
       {
          return boundingBox;

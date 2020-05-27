@@ -24,18 +24,19 @@ public class Graphics3DAdapterTools
    }
 
    public static ClassicCameraController createCameraController(Graphics3DAdapter graphics3DAdapter, ViewportAdapter viewportAdapter,
-           Vector3D initialCameraTranslation)
+                                                                Vector3D initialCameraTranslation)
    {
       CameraTrackingAndDollyPositionHolder cameraTrackingAndDollyPositionHolder = new SimpleCameraTrackingAndDollyPositionHolder();
       ClassicCameraController classicCameraController = ClassicCameraController.createClassicCameraControllerAndAddListeners(viewportAdapter,
-                                                           cameraTrackingAndDollyPositionHolder, graphics3DAdapter);
+                                                                                                                             cameraTrackingAndDollyPositionHolder,
+                                                                                                                             graphics3DAdapter);
       classicCameraController.setCameraPosition(initialCameraTranslation.getX(), initialCameraTranslation.getY(), initialCameraTranslation.getZ());
 
       return classicCameraController;
    }
 
    public static ClassicCameraController createNewWindow(Graphics3DAdapter graphics3DAdapter, ViewportAdapter viewportAdapter, String title, int width,
-           int height, Vector3D initialCameraTranslation)
+                                                         int height, Vector3D initialCameraTranslation)
    {
       ClassicCameraController classicCameraController = createCameraController(graphics3DAdapter, viewportAdapter, initialCameraTranslation);
 
@@ -54,16 +55,20 @@ public class Graphics3DAdapterTools
    }
 
    public static ClassicCameraController createNewWindow(Graphics3DAdapter graphics3DAdapter, String title, int width, int height,
-           Vector3D initialCameraTranslation)
+                                                         Vector3D initialCameraTranslation)
    {
       return createNewWindow(graphics3DAdapter, createViewport(graphics3DAdapter), title, width, height, initialCameraTranslation);
    }
 
    public static ClassicCameraController createNewWindow(Graphics3DAdapter graphics3DAdapter, String title, int width, int height)
    {
-      return createNewWindow(graphics3DAdapter, title, width, height,
-                             new Vector3D(ClassicCameraController.CAMERA_START_X, ClassicCameraController.CAMERA_START_Y,
-                                ClassicCameraController.CAMERA_START_Z));
+      return createNewWindow(graphics3DAdapter,
+                             title,
+                             width,
+                             height,
+                             new Vector3D(ClassicCameraController.CAMERA_START_X,
+                                          ClassicCameraController.CAMERA_START_Y,
+                                          ClassicCameraController.CAMERA_START_Z));
    }
 
    public static JFrame createNewWindow(Canvas canvas, String title, int width, int height)

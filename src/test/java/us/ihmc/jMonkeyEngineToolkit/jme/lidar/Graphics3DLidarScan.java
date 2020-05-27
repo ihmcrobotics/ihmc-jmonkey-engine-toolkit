@@ -51,11 +51,11 @@ public class Graphics3DLidarScan
 
    public void update(LidarTestScan lidarScan)
    {
-      for (int i = 0; (i < lidarScan.size()) && (i < params.getScansPerSweep()); i++)
+      for (int i = 0; i < lidarScan.size() && i < params.getScansPerSweep(); i++)
       {
          if (params.getShowTracePoints())
          {
-            if ((lidarScan.getRange(i) < params.getMinRange()) || (lidarScan.getRange(i) > params.getMaxRange()))
+            if (lidarScan.getRange(i) < params.getMinRange() || lidarScan.getRange(i) > params.getMaxRange())
             {
                points[i].setTransform(new AffineTransform());
             }
@@ -63,7 +63,7 @@ public class Graphics3DLidarScan
             {
                RigidBodyTransform pointTransform = new RigidBodyTransform();
 
-               Point3D p = new Point3D(lidarScan.getRange(i) + (SPHERE_RADIUS * 1.1), 0.0, 0.0);
+               Point3D p = new Point3D(lidarScan.getRange(i) + SPHERE_RADIUS * 1.1, 0.0, 0.0);
                RigidBodyTransform transform = new RigidBodyTransform();
                lidarScan.getInterpolatedTransform(i, transform);
                transform.multiply(RayTracingLidar.getSweepTransform(params, i));
@@ -92,7 +92,8 @@ public class Graphics3DLidarScan
 
       for (int i = 0; i < scansPerSweep; i++)
       {
-         points[i] = new Graphics3DNode(lidarName + "point" + i, Graphics3DNodeType.VISUALIZATION,
+         points[i] = new Graphics3DNode(lidarName + "point" + i,
+                                        Graphics3DNodeType.VISUALIZATION,
                                         new Graphics3DObject(new Sphere3D(SPHERE_RADIUS), appearance));
       }
    }

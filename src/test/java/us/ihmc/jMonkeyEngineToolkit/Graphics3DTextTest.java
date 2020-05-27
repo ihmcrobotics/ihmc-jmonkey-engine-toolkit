@@ -16,7 +16,7 @@ public class Graphics3DTextTest implements Graphics3DFrameListener
    int counter = 0;
    Graphics3DAddExtrusionInstruction instruction;
 
-	@Test// timeout = 30000
+   @Test // timeout = 30000
    public void testTextDisplay()
    {
       Graphics3DWorld world = new Graphics3DWorld(new JMEGraphics3DAdapter());
@@ -28,15 +28,15 @@ public class Graphics3DTextTest implements Graphics3DFrameListener
       textObject.rotate(-Math.PI / 2.0, Axis3D.Y);
       instruction = textObject.addText(text, 20, YoAppearance.Blue());
       Graphics3DNode textNode = new Graphics3DNode("textNode", textObject);
-      
+
       world.addChild(textNode);
-      
+
       world.startWithGui(1000, 800);
-      
+
       world.addFrameListener(this);
-      
+
       world.keepAlive(5);
-      
+
       world.stop();
    }
 
@@ -53,7 +53,7 @@ public class Graphics3DTextTest implements Graphics3DFrameListener
          instruction.setText("IHMC!");
          instruction.setAppearance(YoAppearance.Blue());
       }
-      
+
       counter++;
    }
 }

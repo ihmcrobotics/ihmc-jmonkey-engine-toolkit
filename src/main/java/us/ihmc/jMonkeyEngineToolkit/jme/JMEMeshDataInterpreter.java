@@ -16,7 +16,7 @@ public class JMEMeshDataInterpreter
    {
       if (meshData == null)
       {
-//         // Null meshes are problematic. But empty ones seem to work ok.
+         //         // Null meshes are problematic. But empty ones seem to work ok.
          return new Mesh();
       }
 
@@ -27,7 +27,7 @@ public class JMEMeshDataInterpreter
 
       Mesh mesh = new Mesh();
       mesh.setBuffer(Type.Position, 3, BufferUtils.createFloatBuffer(vertices));
-      if(textureCoords != null)
+      if (textureCoords != null)
          mesh.setBuffer(Type.TexCoord, 2, BufferUtils.createFloatBuffer(textureCoords));
       mesh.setBuffer(Type.Normal, 3, BufferUtils.createFloatBuffer(normals));
       mesh.setBuffer(Type.Index, 3, BufferUtils.createIntBuffer(triangleIndices));

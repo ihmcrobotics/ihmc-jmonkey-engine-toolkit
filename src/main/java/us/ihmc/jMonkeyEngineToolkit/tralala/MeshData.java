@@ -1,6 +1,5 @@
 package us.ihmc.jMonkeyEngineToolkit.tralala;
 
-
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
@@ -18,17 +17,25 @@ import com.jme3.scene.VertexBuffer.Usage;
 import com.jme3.util.BufferUtils;
 
 /**
- * Immutable class that transforms the mesh. It is immutable to minimize
- * get/set/construct array operations, and doesnt copy data unless it has to
- * modify it. Since it is immutable remember to use the returned value, because
- * the class internal state / method arguments dont change. <p/> <p/> <p/> <p/>
- * <p/> <p/> <p/> <p/> <p/>
+ * Immutable class that transforms the mesh. It is immutable to minimize get/set/construct array
+ * operations, and doesnt copy data unless it has to modify it. Since it is immutable remember to
+ * use the returned value, because the class internal state / method arguments dont change.
  * <p/>
+ * <p/>
+ * <p/>
+ * <p/>
+ * <p/>
+ * <p/>
+ * <p/>
+ * <p/>
+ * <p/>
+ * <p/>
+ * 
  * @toDo Implement "slice along mirror" for symmetry.
- * @toDo Support animation. Bug : Only half of the mesh has animation (the
- * symmetric part has no animation).
- * @toDo ability to apply Transformations to specific points (e.g not affecting
- * the whole mesh but a part of it).
+ * @toDo Support animation. Bug : Only half of the mesh has animation (the symmetric part has no
+ *       animation).
+ * @toDo ability to apply Transformations to specific points (e.g not affecting the whole mesh but a
+ *       part of it).
  * @toDo select uvs, vertexes etc based on mouse click.
  */
 public final class MeshData
@@ -47,18 +54,19 @@ public final class MeshData
    {
    }
 
-   /** Creates a mesh without animation, and only 1 tex coord.*/
+   /** Creates a mesh without animation, and only 1 tex coord. */
    public MeshData(float[] vertexArray, float[] normalArray, float[] uvArray, short[] indexArray)
    {
       this.vertexArray = vertexArray;
       this.normalArray = normalArray;
-      this.uvArrays = new float[1][];
-      this.uvArrays[0] = uvArray;
+      uvArrays = new float[1][];
+      uvArrays[0] = uvArray;
       this.indexArray = indexArray;
    }
 
-   /** Creates a mesh with the specified values.*/
-   public MeshData(float[] vertexArray, float[] normalArray, float[][] uvArrays, short[] indexArray, float[] boneWeightArray, byte[] boneIndexArray, int maxNumOfWeights)
+   /** Creates a mesh with the specified values. */
+   public MeshData(float[] vertexArray, float[] normalArray, float[][] uvArrays, short[] indexArray, float[] boneWeightArray, byte[] boneIndexArray,
+                   int maxNumOfWeights)
    {
       this.maxNumOfWeights = maxNumOfWeights;
       this.vertexArray = vertexArray;
@@ -73,20 +81,21 @@ public final class MeshData
       this.boneIndexArray = boneIndexArray;
    }
 
-   /** creates MeshData from mesh  */
+   /** creates MeshData from mesh */
    public MeshData(Mesh mesh)
    {
-      this.maxNumOfWeights = mesh.getMaxNumWeights();
+      maxNumOfWeights = mesh.getMaxNumWeights();
       vertexArray = BufferUtils.getFloatArray(mesh.getFloatBuffer(Type.Position));
       normalArray = BufferUtils.getFloatArray(mesh.getFloatBuffer(Type.Normal));
 
       int numOfTexcoordinates = 0;
       for (int i = 0; i < MAX_TEX_COORDS; i++)
       {
-         if (mesh.getBuffer(Utilities.getTexCoordType(i)) != null) numOfTexcoordinates++;
+         if (mesh.getBuffer(Utilities.getTexCoordType(i)) != null)
+            numOfTexcoordinates++;
       }
 
-      this.uvArrays = new float[numOfTexcoordinates][];
+      uvArrays = new float[numOfTexcoordinates][];
       for (int i = 0; i < numOfTexcoordinates; i++)
       {
          uvArrays[i] = BufferUtils.getFloatArray(mesh.getFloatBuffer(Utilities.getTexCoordType(i)));
@@ -95,11 +104,16 @@ public final class MeshData
       indexArray = Utilities.getShortArray(mesh.getShortBuffer(Type.Index));
       boneWeightArray = BufferUtils.getFloatArray(mesh.getFloatBuffer(Type.BoneWeight));
       VertexBuffer boneIndexBuffer = mesh.getBuffer(Type.BoneIndex);
-      if (boneIndexBuffer != null) boneIndexArray = (Utilities.getByteArray((ByteBuffer) boneIndexBuffer.getData()));
+      if (boneIndexBuffer != null)
+         boneIndexArray = Utilities.getByteArray((ByteBuffer) boneIndexBuffer.getData());
    }
 
-   /**Merges 2 meshes into 1. The second's mesh indexes change to point to their new position (after mesh1's array).
-    * @param shareSkeleton if the resulting mesh will have the skeleton of mesh1, (or mesh2 if mesh1 skeleton is null).
+   /**
+    * Merges 2 meshes into 1. The second's mesh indexes change to point to their new position (after
+    * mesh1's array).
+    * 
+    * @param shareSkeleton if the resulting mesh will have the skeleton of mesh1, (or mesh2 if mesh1
+    *                      skeleton is null).
     */
    public MeshData merge(MeshData mesh2)
    {
@@ -129,8 +143,9 @@ public final class MeshData
    }
 
    /**
-    * @param planeOrigin  the planeOrigin e.g (0,0,0)
-    * @param planeNormal  the planeNormal is a vector that points upward from the plane e.g Vector3f.UNIT_Z
+    * @param planeOrigin the planeOrigin e.g (0,0,0)
+    * @param planeNormal the planeNormal is a vector that points upward from the plane e.g
+    *                    Vector3f.UNIT_Z
     */
    public MeshData mirror(Vector3f planeOrigin, Vector3f planeNormal)
    {
@@ -159,15 +174,18 @@ public final class MeshData
       return resultMesh;
    }
 
-   /** Applies symmetry modifier to mesh, and creates a new mesh from the 2 submeshes.
-    * @param planeOrigin  the planeOrigin e.g (0,0,0)
-    * @param planeNormal  the planeNormal is a vector that points upward from the plane e.g Vector3f.UNIT_Z
-    * @param weldThreshold how much to smooth the vertices near the plane suggested amount from 0.001 until 0.1. 
-    *                      Set it to negative number to disable welding.
+   /**
+    * Applies symmetry modifier to mesh, and creates a new mesh from the 2 submeshes.
+    * 
+    * @param planeOrigin   the planeOrigin e.g (0,0,0)
+    * @param planeNormal   the planeNormal is a vector that points upward from the plane e.g
+    *                      Vector3f.UNIT_Z
+    * @param weldThreshold how much to smooth the vertices near the plane suggested amount from 0.001
+    *                      until 0.1. Set it to negative number to disable welding.
     */
    public MeshData createSymmetricMesh(Vector3f planeOrigin, Vector3f planeNormal, float weldThreshold)
    {
-      MeshData mesh = this.shallowClone();
+      MeshData mesh = shallowClone();
       MeshData mirrorMesh = mesh.mirror(planeOrigin, planeNormal);
 
       float[] weldedMeshVertexArray = new float[mesh.vertexArray.length];
@@ -190,7 +208,7 @@ public final class MeshData
 
             mp1 = p1;
             mn1 = n1;
-         }//if
+         } //if
 
          Utilities.setInArray(p1, weldedMeshVertexArray, index);
          Utilities.setInArray(mp1, weldedMirrorMeshVertexArray, index);
@@ -212,20 +230,22 @@ public final class MeshData
 
    public MeshData scale(Vector3f size, Vector3f pivot)
    {
-      MeshData returned = this.shallowClone();
+      MeshData returned = shallowClone();
       float[] vertex = returned.getVertexArrayCopy();
       for (int i = 0; i < returned.getNumberOfVertexElements(); i++)
       {
          Vector3f v = returned.getVertex(i);
-         Utilities.setInArray(new Vector3f((v.x - pivot.x) * size.x + pivot.x, (v.y - pivot.y) * size.y + pivot.y, (v.z - pivot.z) * size.z + pivot.z), vertex, i);
+         Utilities.setInArray(new Vector3f((v.x - pivot.x) * size.x + pivot.x, (v.y - pivot.y) * size.y + pivot.y, (v.z - pivot.z) * size.z + pivot.z),
+                              vertex,
+                              i);
       }
       returned.vertexArray = vertex;
       return returned;
    }
-   
+
    public MeshData translate(Vector3f translate)
    {
-      MeshData returned = this.shallowClone();
+      MeshData returned = shallowClone();
       float[] vertex = returned.getVertexArrayCopy();
       for (int i = 0; i < returned.getNumberOfVertexElements(); i++)
       {
@@ -235,23 +255,28 @@ public final class MeshData
       returned.vertexArray = vertex;
       return returned;
    }
-   
-   /** Usage :
-      Vector3f min = new Vector3f(Float.MAX_VALUE, Float.MAX_VALUE, Float.MAX_VALUE);
-      Vector3f max = new Vector3f(-Float.MAX_VALUE, -Float.MAX_VALUE, -Float.MAX_VALUE);
-      getBounds(min,max);
+
+   /**
+    * Usage : Vector3f min = new Vector3f(Float.MAX_VALUE, Float.MAX_VALUE, Float.MAX_VALUE); Vector3f
+    * max = new Vector3f(-Float.MAX_VALUE, -Float.MAX_VALUE, -Float.MAX_VALUE); getBounds(min,max);
     */
    public void getBounds(Vector3f min, Vector3f max)
    {
-      for (int i = 0; i < this.getNumberOfVertexElements(); i++)
+      for (int i = 0; i < getNumberOfVertexElements(); i++)
       {
-         Vector3f v = this.getVertex(i);
-         if (v.x < min.x) min.x = v.x;
-         if (v.y < min.y) min.y = v.y;
-         if (v.z < min.z) min.z = v.z;
-         if (v.x > max.x) max.x = v.x;
-         if (v.y > max.y) max.y = v.y;
-         if (v.z > max.z) max.z = v.z;
+         Vector3f v = getVertex(i);
+         if (v.x < min.x)
+            min.x = v.x;
+         if (v.y < min.y)
+            min.y = v.y;
+         if (v.z < min.z)
+            min.z = v.z;
+         if (v.x > max.x)
+            max.x = v.x;
+         if (v.y > max.y)
+            max.y = v.y;
+         if (v.z > max.z)
+            max.z = v.z;
       }
    }
 
@@ -263,8 +288,10 @@ public final class MeshData
       return min.addLocal(max.subtractLocal(min).divideLocal(2));
    }
 
-   /** Changes the order of indexes, e.g from 1,2,3 it becomes 3,2,1. 
-    *  This will allow an invisible mesh to be seen.*/
+   /**
+    * Changes the order of indexes, e.g from 1,2,3 it becomes 3,2,1. This will allow an invisible mesh
+    * to be seen.
+    */
    public MeshData flipIndexes()
    {
       MeshData mesh = this;
@@ -279,7 +306,7 @@ public final class MeshData
       return result;
    }
 
-   /** @param TexCoordNumber which array of tex coords to affect. Usual choice : 0*/
+   /** @param TexCoordNumber which array of tex coords to affect. Usual choice : 0 */
    public MeshData flipU(int TexCoordNumber)
    {
       MeshData mesh = this;
@@ -293,7 +320,7 @@ public final class MeshData
       return result;
    }
 
-   /** @param TexCoordNumber which array of tex coords to affect. Usual choice : 0*/
+   /** @param TexCoordNumber which array of tex coords to affect. Usual choice : 0 */
    public MeshData flipV(int TexCoordNumber)
    {
       MeshData mesh = this;
@@ -307,7 +334,7 @@ public final class MeshData
       return result;
    }
 
-   /** @param TexCoordNumber which array of tex coords to affect. Usual choice : 0*/
+   /** @param TexCoordNumber which array of tex coords to affect. Usual choice : 0 */
    public MeshData moveUV(Vector2f uvMoveOffset, int TexCoordNumber)
    {
       MeshData mesh = this;
@@ -321,7 +348,7 @@ public final class MeshData
       return result;
    }
 
-   /** @param TexCoordNumber which array of tex coords to affect. Usual choice : 0*/
+   /** @param TexCoordNumber which array of tex coords to affect. Usual choice : 0 */
    public MeshData rotateUV(float uvRotateAngle, int TexCoordNumber)
    {
       MeshData mesh = this;
@@ -329,13 +356,15 @@ public final class MeshData
       result.uvArrays[TexCoordNumber] = new float[mesh.uvArrays[TexCoordNumber].length];
       for (int i = 0; i < mesh.uvArrays[TexCoordNumber].length; i += 2)
       {
-         result.uvArrays[TexCoordNumber][i] = (mesh.uvArrays[TexCoordNumber][i] * FastMath.cos(uvRotateAngle) - mesh.uvArrays[TexCoordNumber][i + 1] * FastMath.sin(uvRotateAngle)) % 1;
-         result.uvArrays[TexCoordNumber][i + 1] = (mesh.uvArrays[TexCoordNumber][i] * FastMath.sin(uvRotateAngle) + mesh.uvArrays[TexCoordNumber][i + 1] * FastMath.cos(uvRotateAngle)) % 1;
+         result.uvArrays[TexCoordNumber][i] = (mesh.uvArrays[TexCoordNumber][i] * FastMath.cos(uvRotateAngle)
+               - mesh.uvArrays[TexCoordNumber][i + 1] * FastMath.sin(uvRotateAngle)) % 1;
+         result.uvArrays[TexCoordNumber][i
+               + 1] = (mesh.uvArrays[TexCoordNumber][i] * FastMath.sin(uvRotateAngle) + mesh.uvArrays[TexCoordNumber][i + 1] * FastMath.cos(uvRotateAngle)) % 1;
       }
       return result;
    }
 
-   /** @param TexCoordNumber which array of tex coords to affect. Usual choice : 0*/
+   /** @param TexCoordNumber which array of tex coords to affect. Usual choice : 0 */
    public MeshData scaleUV(Vector2f uvScaleAmount, int TexCoordNumber)
    {
       MeshData mesh = this;
@@ -343,13 +372,15 @@ public final class MeshData
       result.uvArrays[TexCoordNumber] = new float[mesh.uvArrays[TexCoordNumber].length];
       for (int i = 0; i < mesh.uvArrays[TexCoordNumber].length; i += 2)
       {
-         result.uvArrays[TexCoordNumber][i] = (mesh.uvArrays[TexCoordNumber][i] * uvScaleAmount.x) % 1;
-         result.uvArrays[TexCoordNumber][i + 1] = (mesh.uvArrays[TexCoordNumber][i + 1] * uvScaleAmount.y) % 1;
+         result.uvArrays[TexCoordNumber][i] = mesh.uvArrays[TexCoordNumber][i] * uvScaleAmount.x % 1;
+         result.uvArrays[TexCoordNumber][i + 1] = mesh.uvArrays[TexCoordNumber][i + 1] * uvScaleAmount.y % 1;
       }
       return result;
    }
 
-   /** switches u with v.
+   /**
+    * switches u with v.
+    * 
     * @param TexCoordNumber which array of tex coords to affect. Usual choice : 0
     */
    public MeshData switchUV(int TexCoordNumber)
@@ -365,21 +396,25 @@ public final class MeshData
       return result;
    }
 
-   /** sets mesh to have the same data as this.*/
+   /** sets mesh to have the same data as this. */
    public Mesh save(Mesh mesh)
    {
       if (vertexArray != null)
       {
          VertexBuffer vb = mesh.getBuffer(Type.Position);
-         if (vb != null) vb.updateData(BufferUtils.createFloatBuffer(vertexArray));
-         else mesh.setBuffer(Type.Position, 3, vertexArray);
+         if (vb != null)
+            vb.updateData(BufferUtils.createFloatBuffer(vertexArray));
+         else
+            mesh.setBuffer(Type.Position, 3, vertexArray);
       }
 
       if (normalArray != null)
       {
          VertexBuffer vb = mesh.getBuffer(Type.Normal);
-         if (vb != null) vb.updateData(BufferUtils.createFloatBuffer(normalArray));
-         else mesh.setBuffer(Type.Normal, 3, normalArray);
+         if (vb != null)
+            vb.updateData(BufferUtils.createFloatBuffer(normalArray));
+         else
+            mesh.setBuffer(Type.Normal, 3, normalArray);
       }
 
       for (int i = 0; i < uvArrays.length; i++)
@@ -387,16 +422,20 @@ public final class MeshData
          if (uvArrays[i] != null)
          {
             VertexBuffer vb = mesh.getBuffer(Utilities.getTexCoordType(i));
-            if (vb != null) vb.updateData(BufferUtils.createFloatBuffer(uvArrays[i]));
-            else mesh.setBuffer(Type.TexCoord, 2, uvArrays[i]);
+            if (vb != null)
+               vb.updateData(BufferUtils.createFloatBuffer(uvArrays[i]));
+            else
+               mesh.setBuffer(Type.TexCoord, 2, uvArrays[i]);
          }
       }
 
       if (indexArray != null)
       {
          VertexBuffer vb = mesh.getBuffer(Type.Index);
-         if (vb != null) vb.updateData(BufferUtils.createShortBuffer(indexArray));
-         else mesh.setBuffer(Type.Index, 3, indexArray);
+         if (vb != null)
+            vb.updateData(BufferUtils.createShortBuffer(indexArray));
+         else
+            mesh.setBuffer(Type.Index, 3, indexArray);
       }
 
       if (boneIndexArray != null && boneWeightArray != null)
@@ -438,15 +477,16 @@ public final class MeshData
          }
       }
 
-      if (vertexArray != null) mesh.updateBound();
+      if (vertexArray != null)
+         mesh.updateBound();
       return mesh;
    }
 
-   /** Removes duplicate and unindexed vertex, uv, normals if it can. lossless*/
+   /** Removes duplicate and unindexed vertex, uv, normals if it can. lossless */
    public MeshData removeDuplicateData()
    {
-      short[] returnedIndexArray = this.getIndexArrayCopy();
-      ArrayList<Vector3f> vertex = new ArrayList<Vector3f>();
+      short[] returnedIndexArray = getIndexArrayCopy();
+      ArrayList<Vector3f> vertex = new ArrayList<>();
       for (int i = 0; i < getNumberOfVertexElements(); i++)
       {
          vertex.add(getVertex(i));
@@ -464,15 +504,15 @@ public final class MeshData
             }
          }
       }
-      MeshData returned = this.shallowClone();
+      MeshData returned = shallowClone();
       returned.indexArray = returnedIndexArray;
       returned = returned.compress();
 
       return returned;
    }
 
-   /** removes all unindexed vertex/normals/uvs. lossless
-    * The indexes change to match the new structure.
+   /**
+    * removes all unindexed vertex/normals/uvs. lossless The indexes change to match the new structure.
     */
    public MeshData compress()
    {
@@ -491,7 +531,8 @@ public final class MeshData
       int numOfUnused = 0;
       for (int i = 0; i < numOfUnusedElements.length; i++)
       {
-         if (numOfUnusedElements[i] == -1) numOfUnused++;
+         if (numOfUnusedElements[i] == -1)
+            numOfUnused++;
          else
          {
             numOfUsed++;
@@ -537,14 +578,22 @@ public final class MeshData
          compressedIndexArray[i] = (short) (mesh.indexArray[i] - numOfUnusedElements[mesh.indexArray[i]]);
       }
 
-      return new MeshData(compressedVertexArray, compressedNormalArray, compressedUvArray, compressedIndexArray, mesh.boneWeightArray, mesh.boneIndexArray, mesh.maxNumOfWeights);
+      return new MeshData(compressedVertexArray,
+                          compressedNormalArray,
+                          compressedUvArray,
+                          compressedIndexArray,
+                          mesh.boneWeightArray,
+                          mesh.boneIndexArray,
+                          mesh.maxNumOfWeights);
    }
 
-   /** For each triangle, when this index is refered in a triangle, the triangle indexes are returned.*/
+   /**
+    * For each triangle, when this index is refered in a triangle, the triangle indexes are returned.
+    */
    public LinkedHashSet<Short> getAdjacentIndices(short index)
    {
       MeshData mesh = this;
-      LinkedHashSet<Short> otherIndexes = new LinkedHashSet<Short>();
+      LinkedHashSet<Short> otherIndexes = new LinkedHashSet<>();
 
       for (int i = 0; i < mesh.indexArray.length; i += 3)
       {
@@ -582,43 +631,43 @@ public final class MeshData
 
    public MeshData setIndexArray(short[] indexArray)
    {
-      MeshData mesh = this.shallowClone();
+      MeshData mesh = shallowClone();
       mesh.indexArray = indexArray;
       return mesh;
    }
 
    public MeshData setNormalArray(float[] normalArray)
    {
-      MeshData mesh = this.shallowClone();
+      MeshData mesh = shallowClone();
       mesh.normalArray = normalArray;
       return mesh;
    }
 
-   /** @param TexCoordNumber which array of tex coords to affect. Usual choice : 0*/
+   /** @param TexCoordNumber which array of tex coords to affect. Usual choice : 0 */
    public MeshData setUvArray(float[] uvArray, int TexCoordNumber)
    {
-      MeshData mesh = this.shallowClone();
+      MeshData mesh = shallowClone();
       mesh.uvArrays[TexCoordNumber] = uvArray;
       return mesh;
    }
 
    public MeshData setVertexArray(float[] vertexArray)
    {
-      MeshData mesh = this.shallowClone();
+      MeshData mesh = shallowClone();
       mesh.vertexArray = vertexArray;
       return mesh;
    }
 
    public MeshData setBoneWeightArray(float[] boneWeightArray)
    {
-      MeshData mesh = this.shallowClone();
+      MeshData mesh = shallowClone();
       mesh.boneWeightArray = boneWeightArray;
       return mesh;
    }
 
    public MeshData setBoneIndexArray(byte[] boneIndexArray)
    {
-      MeshData mesh = this.shallowClone();
+      MeshData mesh = shallowClone();
       mesh.boneIndexArray = boneIndexArray;
       return mesh;
    }
@@ -638,7 +687,7 @@ public final class MeshData
       return getUv(i, 0);
    }
 
-   /** @param TexCoordNumber which array of tex coords to affect. Usual choice : 0*/
+   /** @param TexCoordNumber which array of tex coords to affect. Usual choice : 0 */
    public Vector2f getUv(int i, int TexCoordNumber)
    {
       return Utilities.getVector2FromArray(uvArrays[TexCoordNumber], i);
@@ -659,7 +708,7 @@ public final class MeshData
       Utilities.setInArray(p, normalArray, i);
    }
 
-   /** @param TexCoordNumber which array of tex coords to affect. Usual choice : 0*/
+   /** @param TexCoordNumber which array of tex coords to affect. Usual choice : 0 */
    private void setUv(Vector2f p, int i, int TexCoordNumber)
    {
       Utilities.setInArray(p, uvArrays[TexCoordNumber], i);
@@ -672,63 +721,73 @@ public final class MeshData
 
    public int getNumberOfVertexElements()
    {
-      if (vertexArray == null) return 0;
+      if (vertexArray == null)
+         return 0;
       return vertexArray.length / 3;
    }
 
    public int getNumberOfNormalElements()
    {
-      if (normalArray == null) return 0;
+      if (normalArray == null)
+         return 0;
       return normalArray.length / 3;
    }
 
-   /** @param TexCoordNumber which array of tex coords to affect. Usual choice : 0*/
+   /** @param TexCoordNumber which array of tex coords to affect. Usual choice : 0 */
    public int getNumberOfUvElements(int TexCoordNumber)
    {
-      if (uvArrays[TexCoordNumber] == null) return 0;
+      if (uvArrays[TexCoordNumber] == null)
+         return 0;
       return uvArrays[TexCoordNumber].length / 2;
    }
 
    public int getNumberOfIndexElements()
    {
-      if (indexArray == null) return 0;
+      if (indexArray == null)
+         return 0;
       return indexArray.length;
    }
 
    public float[] getVertexArrayCopy()
    {
-      if (vertexArray == null) return null;
+      if (vertexArray == null)
+         return null;
       return vertexArray.clone();
    }
 
    public float[] getNormalArrayCopy()
    {
-      if (normalArray == null) return null;
+      if (normalArray == null)
+         return null;
       return normalArray.clone();
    }
 
-   /** @param TexCoordNumber which array of tex coords to affect. Usual choice : 0*/
+   /** @param TexCoordNumber which array of tex coords to affect. Usual choice : 0 */
    public float[] getUvArrayCopy(int TexCoordNumber)
    {
-      if (uvArrays[TexCoordNumber] == null) return null;
+      if (uvArrays[TexCoordNumber] == null)
+         return null;
       return uvArrays[TexCoordNumber].clone();
    }
 
    public short[] getIndexArrayCopy()
    {
-      if (indexArray == null) return null;
+      if (indexArray == null)
+         return null;
       return indexArray.clone();
    }
 
    public float[] getBoneWeightArrayCopy()
    {
-      if (boneWeightArray == null) return null;
+      if (boneWeightArray == null)
+         return null;
       return boneWeightArray.clone();
    }
 
    public byte[] getBoneIndexArrayCopy()
    {
-      if (boneIndexArray == null) return null;
+      if (boneIndexArray == null)
+         return null;
       return boneIndexArray.clone();
    }
 }

@@ -12,14 +12,13 @@ import javax.imageio.ImageIO;
 import us.ihmc.euclid.tuple3D.Point3D;
 import us.ihmc.euclid.tuple4D.Quaternion;
 
-
 public class ScreenCapture implements Serializable
 {
    private static final long serialVersionUID = 4267642643460511978L;
    private static final boolean isOpenJDK = System.getProperty("java.vm.name").indexOf("OpenJDK") != -1;
    static
    {
-      if(isOpenJDK)
+      if (isOpenJDK)
       {
          System.err.println("OpenJDK doesn't ship with JPEG libraries. Streaming using PNG images.");
       }
@@ -32,8 +31,8 @@ public class ScreenCapture implements Serializable
 
    public ScreenCapture(BufferedImage bufferedImage, Point3D location, Quaternion rotation, float fov)
    {
-      this.height = bufferedImage.getHeight();
-      this.width = bufferedImage.getWidth();
+      height = bufferedImage.getHeight();
+      width = bufferedImage.getWidth();
 
       try
       {
@@ -60,17 +59,17 @@ public class ScreenCapture implements Serializable
    {
       return rotation;
    }
-   
+
    public float getFov()
    {
       return fov;
    }
-   
+
    public static byte[] bufferedImageToByteArray(BufferedImage image) throws IOException
    {
       ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-      if(isOpenJDK)
+      if (isOpenJDK)
       {
          ImageIO.write(image, "png", outputStream);
       }
@@ -90,8 +89,9 @@ public class ScreenCapture implements Serializable
 
    public static BufferedImage byteArrayToBufferedImage(byte[] bytes)
    {
-      if (bytes == null) return null;
-      
+      if (bytes == null)
+         return null;
+
       InputStream inputStream = new ByteArrayInputStream(bytes);
       BufferedImage bufferedImageFromConvert = null;
       try
@@ -101,7 +101,7 @@ public class ScreenCapture implements Serializable
       catch (IOException e)
       {
          return null;
-//         e.printStackTrace();
+         //         e.printStackTrace();
       }
 
       return bufferedImageFromConvert;
@@ -109,8 +109,8 @@ public class ScreenCapture implements Serializable
 
    public BufferedImage getImage()
    {
-//    BufferedImage bi = new BufferedImage(_width, _height, BufferedImage.TYPE_4BYTE_ABGR);
-//    bi.setRGB(0, 0, _width, _height, _bytesOut, 0, _width);
+      //    BufferedImage bi = new BufferedImage(_width, _height, BufferedImage.TYPE_4BYTE_ABGR);
+      //    bi.setRGB(0, 0, _width, _height, _bytesOut, 0, _width);
 
       return byteArrayToBufferedImage(bytesOut);
    }

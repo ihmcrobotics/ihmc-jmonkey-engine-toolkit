@@ -26,12 +26,12 @@ import us.ihmc.graphicsDescription.HeightMap;
 import us.ihmc.graphicsDescription.appearance.AppearanceDefinition;
 import us.ihmc.graphicsDescription.appearance.HeightBasedTerrainBlend;
 import us.ihmc.graphicsDescription.appearance.HeightBasedTerrainBlend.TextureDefinition;
-import us.ihmc.graphicsDescription.color.MutableColor;
 import us.ihmc.graphicsDescription.appearance.SDFAppearance;
 import us.ihmc.graphicsDescription.appearance.YoAppearance;
 import us.ihmc.graphicsDescription.appearance.YoAppearanceMaterial;
 import us.ihmc.graphicsDescription.appearance.YoAppearanceRGBColor;
 import us.ihmc.graphicsDescription.appearance.YoAppearanceTexture;
+import us.ihmc.graphicsDescription.color.MutableColor;
 import us.ihmc.jMonkeyEngineToolkit.jme.util.JMEDataTypeUtils;
 import us.ihmc.tools.ClassLoaderTools;
 
@@ -75,9 +75,9 @@ public class JMEAppearanceMaterial
       BoundingBox3D boundingBox = heightMap.getBoundingBox();
 
       double xMin = boundingBox.getMinX();
-      double xStep = (boundingBox.getMaxX() - boundingBox.getMinX()) / ((double) alphaMapSize);
+      double xStep = (boundingBox.getMaxX() - boundingBox.getMinX()) / alphaMapSize;
       double yMin = boundingBox.getMinY();
-      double yStep = (boundingBox.getMaxY() - boundingBox.getMinY()) / ((double) alphaMapSize);
+      double yStep = (boundingBox.getMaxY() - boundingBox.getMinY()) / alphaMapSize;
 
       BufferedImage alphaMap = new BufferedImage(alphaMapSize, alphaMapSize, BufferedImage.TYPE_INT_ARGB);
       for (int x = 0; x < alphaMapSize; x++)
@@ -103,7 +103,7 @@ public class JMEAppearanceMaterial
                   layer++;
                   layerHeight = minHeight;
 
-                  if (height < (minHeight + fadeHeight))
+                  if (height < minHeight + fadeHeight)
                   {
                      fade = (height - minHeight) / fadeHeight;
                   }
@@ -112,13 +112,13 @@ public class JMEAppearanceMaterial
 
             }
 
-            color = ((int) (fade * 255.0)) << (8 * layer);
+            color = (int) (fade * 255.0) << 8 * layer;
             if (layer > 0)
             {
-               color |= ((int) ((1.0 - fade) * 255.0)) << (8 * (layer - 1));
+               color |= (int) ((1.0 - fade) * 255.0) << 8 * (layer - 1);
             }
 
-            color = color | (255 << 24);
+            color = color | 255 << 24;
             alphaMap.setRGB(y, x, color);
 
          }
@@ -185,7 +185,7 @@ public class JMEAppearanceMaterial
                {
                   matPath = stripDiskRootFromPath(matPath);
                }
-               materials.putAll(JMEAssetLocator.loadOgreAsset(subFile.getPath(),contentMan));
+               materials.putAll(JMEAssetLocator.loadOgreAsset(subFile.getPath(), contentMan));
             }
             else if (subFile.isDirectory())
             {
@@ -255,11 +255,11 @@ public class JMEAppearanceMaterial
       else
       {
          Path temporaryDirectoryPath = PathTools.systemTemporaryDirectory();
-        
+
          printIfDebug("temporaryDirectoryPathName = " + temporaryDirectoryPath);
-         
+
          Path ogreCacheDirectoryPath = temporaryDirectoryPath.resolve("SCSCache").resolve("ogre_materials");
-         
+
          printIfDebug("ogreCacheDirectoryName = " + ogreCacheDirectoryPath);
 
          File cacheDir = ogreCacheDirectoryPath.toFile();
@@ -272,7 +272,8 @@ public class JMEAppearanceMaterial
          {
             Path path = cacheDir.toPath();
             ClassLoaderTools.copyToFileSystem(path, "models/gazebo/media/materials");
-            GAZEBO_MATERIAL_CACHE = cacheDir.getAbsolutePath() + File.separator + "models" + File.separator + "gazebo" + File.separator + "media" + File.separator + "materials" + File.separator;
+            GAZEBO_MATERIAL_CACHE = cacheDir.getAbsolutePath() + File.separator + "models" + File.separator + "gazebo" + File.separator + "media"
+                  + File.separator + "materials" + File.separator;
          }
          catch (IOException e)
          {
@@ -286,11 +287,10 @@ public class JMEAppearanceMaterial
 
    private static void printIfDebug(String string)
    {
-      if (DEBUG) System.out.println(string);
+      if (DEBUG)
+         System.out.println(string);
    }
 
-   
-   
    public static Material createMaterialFromBufferedImage(AssetManager contentMan, BufferedImage bufferedImage)
    {
       Material material = new Material(contentMan, PHONG_ILLUMINATED_JME_MAT);
@@ -349,12 +349,16 @@ public class JMEAppearanceMaterial
 
    public static Material createMaterialFromYoAppearanceMaterial(AssetManager contentMan, YoAppearanceMaterial appearanceMaterial)
    {
-      return createMaterialFromProperties(contentMan, appearanceMaterial.getDiffuseColor(), appearanceMaterial.getAmbientColor(),
-            appearanceMaterial.getSpecularColor(), appearanceMaterial.getShininess(), appearanceMaterial.getTransparency());
+      return createMaterialFromProperties(contentMan,
+                                          appearanceMaterial.getDiffuseColor(),
+                                          appearanceMaterial.getAmbientColor(),
+                                          appearanceMaterial.getSpecularColor(),
+                                          appearanceMaterial.getShininess(),
+                                          appearanceMaterial.getTransparency());
    }
 
-   public static Material createMaterialFromProperties(AssetManager contentMan, MutableColor diffuse, MutableColor ambient, MutableColor specular, double shininess,
-         double transparancy)
+   public static Material createMaterialFromProperties(AssetManager contentMan, MutableColor diffuse, MutableColor ambient, MutableColor specular,
+                                                       double shininess, double transparancy)
    {
       Material material = new Material(contentMan, PHONG_ILLUMINATED_JME_MAT);
 

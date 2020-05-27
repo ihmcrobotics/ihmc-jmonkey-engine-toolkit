@@ -4,16 +4,17 @@ import java.util.ArrayList;
 
 import us.ihmc.euclid.geometry.BoundingBox3D;
 import us.ihmc.euclid.tuple3D.Vector3D;
+import us.ihmc.euclid.tuple3D.interfaces.Vector3DBasics;
 import us.ihmc.graphicsDescription.HeightMap;
 
 public class CombinedHeightMapWithNormals implements HeightMapWithNormals
 {
-   private final ArrayList<HeightMapWithNormals> heightMaps = new ArrayList<HeightMapWithNormals>();
+   private final ArrayList<HeightMapWithNormals> heightMaps = new ArrayList<>();
    private BoundingBox3D boundingBox = null;
 
    public void addHeightMap(HeightMapWithNormals heightMap)
    {
-      this.heightMaps.add(heightMap);
+      heightMaps.add(heightMap);
 
       if (boundingBox == null)
          boundingBox = heightMap.getBoundingBox();
@@ -21,8 +22,8 @@ public class CombinedHeightMapWithNormals implements HeightMapWithNormals
          boundingBox = BoundingBox3D.union(boundingBox, heightMap.getBoundingBox());
    }
 
-
-   public double heightAndNormalAt(double x, double y, double z, Vector3D normalToPack)
+   @Override
+   public double heightAndNormalAt(double x, double y, double z, Vector3DBasics normalToPack)
    {
       Double heightAt = Double.NEGATIVE_INFINITY;
       normalToPack.set(0.0, 0.0, 1.0);
@@ -44,6 +45,7 @@ public class CombinedHeightMapWithNormals implements HeightMapWithNormals
       return heightAt;
    }
 
+   @Override
    public double heightAt(double x, double y, double z)
    {
       Double heightAt = Double.NEGATIVE_INFINITY;
@@ -62,6 +64,7 @@ public class CombinedHeightMapWithNormals implements HeightMapWithNormals
       return heightAt;
    }
 
+   @Override
    public BoundingBox3D getBoundingBox()
    {
       return boundingBox;

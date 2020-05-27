@@ -1,18 +1,18 @@
 /*
  *   Copyright 2014 Florida Institute for Human and Machine Cognition (IHMC)
- *    
+ *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
  *    You may obtain a copy of the License at
- *    
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *    
+ *
  *    Unless required by applicable law or agreed to in writing, software
  *    distributed under the License is distributed on an "AS IS" BASIS,
  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
- *    
+ *
  *    Written by Jesper Smith with assistance from IHMC team members
  */
 package us.ihmc.jMonkeyEngineToolkit.stlLoader;
@@ -26,14 +26,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-
 /**
  * Reader for the ASCII STL format
- * 
- * @see STLReaderFactory
- * 
- * @author Jesper Smith
  *
+ * @see STLReaderFactory
+ * @author Jesper Smith
  */
 public class ASCIISTLReader implements STLReader
 {
@@ -43,20 +40,20 @@ public class ASCIISTLReader implements STLReader
    }
 
    private final String name;
-   private final ArrayList<Triangle> triangles = new ArrayList<Triangle>();
+   private final ArrayList<Triangle> triangles = new ArrayList<>();
 
    public ASCIISTLReader(InputStream stream) throws IOException
    {
       BufferedReader reader = new BufferedReader(new InputStreamReader(stream, Charset.forName("US-ASCII")));
 
-      this.name = getModelName(reader);
+      name = getModelName(reader);
 
       Triangle triangle;
       while ((triangle = getTriangle(reader)) != null)
       {
          triangles.add(triangle);
       }
-      
+
       stream.close();
    }
 
@@ -102,52 +99,52 @@ public class ASCIISTLReader implements STLReader
          }
          switch (state)
          {
-         case FACET:
-            if (!"facet".equals(firstToken) || !"normal".equals(tokenizer.nextToken()))
-            {
-               throw new IOException("Expected \"facet normal\", got " + line);
-            }
+            case FACET:
+               if (!"facet".equals(firstToken) || !"normal".equals(tokenizer.nextToken()))
+               {
+                  throw new IOException("Expected \"facet normal\", got " + line);
+               }
 
-            float ni = Float.parseFloat(tokenizer.nextToken());
-            float nj = Float.parseFloat(tokenizer.nextToken());
-            float nk = Float.parseFloat(tokenizer.nextToken());
-            result.setNormal(ni, nj, nk);
-            state = State.OUTER_LOOP;
-            break;
-         case OUTER_LOOP:
-            if (!"outer".equals(firstToken) || !"loop".equals(tokenizer.nextToken()))
-            {
-               throw new IOException("Expected \"outer loop\", got " + line);
-            }
-            state = State.VERTICES;
-            break;
-         case VERTICES:
-            if ("vertex".equals(firstToken))
-            {
-               float vx = Float.parseFloat(tokenizer.nextToken());
-               float vy = Float.parseFloat(tokenizer.nextToken());
-               float vz = Float.parseFloat(tokenizer.nextToken());
-               result.addVertex(vx, vy, vz);
-            }
-            else if ("endloop".equals(firstToken))
-            {
-               state = State.END_FACET;
-            }
-            else if ("end".equals(firstToken) && "loop".equals(tokenizer.nextToken())) // handle broken STL files
-            {
-               state = State.END_FACET;
-            }
-            else
-            {
-               throw new IOException("Expected \"vertex\" or \"endloop\", got " + line);
-            }
-            break;
-         case END_FACET:
-            if (!"endfacet".equals(firstToken))
-            {
-               throw new IOException("Expected \"endfacet\", got " + line);
-            }
-            return result;
+               float ni = Float.parseFloat(tokenizer.nextToken());
+               float nj = Float.parseFloat(tokenizer.nextToken());
+               float nk = Float.parseFloat(tokenizer.nextToken());
+               result.setNormal(ni, nj, nk);
+               state = State.OUTER_LOOP;
+               break;
+            case OUTER_LOOP:
+               if (!"outer".equals(firstToken) || !"loop".equals(tokenizer.nextToken()))
+               {
+                  throw new IOException("Expected \"outer loop\", got " + line);
+               }
+               state = State.VERTICES;
+               break;
+            case VERTICES:
+               if ("vertex".equals(firstToken))
+               {
+                  float vx = Float.parseFloat(tokenizer.nextToken());
+                  float vy = Float.parseFloat(tokenizer.nextToken());
+                  float vz = Float.parseFloat(tokenizer.nextToken());
+                  result.addVertex(vx, vy, vz);
+               }
+               else if ("endloop".equals(firstToken))
+               {
+                  state = State.END_FACET;
+               }
+               else if ("end".equals(firstToken) && "loop".equals(tokenizer.nextToken())) // handle broken STL files
+               {
+                  state = State.END_FACET;
+               }
+               else
+               {
+                  throw new IOException("Expected \"vertex\" or \"endloop\", got " + line);
+               }
+               break;
+            case END_FACET:
+               if (!"endfacet".equals(firstToken))
+               {
+                  throw new IOException("Expected \"endfacet\", got " + line);
+               }
+               return result;
          }
 
       }
@@ -155,11 +152,13 @@ public class ASCIISTLReader implements STLReader
       throw new RuntimeException("Cannot pare ASCII STL file: Unexpected end of file");
    }
 
+   @Override
    public String getName()
    {
       return name;
    }
 
+   @Override
    public List<Triangle> getTriangles()
    {
       return triangles;
