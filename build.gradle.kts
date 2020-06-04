@@ -38,7 +38,6 @@ mainDependencies {
    }
    api("com.vividsolutions:jts:1.13")
    api("com.google.guava:guava:18.0")
-   api("org.boofcv:geo:0.24.1")
    api("org.apache.commons:commons-lang3:3.9")
 
    api("us.ihmc:euclid:0.14.2-ejml-0.39-beta-1")
