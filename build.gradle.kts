@@ -43,7 +43,7 @@ mainDependencies {
 
    api("us.ihmc:euclid:0.14.2")
    api("us.ihmc:euclid-shape:0.14.2")
-   api("us.ihmc:ihmc-commons:0.29.0")
+   api("us.ihmc:ihmc-commons:0.30.0")
    api("us.ihmc:ihmc-graphics-description:0.17.0")
 }
 
