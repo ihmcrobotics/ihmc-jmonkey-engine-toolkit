@@ -43,7 +43,7 @@ mainDependencies {
    api("us.ihmc:euclid:0.15.0")
    api("us.ihmc:euclid-shape:0.15.0")
    api("us.ihmc:ihmc-commons:0.29.0")
-   api("us.ihmc:ihmc-graphics-description:0.17.0-ejml-0.39-beta-1")
+   api("us.ihmc:ihmc-graphics-description:0.18.0")
 }
 
 testDependencies {
