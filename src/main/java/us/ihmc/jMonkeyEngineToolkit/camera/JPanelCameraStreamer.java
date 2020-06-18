@@ -8,7 +8,6 @@ import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import boofcv.struct.calib.IntrinsicParameters;
 import us.ihmc.euclid.tuple3D.Point3D;
 import us.ihmc.euclid.tuple3D.interfaces.Point3DReadOnly;
 import us.ihmc.euclid.tuple4D.Quaternion;
@@ -28,17 +27,6 @@ public class JPanelCameraStreamer extends JPanel implements CameraStreamer
    {
       this.bufferedImage = bufferedImage;
       repaint();
-   }
-
-   public void setIntrinsic(IntrinsicParameters param)
-   {
-
-   }
-
-   public synchronized void updateImage(BufferedImage bufferedImage, Point3DReadOnly cameraPosition, QuaternionReadOnly cameraOrientation,
-                                        IntrinsicParameters intrinsicParamaters)
-   {
-      updateImage(bufferedImage);
    }
 
    @Override

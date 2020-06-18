@@ -2,12 +2,12 @@ plugins {
    id("us.ihmc.ihmc-build") version "0.20.1"
    id("us.ihmc.ihmc-ci") version "5.3"
    id("us.ihmc.ihmc-cd") version "1.8"
-   id("us.ihmc.log-tools") version "0.4.2"
+   id("us.ihmc.log-tools-plugin") version "0.5.0"
 }
 
 ihmc {
    group = "us.ihmc"
-   version = "0.17.0"
+   version = "0.18.0"
    vcsUrl = "https://github.com/ihmcrobotics/ihmc-jmonkey-engine-toolkit"
    openSource = true
 
@@ -38,15 +38,14 @@ mainDependencies {
    }
    api("com.vividsolutions:jts:1.13")
    api("com.google.guava:guava:18.0")
-   api("org.boofcv:geo:0.24.1")
    api("org.apache.commons:commons-lang3:3.9")
 
-   api("us.ihmc:euclid:0.14.2")
-   api("us.ihmc:euclid-shape:0.14.2")
-   api("us.ihmc:ihmc-commons:0.29.0")
-   api("us.ihmc:ihmc-graphics-description:0.17.0")
+   api("us.ihmc:euclid:0.15.0")
+   api("us.ihmc:euclid-shape:0.15.0")
+   api("us.ihmc:ihmc-commons:0.30.0")
+   api("us.ihmc:ihmc-graphics-description:0.18.0")
 }
 
 testDependencies {
-   api("us.ihmc:ihmc-commons-testing:0.29.0")
+   api("us.ihmc:ihmc-commons-testing:0.30.0")
 }
