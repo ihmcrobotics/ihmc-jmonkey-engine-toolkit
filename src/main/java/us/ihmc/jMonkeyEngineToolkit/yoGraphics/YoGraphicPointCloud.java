@@ -22,7 +22,7 @@ import us.ihmc.graphicsDescription.Graphics3DObject;
 import us.ihmc.graphicsDescription.plotting.artifact.Artifact;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphic;
 import us.ihmc.jMonkeyEngineToolkit.jme.JMERenderer;
-import us.ihmc.yoVariables.registry.YoVariableRegistry;
+import us.ihmc.yoVariables.registry.YoRegistry;
 
 public class YoGraphicPointCloud extends YoGraphic
 {
@@ -175,7 +175,7 @@ public class YoGraphicPointCloud extends YoGraphic
    }
 
    @Override
-   public YoGraphic duplicate(YoVariableRegistry newRegistry)
+   public YoGraphic duplicate(YoRegistry newRegistry)
    {
       throw new UnsupportedOperationException();
    }
