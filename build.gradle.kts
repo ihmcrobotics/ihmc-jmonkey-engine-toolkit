@@ -24,17 +24,15 @@ jme.forkEvery = 1
 jme.maxParallelForks = 1
 
 mainDependencies {
-   api("org.jmonkeyengine:jme3-core:3.2.0-171208")
-   api("org.jmonkeyengine:jme3-desktop:3.2.0-171208")
-   api("org.jmonkeyengine:jme3-terrain:3.2.0-171208")
-   api("org.jmonkeyengine:jme3-plugins:3.2.0-171208")
-   api("org.jmonkeyengine:jme3-dae:3.2.0-171208")
-   // Only one version of lwjgl can be used at a time (sealed JARs), we require 2.9.3
-   // for Canvas
-   // api("org.jmonkeyengine:jme3-lwjgl3:3.2.0-171208")
-   api("org.jmonkeyengine:jme3-lwjgl:3.2.0-171208") {
-      //Exclude incompatible version of jinput
-      exclude(group = "net.java.jinput", module = "jinput")
+   var jmeVersion = "3.3.0-stable"
+   api("org.jmonkeyengine:jme3-core:$jmeVersion")
+   api("org.jmonkeyengine:jme3-desktop:$jmeVersion")
+   api("org.jmonkeyengine:jme3-terrain:$jmeVersion")
+   api("org.jmonkeyengine:jme3-plugins:$jmeVersion")
+   // Only one version of lwjgl can be used at a time (sealed JARs), we require 2.9.3 for AWT LwjglCanvas
+   var lwjglVersion = "lwjgl3";
+   api("org.jmonkeyengine:jme3-$lwjglVersion:$jmeVersion") {
+      exclude(group = "net.java.jinput", module = "jinput") // Exclude incompatible version of jinput
    }
    api("com.vividsolutions:jts:1.13")
    api("com.google.guava:guava:18.0")

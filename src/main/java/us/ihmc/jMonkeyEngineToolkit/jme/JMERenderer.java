@@ -222,8 +222,8 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
 
    private void changeJMELoggerLevelToSevere()
    {
-      for (Logger jmeLogger : jmeLoggers)
-         jmeLogger.setLevel(Level.SEVERE);
+//      for (Logger jmeLogger : jmeLoggers)
+//         jmeLogger.setLevel(Level.SEVERE);
    }
 
    private void notifyRepaint(int rendersToPerform)

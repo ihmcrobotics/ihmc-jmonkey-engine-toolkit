@@ -235,6 +235,12 @@ public class JMEGPULidar implements GPULidar, AppState
    }
 
    @Override
+   public String getId()
+   {
+      return null;
+   }
+
+   @Override
    public void setEnabled(boolean active)
    {
    }
