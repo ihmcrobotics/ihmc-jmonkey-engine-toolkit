@@ -7,7 +7,7 @@ plugins {
 
 ihmc {
    group = "us.ihmc"
-   version = "0.19.2"
+   version = "0.19.3"
    vcsUrl = "https://github.com/ihmcrobotics/ihmc-jmonkey-engine-toolkit"
    openSource = true
 
@@ -34,7 +34,7 @@ mainDependencies {
    // api("org.jmonkeyengine:jme3-lwjgl3:3.2.0-171208")
    api("org.jmonkeyengine:jme3-lwjgl:3.2.0-171208") {
       //Exclude incompatible version of jinput
-      exclude(group = "net.java.jinput", module = "jinput")
+      exclude("net.java.jinput")
    }
    api("com.vividsolutions:jts:1.13")
    api("com.google.guava:guava:18.0")
