@@ -955,7 +955,7 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
       {
          if (transparentNode instanceof JMEGraphics3DNode)
          {
-            ((JMEGraphics3DNode) transparentNode).getGraphics3DNode().getTransform().setScale(0);
+            ((JMEGraphics3DNode) transparentNode).getGraphics3DNode().getTransform().setToZero();
          }
          else
          {
@@ -971,7 +971,7 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
       {
          if (transparentNode instanceof JMEGraphics3DNode)
          {
-            ((JMEGraphics3DNode) transparentNode).getGraphics3DNode().getTransform().setScale(1);
+            ((JMEGraphics3DNode) transparentNode).getGraphics3DNode().getTransform().resetScale();
          }
          else
          {

@@ -90,7 +90,8 @@ public class Graphics3DAdapterExampleTwo
       while (true)
       {
          rotation = rotation + 0.01;
-         node2.getTransform().setRotationYaw(rotation);
+         node2.getTransform().setIdentity();
+         node2.getTransform().appendYawRotation(rotation);
          node2.getTransform().setTranslationToZero();
 
          count++;
