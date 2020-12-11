@@ -14,17 +14,14 @@ import us.ihmc.euclid.tuple3D.interfaces.Point3DReadOnly;
 import us.ihmc.euclid.tuple4D.interfaces.QuaternionReadOnly;
 import us.ihmc.graphicsDescription.Graphics3DObject;
 import us.ihmc.graphicsDescription.appearance.YoAppearance;
-import us.ihmc.graphicsDescription.input.SelectedListener;
 import us.ihmc.graphicsDescription.input.keyboard.KeyListener;
-import us.ihmc.graphicsDescription.input.mouse.Mouse3DListener;
 import us.ihmc.graphicsDescription.input.mouse.MouseButton;
-import us.ihmc.graphicsDescription.input.mouse.MouseListener;
 import us.ihmc.graphicsDescription.structure.Graphics3DNode;
 import us.ihmc.jMonkeyEngineToolkit.Graphics3DAdapter;
 import us.ihmc.tools.inputDevices.keyboard.Key;
 import us.ihmc.tools.inputDevices.keyboard.ModifierKeyInterface;
 
-public class ClassicCameraController implements TrackingDollyCameraController, KeyListener, MouseListener, Mouse3DListener, SelectedListener
+public class ClassicCameraController implements TrackingDollyCameraController
 {
    public static final double MIN_FIELD_OF_VIEW = 0.001;
    public static final double MAX_FIELD_OF_VIEW = 2.0;
@@ -94,6 +91,8 @@ public class ClassicCameraController implements TrackingDollyCameraController, K
 
    private Graphics3DAdapter graphics3dAdapter;
 
+   private KeyListener keyListener;
+
    public static ClassicCameraController createClassicCameraControllerAndAddListeners(ViewportAdapter viewportAdapter,
                                                                                       CameraTrackingAndDollyPositionHolder cameraTrackAndDollyVariablesHolder,
                                                                                       Graphics3DAdapter graphics3dAdapter)
@@ -105,16 +104,7 @@ public class ClassicCameraController implements TrackingDollyCameraController, K
                                                                                       CameraTrackingAndDollyPositionHolder cameraTrackAndDollyVariablesHolder,
                                                                                       Graphics3DAdapter graphics3dAdapter, JFrame jFrame)
    {
-      ClassicCameraController classicCameraController = new ClassicCameraController(graphics3dAdapter,
-                                                                                    viewportAdapter,
-                                                                                    cameraTrackAndDollyVariablesHolder,
-                                                                                    jFrame);
-      graphics3dAdapter.addKeyListener(classicCameraController);
-      graphics3dAdapter.addMouseListener(classicCameraController);
-      graphics3dAdapter.addMouse3DListener(classicCameraController);
-      graphics3dAdapter.addSelectedListener(classicCameraController);
-
-      return classicCameraController;
+      return new ClassicCameraController(graphics3dAdapter, viewportAdapter, cameraTrackAndDollyVariablesHolder, jFrame);
    }
 
    public ClassicCameraController(Graphics3DAdapter graphics3dAdapter, ViewportAdapter viewportAdapter,
@@ -144,6 +134,13 @@ public class ClassicCameraController implements TrackingDollyCameraController, K
       // Don't do this stuff by default
       setTracking(false);
       setDolly(false);
+
+      keyListener = new PrivateKeyListener();
+
+      graphics3dAdapter.addKeyListener(keyListener);
+      graphics3dAdapter.addMouseListener(this::mouseDragged);
+      graphics3dAdapter.addMouse3DListener(this::mouseDragged);
+      graphics3dAdapter.addSelectedListener(this::selected);
    }
 
    public void setCameraMount(CameraMountInterface mount)
@@ -1334,110 +1331,112 @@ public class ClassicCameraController implements TrackingDollyCameraController, K
       return true;
    }
 
-   @Override
-   public void keyPressed(Key key)
+   class PrivateKeyListener implements KeyListener
    {
-      if (shouldAcceptDeviceInput())
+      @Override
+      public void keyPressed(Key key)
       {
-         switch (key)
+         if (shouldAcceptDeviceInput())
          {
-            case W:
-               forward = true;
+            switch (key)
+            {
+               case W:
+                  forward = true;
 
-               break;
+                  break;
 
-            case S:
-               backward = true;
+               case S:
+                  backward = true;
 
-               break;
+                  break;
 
-            case A:
-               left = true;
+               case A:
+                  left = true;
 
-               break;
+                  break;
 
-            case D:
-               right = true;
+               case D:
+                  right = true;
 
-               break;
+                  break;
 
-            case Q:
-               up = true;
+               case Q:
+                  up = true;
 
-               break;
+                  break;
 
-            case Z:
-               down = true;
+               case Z:
+                  down = true;
 
-               break;
+                  break;
 
-            default:
+               default:
 
-               break;
+                  break;
+            }
+         }
+      }
+
+      @Override
+      public void keyReleased(Key key)
+      {
+         if (shouldAcceptDeviceInput())
+         {
+            switch (key)
+            {
+               case W:
+                  forward = false;
+
+                  break;
+
+               case S:
+                  backward = false;
+
+                  break;
+
+               case A:
+                  left = false;
+
+                  break;
+
+               case D:
+                  right = false;
+
+                  break;
+
+               case Q:
+                  up = false;
+
+                  break;
+
+               case Z:
+                  down = false;
+
+                  break;
+
+               case RIGHT:
+                  nextStoredPosition();
+
+                  break;
+
+               case LEFT:
+                  previousStoredPosition();
+
+                  break;
+
+               case K:
+                  storePosition();
+
+                  break;
+               default:
+
+                  break;
+            }
          }
       }
    }
 
-   @Override
-   public void keyReleased(Key key)
-   {
-      if (shouldAcceptDeviceInput())
-      {
-         switch (key)
-         {
-            case W:
-               forward = false;
-
-               break;
-
-            case S:
-               backward = false;
-
-               break;
-
-            case A:
-               left = false;
-
-               break;
-
-            case D:
-               right = false;
-
-               break;
-
-            case Q:
-               up = false;
-
-               break;
-
-            case Z:
-               down = false;
-
-               break;
-
-            case RIGHT:
-               nextStoredPosition();
-
-               break;
-
-            case LEFT:
-               previousStoredPosition();
-
-               break;
-
-            case K:
-               storePosition();
-
-               break;
-            default:
-
-               break;
-         }
-      }
-   }
-
-   @Override
-   public void selected(Graphics3DNode graphics3dNode, ModifierKeyInterface modifierKeyInterface, Point3DReadOnly location, Point3DReadOnly cameraLocation,
+   private void selected(Graphics3DNode graphics3dNode, ModifierKeyInterface modifierKeyInterface, Point3DReadOnly location, Point3DReadOnly cameraLocation,
                         QuaternionReadOnly cameraRotation)
    {
       if (shouldAcceptDeviceInput())
@@ -1454,8 +1453,7 @@ public class ClassicCameraController implements TrackingDollyCameraController, K
       }
    }
 
-   @Override
-   public void mouseDragged(MouseButton mouseButton, double dx, double dy)
+   private void mouseDragged(MouseButton mouseButton, double dx, double dy)
    {
       if (shouldAcceptDeviceInput())
       {
@@ -1487,8 +1485,7 @@ public class ClassicCameraController implements TrackingDollyCameraController, K
    private double rotateGain = 0.15;
    private double translateGain = 0.05;
 
-   @Override
-   public void mouseDragged(double dx, double dy, double dz, double drx, double dry, double drz)
+   private void mouseDragged(double dx, double dy, double dz, double drx, double dry, double drz)
    {
       if (shouldAcceptDeviceInput())
       {
