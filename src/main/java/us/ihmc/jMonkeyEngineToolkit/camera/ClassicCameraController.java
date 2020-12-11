@@ -104,17 +104,21 @@ public class ClassicCameraController implements TrackingDollyCameraController
                                                                                       CameraTrackingAndDollyPositionHolder cameraTrackAndDollyVariablesHolder,
                                                                                       Graphics3DAdapter graphics3dAdapter, JFrame jFrame)
    {
-      return new ClassicCameraController(graphics3dAdapter, viewportAdapter, cameraTrackAndDollyVariablesHolder, jFrame);
+      return new ClassicCameraController(graphics3dAdapter, viewportAdapter, cameraTrackAndDollyVariablesHolder, jFrame, true);
    }
 
-   public ClassicCameraController(Graphics3DAdapter graphics3dAdapter, ViewportAdapter viewportAdapter,
+   public ClassicCameraController(Graphics3DAdapter graphics3dAdapter,
+                                  ViewportAdapter viewportAdapter,
                                   CameraTrackingAndDollyPositionHolder cameraTrackAndDollyVariablesHolder)
    {
-      this(graphics3dAdapter, viewportAdapter, cameraTrackAndDollyVariablesHolder, null);
+      this(graphics3dAdapter, viewportAdapter, cameraTrackAndDollyVariablesHolder, null, false);
    }
 
-   public ClassicCameraController(Graphics3DAdapter graphics3dAdapter, ViewportAdapter viewportAdapter,
-                                  CameraTrackingAndDollyPositionHolder cameraTrackAndDollyVariablesHolder, JFrame jFrame)
+   public ClassicCameraController(Graphics3DAdapter graphics3dAdapter,
+                                  ViewportAdapter viewportAdapter,
+                                  CameraTrackingAndDollyPositionHolder cameraTrackAndDollyVariablesHolder,
+                                  JFrame jFrame,
+                                  boolean addListeners)
    {
       if (graphics3dAdapter == null)
          throw new RuntimeException("graphics3dAdapter == null");
@@ -137,10 +141,13 @@ public class ClassicCameraController implements TrackingDollyCameraController
 
       keyListener = new PrivateKeyListener();
 
-      graphics3dAdapter.addKeyListener(keyListener);
-      graphics3dAdapter.addMouseListener(this::mouseDragged);
-      graphics3dAdapter.addMouse3DListener(this::mouseDragged);
-      graphics3dAdapter.addSelectedListener(this::selected);
+      if (addListeners)
+      {
+         graphics3dAdapter.addKeyListener(keyListener);
+         graphics3dAdapter.addMouseListener(this::mouseDragged);
+         graphics3dAdapter.addMouse3DListener(this::mouseDragged);
+         graphics3dAdapter.addSelectedListener(this::selected);
+      }
    }
 
    public void setCameraMount(CameraMountInterface mount)
