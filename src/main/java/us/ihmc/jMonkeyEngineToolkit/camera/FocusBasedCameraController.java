@@ -1,9 +1,5 @@
 package us.ihmc.jMonkeyEngineToolkit.camera;
 
-import java.util.ArrayList;
-
-import javax.swing.JFrame;
-
 import us.ihmc.euclid.axisAngle.AxisAngle;
 import us.ihmc.euclid.matrix.RotationMatrix;
 import us.ihmc.euclid.shape.primitives.Sphere3D;
@@ -21,16 +17,15 @@ import us.ihmc.jMonkeyEngineToolkit.Graphics3DAdapter;
 import us.ihmc.tools.inputDevices.keyboard.Key;
 import us.ihmc.tools.inputDevices.keyboard.ModifierKeyInterface;
 
-public class ClassicCameraController implements TrackingDollyCameraController
+import javax.swing.*;
+import java.util.ArrayList;
+
+public class FocusBasedCameraController implements TrackingDollyCameraController
 {
    public static final double MIN_FIELD_OF_VIEW = 0.001;
    public static final double MAX_FIELD_OF_VIEW = 2.0;
 
    private static final double MIN_CAMERA_POSITION_TO_FIX_DISTANCE = 0.1; // 0.8;
-
-   public final static double CAMERA_START_X = 0.0;
-   public final static double CAMERA_START_Y = -6.0;
-   public final static double CAMERA_START_Z = 1.0;
 
    private double fieldOfView = CameraConfiguration.DEFAULT_FIELD_OF_VIEW;
    private double clipDistanceNear = CameraConfiguration.DEFAULT_CLIP_DISTANCE_NEAR;
@@ -93,32 +88,11 @@ public class ClassicCameraController implements TrackingDollyCameraController
 
    private KeyListener keyListener;
 
-   public static FocusBasedCameraController createClassicCameraControllerAndAddListeners(ViewportAdapter viewportAdapter,
-                                                                                         CameraTrackingAndDollyPositionHolder cameraTrackAndDollyVariablesHolder,
-                                                                                         Graphics3DAdapter graphics3dAdapter)
-   {
-      return createClassicCameraControllerAndAddListeners(viewportAdapter, cameraTrackAndDollyVariablesHolder, graphics3dAdapter, null);
-   }
-
-   public static FocusBasedCameraController createClassicCameraControllerAndAddListeners(ViewportAdapter viewportAdapter,
-                                                                                         CameraTrackingAndDollyPositionHolder cameraTrackAndDollyVariablesHolder,
-                                                                                         Graphics3DAdapter graphics3dAdapter, JFrame jFrame)
-   {
-      return new FocusBasedCameraController(graphics3dAdapter, viewportAdapter, cameraTrackAndDollyVariablesHolder, jFrame, true);
-   }
-
-   public ClassicCameraController(Graphics3DAdapter graphics3dAdapter,
-                                  ViewportAdapter viewportAdapter,
-                                  CameraTrackingAndDollyPositionHolder cameraTrackAndDollyVariablesHolder)
-   {
-      this(graphics3dAdapter, viewportAdapter, cameraTrackAndDollyVariablesHolder, null, false);
-   }
-
-   public ClassicCameraController(Graphics3DAdapter graphics3dAdapter,
-                                  ViewportAdapter viewportAdapter,
-                                  CameraTrackingAndDollyPositionHolder cameraTrackAndDollyVariablesHolder,
-                                  JFrame jFrame,
-                                  boolean addListeners)
+   public FocusBasedCameraController(Graphics3DAdapter graphics3dAdapter,
+                                     ViewportAdapter viewportAdapter,
+                                     CameraTrackingAndDollyPositionHolder cameraTrackAndDollyVariablesHolder,
+                                     JFrame jFrame,
+                                     boolean addListeners)
    {
       if (graphics3dAdapter == null)
          throw new RuntimeException("graphics3dAdapter == null");
@@ -126,9 +100,9 @@ public class ClassicCameraController implements TrackingDollyCameraController
       this.viewportAdapter = viewportAdapter;
       this.jFrame = jFrame;
 
-      camX = CAMERA_START_X;
-      camY = CAMERA_START_Y;
-      camZ = CAMERA_START_Z;
+      camX = ClassicCameraController.CAMERA_START_X;
+      camY = ClassicCameraController.CAMERA_START_Y;
+      camZ = ClassicCameraController.CAMERA_START_Z;
       fixX = 0.0;
       fixY = 0.0;
       fixZ = 0.6;
@@ -1569,9 +1543,9 @@ public class ClassicCameraController implements TrackingDollyCameraController
       setDollyOffsets(otherCamera.getDollyXOffset(), otherCamera.getDollyYOffset(), otherCamera.getDollyZOffset());
       setTrackingOffsets(otherCamera.getTrackingXOffset(), otherCamera.getTrackingYOffset(), otherCamera.getTrackingZOffset());
 
-      if (otherCamera instanceof ClassicCameraController)
+      if (otherCamera instanceof FocusBasedCameraController)
       {
-         ClassicCameraController classicOtherCamera = (ClassicCameraController) otherCamera;
+         FocusBasedCameraController classicOtherCamera = (FocusBasedCameraController) otherCamera;
 
          keyFrameCamPos = classicOtherCamera.keyFrameCamPos;
          keyFrameFixPos = classicOtherCamera.keyFrameFixPos;
