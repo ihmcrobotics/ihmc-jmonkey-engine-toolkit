@@ -10,11 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import us.ihmc.euclid.tuple3D.Vector3D;
-import us.ihmc.jMonkeyEngineToolkit.camera.CameraController;
-import us.ihmc.jMonkeyEngineToolkit.camera.CameraTrackingAndDollyPositionHolder;
-import us.ihmc.jMonkeyEngineToolkit.camera.ClassicCameraController;
-import us.ihmc.jMonkeyEngineToolkit.camera.SimpleCameraTrackingAndDollyPositionHolder;
-import us.ihmc.jMonkeyEngineToolkit.camera.ViewportAdapter;
+import us.ihmc.jMonkeyEngineToolkit.camera.*;
 
 public class Graphics3DAdapterTools
 {
@@ -23,11 +19,11 @@ public class Graphics3DAdapterTools
       return graphics3DAdapter.createNewViewport(null, false, false);
    }
 
-   public static ClassicCameraController createCameraController(Graphics3DAdapter graphics3DAdapter, ViewportAdapter viewportAdapter,
+   public static TrackingDollyCameraController createCameraController(Graphics3DAdapter graphics3DAdapter, ViewportAdapter viewportAdapter,
                                                                 Vector3D initialCameraTranslation)
    {
       CameraTrackingAndDollyPositionHolder cameraTrackingAndDollyPositionHolder = new SimpleCameraTrackingAndDollyPositionHolder();
-      ClassicCameraController classicCameraController = ClassicCameraController.createClassicCameraControllerAndAddListeners(viewportAdapter,
+      TrackingDollyCameraController classicCameraController = ClassicCameraController.createClassicCameraControllerAndAddListeners(viewportAdapter,
                                                                                                                              cameraTrackingAndDollyPositionHolder,
                                                                                                                              graphics3DAdapter);
       classicCameraController.setCameraPosition(initialCameraTranslation.getX(), initialCameraTranslation.getY(), initialCameraTranslation.getZ());
@@ -35,10 +31,10 @@ public class Graphics3DAdapterTools
       return classicCameraController;
    }
 
-   public static ClassicCameraController createNewWindow(Graphics3DAdapter graphics3DAdapter, ViewportAdapter viewportAdapter, String title, int width,
-                                                         int height, Vector3D initialCameraTranslation)
+   public static TrackingDollyCameraController createNewWindow(Graphics3DAdapter graphics3DAdapter, ViewportAdapter viewportAdapter, String title, int width,
+                                                               int height, Vector3D initialCameraTranslation)
    {
-      ClassicCameraController classicCameraController = createCameraController(graphics3DAdapter, viewportAdapter, initialCameraTranslation);
+      TrackingDollyCameraController classicCameraController = createCameraController(graphics3DAdapter, viewportAdapter, initialCameraTranslation);
 
       viewportAdapter.setCameraController(classicCameraController);
 
@@ -54,13 +50,13 @@ public class Graphics3DAdapterTools
       return createNewWindow(viewportAdapter.getCanvas(), title, width, height);
    }
 
-   public static ClassicCameraController createNewWindow(Graphics3DAdapter graphics3DAdapter, String title, int width, int height,
+   public static TrackingDollyCameraController createNewWindow(Graphics3DAdapter graphics3DAdapter, String title, int width, int height,
                                                          Vector3D initialCameraTranslation)
    {
       return createNewWindow(graphics3DAdapter, createViewport(graphics3DAdapter), title, width, height, initialCameraTranslation);
    }
 
-   public static ClassicCameraController createNewWindow(Graphics3DAdapter graphics3DAdapter, String title, int width, int height)
+   public static TrackingDollyCameraController createNewWindow(Graphics3DAdapter graphics3DAdapter, String title, int width, int height)
    {
       return createNewWindow(graphics3DAdapter,
                              title,

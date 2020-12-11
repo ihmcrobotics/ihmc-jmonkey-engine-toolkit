@@ -20,6 +20,7 @@ import us.ihmc.graphicsDescription.structure.Graphics3DNodeType;
 import us.ihmc.jMonkeyEngineToolkit.Graphics3DAdapter;
 import us.ihmc.jMonkeyEngineToolkit.camera.ClassicCameraController;
 import us.ihmc.jMonkeyEngineToolkit.camera.SimpleCameraTrackingAndDollyPositionHolder;
+import us.ihmc.jMonkeyEngineToolkit.camera.TrackingDollyCameraController;
 import us.ihmc.jMonkeyEngineToolkit.camera.ViewportAdapter;
 import us.ihmc.jMonkeyEngineToolkit.utils.GraphicsDemoTools;
 import us.ihmc.tools.inputDevices.keyboard.ModifierKeyInterface;
@@ -66,9 +67,9 @@ public class Graphics3DAdapterExampleTwo
 
       SimpleCameraTrackingAndDollyPositionHolder cameraTrackAndDollyVariablesHolder = new SimpleCameraTrackingAndDollyPositionHolder();
       ViewportAdapter camera = adapter.createNewViewport(null, false, false);
-      ClassicCameraController classicCameraController = ClassicCameraController.createClassicCameraControllerAndAddListeners(camera,
-                                                                                                                             cameraTrackAndDollyVariablesHolder,
-                                                                                                                             adapter);
+      TrackingDollyCameraController classicCameraController = ClassicCameraController.createClassicCameraControllerAndAddListeners(camera,
+                                                                                                                                   cameraTrackAndDollyVariablesHolder,
+                                                                                                                                   adapter);
       camera.setCameraController(classicCameraController);
       Canvas canvas = camera.getCanvas();
       JPanel panel = new JPanel(new BorderLayout());

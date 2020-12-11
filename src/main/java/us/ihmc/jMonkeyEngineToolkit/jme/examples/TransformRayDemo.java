@@ -16,6 +16,7 @@ import us.ihmc.graphicsDescription.appearance.YoAppearance;
 import us.ihmc.graphicsDescription.structure.Graphics3DNode;
 import us.ihmc.graphicsDescription.structure.Graphics3DNodeType;
 import us.ihmc.jMonkeyEngineToolkit.camera.ClassicCameraController;
+import us.ihmc.jMonkeyEngineToolkit.camera.TrackingDollyCameraController;
 import us.ihmc.jMonkeyEngineToolkit.jme.JMERenderer;
 import us.ihmc.jMonkeyEngineToolkit.jme.JMERenderer.RenderType;
 import us.ihmc.jMonkeyEngineToolkit.jme.JMEViewportAdapter;
@@ -50,9 +51,9 @@ public class TransformRayDemo
 
       PanBackAndForthTrackingAndDollyPositionHolder cameraTrackAndDollyVariablesHolder = new PanBackAndForthTrackingAndDollyPositionHolder(20.0, 20.0, 20.0);
       JMEViewportAdapter viewportAdapter = (JMEViewportAdapter) renderer.createNewViewport(null, false, false);
-      ClassicCameraController classicCameraController = ClassicCameraController.createClassicCameraControllerAndAddListeners(viewportAdapter,
-                                                                                                                             cameraTrackAndDollyVariablesHolder,
-                                                                                                                             renderer);
+      TrackingDollyCameraController classicCameraController = ClassicCameraController.createClassicCameraControllerAndAddListeners(viewportAdapter,
+                                                                                                                                   cameraTrackAndDollyVariablesHolder,
+                                                                                                                                   renderer);
       viewportAdapter.setCameraController(classicCameraController);
 
       Canvas canvas = viewportAdapter.getCanvas();

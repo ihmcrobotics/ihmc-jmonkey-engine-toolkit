@@ -1,5 +1,9 @@
 package us.ihmc.jMonkeyEngineToolkit.camera;
 
+import us.ihmc.graphicsDescription.structure.Graphics3DNode;
+
+import java.util.ArrayList;
+
 public interface TrackingDollyCameraController extends CameraController, CameraPropertiesHolder
 {
    public void reset();
@@ -37,4 +41,10 @@ public interface TrackingDollyCameraController extends CameraController, CameraP
    public void setUseCameraKeyPoints(boolean b);
 
    public void copyPositionTrackingDollyConfiguration(TrackingDollyCameraController otherCamera);
+
+   public Graphics3DNode getFixPointNode();
+
+   public ArrayList<Integer> getCameraKeyPoints();
+
+   public boolean getCameraKeyMode();
 }

@@ -662,6 +662,7 @@ public class ClassicCameraController implements TrackingDollyCameraController, K
       }
    }
 
+   @Override
    public ArrayList<Integer> getCameraKeyPoints()
    {
       return cameraKeyPoints;
@@ -1110,6 +1111,7 @@ public class ClassicCameraController implements TrackingDollyCameraController, K
       setUseCameraKeyPoints(!useKeyCameraPoints());
    }
 
+   @Override
    public boolean getCameraKeyMode()
    {
       return toggleCameraKeyPoints;
@@ -1598,6 +1600,7 @@ public class ClassicCameraController implements TrackingDollyCameraController, K
       graphics3dAdapter = null;
    }
 
+   @Override
    public Graphics3DNode getFixPointNode()
    {
       return fixPointNode;

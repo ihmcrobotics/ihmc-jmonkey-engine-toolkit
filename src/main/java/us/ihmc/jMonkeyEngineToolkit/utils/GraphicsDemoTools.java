@@ -31,9 +31,7 @@ import us.ihmc.graphicsDescription.instructions.Graphics3DInstruction;
 import us.ihmc.graphicsDescription.structure.Graphics3DNode;
 import us.ihmc.graphicsDescription.structure.Graphics3DNodeType;
 import us.ihmc.jMonkeyEngineToolkit.Graphics3DAdapter;
-import us.ihmc.jMonkeyEngineToolkit.camera.ClassicCameraController;
-import us.ihmc.jMonkeyEngineToolkit.camera.SimpleCameraTrackingAndDollyPositionHolder;
-import us.ihmc.jMonkeyEngineToolkit.camera.ViewportAdapter;
+import us.ihmc.jMonkeyEngineToolkit.camera.*;
 import us.ihmc.tools.inputDevices.keyboard.ModifierKeyInterface;
 
 public class GraphicsDemoTools
@@ -58,9 +56,9 @@ public class GraphicsDemoTools
    public static void addFirstCamera(Graphics3DAdapter graphics3DAdapter, PanBackAndForthTrackingAndDollyPositionHolder cameraTrackAndDollyVariablesHolder)
    {
       ViewportAdapter viewportAdapter = graphics3DAdapter.createNewViewport(null, false, false);
-      ClassicCameraController classicCameraController = ClassicCameraController.createClassicCameraControllerAndAddListeners(viewportAdapter,
-                                                                                                                             cameraTrackAndDollyVariablesHolder,
-                                                                                                                             graphics3DAdapter);
+      TrackingDollyCameraController classicCameraController = ClassicCameraController.createClassicCameraControllerAndAddListeners(viewportAdapter,
+                                                                                                                                   cameraTrackAndDollyVariablesHolder,
+                                                                                                                                   graphics3DAdapter);
       viewportAdapter.setCameraController(classicCameraController);
       classicCameraController.setTracking(true, true, false, false);
       Canvas canvas = viewportAdapter.getCanvas();
@@ -80,9 +78,9 @@ public class GraphicsDemoTools
    public static void addSecondCamera(Graphics3DAdapter graphics3DAdapter, PanBackAndForthTrackingAndDollyPositionHolder cameraTrackAndDollyVariablesHolder)
    {
       ViewportAdapter secondCamera = graphics3DAdapter.createNewViewport(null, false, false);
-      ClassicCameraController secondController = ClassicCameraController.createClassicCameraControllerAndAddListeners(secondCamera,
-                                                                                                                      cameraTrackAndDollyVariablesHolder,
-                                                                                                                      graphics3DAdapter);
+      CameraController secondController = ClassicCameraController.createClassicCameraControllerAndAddListeners(secondCamera,
+                                                                                                               cameraTrackAndDollyVariablesHolder,
+                                                                                                               graphics3DAdapter);
       secondCamera.setCameraController(secondController);
       createNewWindow(secondCamera.getCanvas());
    }

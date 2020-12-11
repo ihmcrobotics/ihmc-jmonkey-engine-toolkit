@@ -27,6 +27,7 @@ import us.ihmc.graphicsDescription.structure.Graphics3DNodeType;
 import us.ihmc.jMonkeyEngineToolkit.Graphics3DAdapter;
 import us.ihmc.jMonkeyEngineToolkit.camera.ClassicCameraController;
 import us.ihmc.jMonkeyEngineToolkit.camera.SimpleCameraTrackingAndDollyPositionHolder;
+import us.ihmc.jMonkeyEngineToolkit.camera.TrackingDollyCameraController;
 import us.ihmc.jMonkeyEngineToolkit.camera.ViewportAdapter;
 import us.ihmc.tools.inputDevices.keyboard.ModifierKeyInterface;
 
@@ -52,15 +53,15 @@ public class Graphics3DAdapterExampleOne
       PanBackAndForthTrackingAndDollyPositionHolder cameraTrackAndDollyVariablesHolder = new PanBackAndForthTrackingAndDollyPositionHolder(0.0, 2.0, 0.2);
 
       ViewportAdapter viewportAdapter = graphics3DAdapter.createNewViewport(null, false, false);
-      ClassicCameraController classicCameraController = ClassicCameraController.createClassicCameraControllerAndAddListeners(viewportAdapter,
-                                                                                                                             cameraTrackAndDollyVariablesHolder,
-                                                                                                                             graphics3DAdapter);
+      TrackingDollyCameraController classicCameraController = ClassicCameraController.createClassicCameraControllerAndAddListeners(viewportAdapter,
+                                                                                                                                   cameraTrackAndDollyVariablesHolder,
+                                                                                                                                   graphics3DAdapter);
       viewportAdapter.setCameraController(classicCameraController);
       Canvas canvas = viewportAdapter.getCanvas();
       createNewWindow(canvas);
 
       ViewportAdapter secondCamera = graphics3DAdapter.createNewViewport(null, false, false);
-      ClassicCameraController secondController = ClassicCameraController.createClassicCameraControllerAndAddListeners(secondCamera,
+      TrackingDollyCameraController secondController = ClassicCameraController.createClassicCameraControllerAndAddListeners(secondCamera,
                                                                                                                       cameraTrackAndDollyVariablesHolder,
                                                                                                                       graphics3DAdapter);
       secondCamera.setCameraController(secondController);

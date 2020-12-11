@@ -9,6 +9,7 @@ import us.ihmc.commons.thread.ThreadTools;
 import us.ihmc.euclid.tuple3D.Vector3D;
 import us.ihmc.graphicsDescription.structure.Graphics3DNode;
 import us.ihmc.jMonkeyEngineToolkit.camera.ClassicCameraController;
+import us.ihmc.jMonkeyEngineToolkit.camera.TrackingDollyCameraController;
 import us.ihmc.jMonkeyEngineToolkit.camera.ViewportAdapter;
 
 public class Graphics3DWorld implements Graphics3DFrameListener
@@ -16,7 +17,7 @@ public class Graphics3DWorld implements Graphics3DFrameListener
    private final Graphics3DAdapter graphics3dAdapter;
    private Graphics3DNode rootNode;
    private final String worldName;
-   private ClassicCameraController cameraController;
+   private TrackingDollyCameraController cameraController;
    protected ViewportAdapter viewportAdapter;
    private JFrame jFrame;
    private ConcurrentLinkedQueue<Graphics3DNode> graphics3DNodesToAddPostFrame = new ConcurrentLinkedQueue<>();

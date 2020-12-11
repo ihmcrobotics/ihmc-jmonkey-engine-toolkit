@@ -31,7 +31,7 @@ public class OffscreenBufferDepthImageServer
       this.nearClip = nearClip;
       this.farClip = farClip;
 
-      ClassicCameraController cameraController = new ClassicCameraController(adapter, viewport, cameraTrackingAndDollyPositionHolder);
+      TrackingDollyCameraController cameraController = new ClassicCameraController(adapter, viewport, cameraTrackingAndDollyPositionHolder);
       cameraController.setConfiguration(cameraConfiguration, mountList);
       viewport.setCameraController(cameraController);
 

@@ -23,6 +23,7 @@ import com.jme3.system.awt.AwtPanelsContext;
 
 import us.ihmc.graphicsDescription.structure.Graphics3DNodeType;
 import us.ihmc.jMonkeyEngineToolkit.camera.ClassicCameraController;
+import us.ihmc.jMonkeyEngineToolkit.camera.TrackingDollyCameraController;
 import us.ihmc.jMonkeyEngineToolkit.camera.ViewportAdapter;
 import us.ihmc.jMonkeyEngineToolkit.jme.util.JME3DLoaderUtils;
 import us.ihmc.jMonkeyEngineToolkit.utils.GraphicsDemoTools.PanBackAndForthTrackingAndDollyPositionHolder;
@@ -125,9 +126,9 @@ public class JMEBufferedImageAppearanceTester extends JMERenderer
       PanBackAndForthTrackingAndDollyPositionHolder cameraTrackAndDollyVariablesHolder = new PanBackAndForthTrackingAndDollyPositionHolder(0.0, 2.0, 0.2);
 
       ViewportAdapter viewportAdapter = jmeChangeAppearanceTester.createNewViewport(null, false, false);
-      ClassicCameraController classicCameraController = ClassicCameraController.createClassicCameraControllerAndAddListeners(viewportAdapter,
-                                                                                                                             cameraTrackAndDollyVariablesHolder,
-                                                                                                                             jmeChangeAppearanceTester);
+      TrackingDollyCameraController classicCameraController = ClassicCameraController.createClassicCameraControllerAndAddListeners(viewportAdapter,
+                                                                                                                                   cameraTrackAndDollyVariablesHolder,
+                                                                                                                                   jmeChangeAppearanceTester);
       viewportAdapter.setCameraController(classicCameraController);
       Canvas canvas = viewportAdapter.getCanvas();
       createNewWindow(canvas);

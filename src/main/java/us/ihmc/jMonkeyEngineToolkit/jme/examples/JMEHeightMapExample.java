@@ -16,6 +16,7 @@ import us.ihmc.graphicsDescription.structure.Graphics3DNode;
 import us.ihmc.graphicsDescription.structure.Graphics3DNodeType;
 import us.ihmc.jMonkeyEngineToolkit.camera.ClassicCameraController;
 import us.ihmc.jMonkeyEngineToolkit.camera.SimpleCameraTrackingAndDollyPositionHolder;
+import us.ihmc.jMonkeyEngineToolkit.camera.TrackingDollyCameraController;
 import us.ihmc.jMonkeyEngineToolkit.camera.ViewportAdapter;
 import us.ihmc.jMonkeyEngineToolkit.jme.JMEGraphics3DAdapter;
 
@@ -56,9 +57,9 @@ public class JMEHeightMapExample
    {
       SimpleCameraTrackingAndDollyPositionHolder cameraTrackAndDollyVariablesHolder = new SimpleCameraTrackingAndDollyPositionHolder();
       ViewportAdapter camera = graphicsAdapter.createNewViewport(null, false, false);
-      ClassicCameraController classicCameraController = ClassicCameraController.createClassicCameraControllerAndAddListeners(camera,
-                                                                                                                             cameraTrackAndDollyVariablesHolder,
-                                                                                                                             graphicsAdapter);
+      TrackingDollyCameraController classicCameraController = ClassicCameraController.createClassicCameraControllerAndAddListeners(camera,
+                                                                                                                                   cameraTrackAndDollyVariablesHolder,
+                                                                                                                                   graphicsAdapter);
       camera.setCameraController(classicCameraController);
       Canvas canvas = camera.getCanvas();
       JPanel panel = new JPanel(new BorderLayout());
