@@ -110,12 +110,12 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
       this.viewportAdapter = viewportAdapter;
       this.jFrame = jFrame;
 
-      camX = ClassicCameraController.CAMERA_START_X;
-      camY = ClassicCameraController.CAMERA_START_Y;
-      camZ = ClassicCameraController.CAMERA_START_Z;
-      fixX = 0.0;
-      fixY = 0.0;
-      fixZ = 0.6;
+      cam.setX(ClassicCameraController.CAMERA_START_X);
+      cam.setY(ClassicCameraController.CAMERA_START_Y);
+      cam.setZ(ClassicCameraController.CAMERA_START_Z);
+      fix.setX(0.0);
+      fix.setY(0.0);
+      fix.setZ(0.6);
 
       RotationMatrix zUpToYUp = new RotationMatrix();
       zUpToYUp.set(0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0);
@@ -183,12 +183,12 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
          cameraMount = mountList.getCameraMount(config.getCameraMountName());
       }
 
-      camX = config.camX;
-      camY = config.camY;
-      camZ = config.camZ;
-      fixX = config.fixX;
-      fixY = config.fixY;
-      fixZ = config.fixZ;
+      cam.setX(config.camX);
+      cam.setY(config.camY);
+      cam.setZ(config.camZ);
+      fix.setX(config.fixX);
+      fix.setY(config.fixY);
+      fix.setZ(config.fixZ);
 
       isTracking = config.isTracking;
       isTrackingX = config.isTrackingX;
@@ -434,21 +434,21 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
          {
             double trackX = cameraTrackAndDollyVariablesHolder.getTrackingX();
             if (!Double.isNaN(trackX))
-               fixX = trackX + trackDX;
+               fix.setX(trackX + trackDX);
          }
 
          if (isTrackingY)
          {
             double trackY = cameraTrackAndDollyVariablesHolder.getTrackingY();
             if (!Double.isNaN(trackY))
-               fixY = trackY + trackDY;
+               fix.setY(trackY + trackDY);
          }
 
          if (isTrackingZ)
          {
             double trackZ = cameraTrackAndDollyVariablesHolder.getTrackingZ();
             if (!Double.isNaN(trackZ))
-               fixZ = trackZ + trackDZ;
+               fix.setZ(trackZ + trackDZ);
          }
       }
 
@@ -458,21 +458,21 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
          if (isDollyX)
          {
             if (!Double.isNaN(dollyX))
-               camX = dollyX + dollyDX;
+               cam.setX(dollyX + dollyDX);
          }
 
          if (isDollyY)
          {
             double dollyY = cameraTrackAndDollyVariablesHolder.getDollyY();
             if (!Double.isNaN(dollyY))
-               camY = dollyY + dollyDY;
+               cam.setY(dollyY + dollyDY);
          }
 
          if (isDollyZ)
          {
             double dollyZ = cameraTrackAndDollyVariablesHolder.getDollyZ();
             if (!Double.isNaN(dollyZ))
-               camZ = dollyZ + dollyDZ;
+               cam.setZ(dollyZ + dollyDZ);
          }
       }
 
@@ -524,62 +524,62 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
 
          if (Math.abs(cam.getX() - storedCameraPositions.get(storedPositionIndex).getX()) <= Math.abs(camXSpeed * elapsedTransitionTime))
          {
-            camX = storedCameraPositions.get(storedPositionIndex).getX();
+            cam.setX(storedCameraPositions.get(storedPositionIndex).getX());
             numberOfDimensionsThatHaveTransitioned++;
          }
          else
          {
-            camX += camXSpeed * elapsedTransitionTime;
+            cam.addX(camXSpeed * elapsedTransitionTime);
          }
 
          if (Math.abs(cam.getY() - storedCameraPositions.get(storedPositionIndex).getY()) <= Math.abs(camYSpeed * elapsedTransitionTime))
          {
-            camY = storedCameraPositions.get(storedPositionIndex).getY();
+            cam.setY(storedCameraPositions.get(storedPositionIndex).getY());
             numberOfDimensionsThatHaveTransitioned++;
          }
          else
          {
-            camY += camYSpeed * elapsedTransitionTime;
+            cam.addY(camYSpeed * elapsedTransitionTime);
          }
 
          if (Math.abs(cam.getZ() - storedCameraPositions.get(storedPositionIndex).getZ()) <= Math.abs(camZSpeed * elapsedTransitionTime))
          {
-            camZ = storedCameraPositions.get(storedPositionIndex).getZ();
+            cam.setZ(storedCameraPositions.get(storedPositionIndex).getZ());
             numberOfDimensionsThatHaveTransitioned++;
          }
          else
          {
-            camZ += camZSpeed * elapsedTransitionTime;
+            cam.addZ(camZSpeed * elapsedTransitionTime);
          }
 
          if (Math.abs(fix.getX() - storedFixPositions.get(storedPositionIndex).getX()) <= Math.abs(fixXSpeed * elapsedTransitionTime))
          {
-            fixX = storedFixPositions.get(storedPositionIndex).getX();
+            fix.setX(storedFixPositions.get(storedPositionIndex).getX());
             numberOfDimensionsThatHaveTransitioned++;
          }
          else
          {
-            fixX += fixXSpeed * elapsedTransitionTime;
+            fix.addX(fixXSpeed * elapsedTransitionTime);
          }
 
          if (Math.abs(fix.getY() - storedFixPositions.get(storedPositionIndex).getY()) <= Math.abs(fixYSpeed * elapsedTransitionTime))
          {
-            fixY = storedFixPositions.get(storedPositionIndex).getY();
+            fix.setY(storedFixPositions.get(storedPositionIndex).getY());
             numberOfDimensionsThatHaveTransitioned++;
          }
          else
          {
-            fixY += fixYSpeed * elapsedTransitionTime;
+            fix.addY(fixYSpeed * elapsedTransitionTime);
          }
 
          if (Math.abs(fix.getZ() - storedFixPositions.get(storedPositionIndex).getZ()) <= Math.abs(fixZSpeed * elapsedTransitionTime))
          {
-            fixZ = storedFixPositions.get(storedPositionIndex).getZ();
+            fix.setZ(storedFixPositions.get(storedPositionIndex).getZ());
             numberOfDimensionsThatHaveTransitioned++;
          }
          else
          {
-            fixZ += fixZSpeed * elapsedTransitionTime;
+            fix.addZ(fixZSpeed * elapsedTransitionTime);
          }
 
          if (numberOfDimensionsThatHaveTransitioned == 6)
@@ -637,13 +637,13 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
             {
                double elapsedTime = time - keyFrameTimes.get(i);
                double totalTime = keyFrameTimes.get(i + 1) - keyFrameTimes.get(i);
-               camX = keyFrameCamPos.get(i).getX() + (keyFrameCamPos.get(i + 1).getX() - keyFrameCamPos.get(i).getX()) * elapsedTime / totalTime;
-               camY = keyFrameCamPos.get(i).getY() + (keyFrameCamPos.get(i + 1).getY() - keyFrameCamPos.get(i).getY()) * elapsedTime / totalTime;
-               camZ = keyFrameCamPos.get(i).getZ() + (keyFrameCamPos.get(i + 1).getZ() - keyFrameCamPos.get(i).getZ()) * elapsedTime / totalTime;
+               cam.setX(keyFrameCamPos.get(i).getX() + (keyFrameCamPos.get(i + 1).getX() - keyFrameCamPos.get(i).getX()) * elapsedTime / totalTime);
+               cam.setY(keyFrameCamPos.get(i).getY() + (keyFrameCamPos.get(i + 1).getY() - keyFrameCamPos.get(i).getY()) * elapsedTime / totalTime);
+               cam.setZ(keyFrameCamPos.get(i).getZ() + (keyFrameCamPos.get(i + 1).getZ() - keyFrameCamPos.get(i).getZ()) * elapsedTime / totalTime);
 
-               fixX = keyFrameFixPos.get(i).getX() + (keyFrameFixPos.get(i + 1).getX() - keyFrameFixPos.get(i).getX()) * elapsedTime / totalTime;
-               fixY = keyFrameFixPos.get(i).getY() + (keyFrameFixPos.get(i + 1).getY() - keyFrameFixPos.get(i).getY()) * elapsedTime / totalTime;
-               fixZ = keyFrameFixPos.get(i).getZ() + (keyFrameFixPos.get(i + 1).getZ() - keyFrameFixPos.get(i).getZ()) * elapsedTime / totalTime;
+               fix.setX(keyFrameFixPos.get(i).getX() + (keyFrameFixPos.get(i + 1).getX() - keyFrameFixPos.get(i).getX()) * elapsedTime / totalTime);
+               fix.setY(keyFrameFixPos.get(i).getY() + (keyFrameFixPos.get(i + 1).getY() - keyFrameFixPos.get(i).getY()) * elapsedTime / totalTime);
+               fix.setZ(keyFrameFixPos.get(i).getZ() + (keyFrameFixPos.get(i + 1).getZ() - keyFrameFixPos.get(i).getZ()) * elapsedTime / totalTime);
             }
 
             break;
@@ -656,13 +656,13 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
       if (index >= 0 && index < keyFrameCamPos.size())
       {
          storedPositionIndex = index;
-         camX = keyFrameCamPos.get(index).getX();
-         camY = keyFrameCamPos.get(index).getY();
-         camZ = keyFrameCamPos.get(index).getZ();
+         cam.setX(keyFrameCamPos.get(index).getX());
+         cam.setY(keyFrameCamPos.get(index).getY());
+         cam.setZ(keyFrameCamPos.get(index).getZ());
 
-         fixX = keyFrameFixPos.get(index).getX();
-         fixY = keyFrameFixPos.get(index).getY();
-         fixZ = keyFrameFixPos.get(index).getZ();
+         fix.setX(keyFrameFixPos.get(index).getX());
+         fix.setY(keyFrameFixPos.get(index).getY());
+         fix.setZ(keyFrameFixPos.get(index).getZ());
       }
    }
 
@@ -711,53 +711,53 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
    @Override
    public void setFixX(double fx)
    {
-      fixX = fx;
+      fix.setX(fx);
    }
 
    @Override
    public void setFixY(double fy)
    {
-      fixY = fy;
+      fix.setY(fy);
    }
 
    @Override
    public void setFixZ(double fz)
    {
-      fixZ = fz;
+      fix.setZ(fz);
    }
 
    @Override
    public void setCamX(double cx)
    {
-      camX = cx;
+      cam.setX(cx);
    }
 
    @Override
    public void setCamY(double cy)
    {
-      camY = cy;
+      cam.setY(cy);
    }
 
    @Override
    public void setCamZ(double cz)
    {
-      camZ = cz;
+      cam.setZ(cz);
    }
 
    @Override
    public void setFixPosition(double fx, double fy, double fz)
    {
-      fixX = fx;
-      fixY = fy;
-      fixZ = fz;
+      fix.setX(fx);
+      fix.setY(fy);
+      fix.setZ(fz);
    }
 
    @Override
    public void setCameraPosition(double cx, double cy, double cz)
    {
-      camX = cx;
-      camY = cy;
-      camZ = cz;
+      cam.setX(cx);
+      cam.setY(cy);
+      cam.setZ(cz);
    }
 
    private Vector3D v3d = new Vector3D();
@@ -779,8 +779,8 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
 
       if (!isDolly || !isDollyX && !isDollyY)
       {
-         camX = v3d.getX() + fix.getX();
-         camY = v3d.getY() + fix.getY();
+         cam.setX(v3d.getX() + fix.getX());
+         cam.setY(v3d.getY() + fix.getY());
       }
 
       delX0 = cam.getX() - fix.getX();
@@ -798,17 +798,17 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
       {
          if (!isDolly || !isDollyX && !isDollyY)
          {
-            camX = v3d.getX() + fix.getX();
-            camY = v3d.getY() + fix.getY();
+            cam.setX(v3d.getX() + fix.getX());
+            cam.setY(v3d.getY() + fix.getY());
          }
 
          if (!isDolly || !isDollyZ)
          {
-            camZ = v3d.getZ() + fix.getZ();
+            cam.setZ(v3d.getZ() + fix.getZ());
 
             /*
              * double factor = elevate_factor * Math.abs(offsetDistance); //cam.getZ()-fix.getZ()); if (factor <
-             * elevate_factor) factor = elevate_factor; //camZ = v3d.z + fix.getZ() + dy * elevate_factor; camZ =
+             * elevate_factor) factor = elevate_factor; //cam.setZ(v3d.z + fix.getZ() + dy * elevate_factor; camZ =
              * v3d.z + fix.getZ() + dy * factor;
              */
          }
@@ -835,8 +835,8 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
 
       if (!isDolly || !isDollyX && !isDollyY)
       {
-         camX = v3d.getX() + fix.getX();
-         camY = v3d.getY() + fix.getY();
+         cam.setX(v3d.getX() + fix.getX());
+         cam.setY(v3d.getY() + fix.getY());
       }
 
       delX0 = cam.getX() - fix.getX();
@@ -853,13 +853,13 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
       {
          if (!isDolly || !isDollyX && !isDollyY)
          {
-            camX = v3d.getX() + fix.getX();
-            camY = v3d.getY() + fix.getY();
+            cam.setX(v3d.getX() + fix.getX());
+            cam.setY(v3d.getY() + fix.getY());
          }
 
          if (!isDolly || !isDollyZ)
          {
-            camZ = v3d.getZ() + fix.getZ();
+            cam.setZ(v3d.getZ() + fix.getZ());
          }
       }
    }
@@ -877,8 +877,8 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
 
       if (!isTracking || !isTrackingX && !isTrackingY)
       {
-         fixX = cam.getX() - v3d.getX();
-         fixY = cam.getY() - v3d.getY();
+         fix.setX(cam.getX() - v3d.getX());
+         fix.setY(cam.getY() - v3d.getY());
       }
 
       delX0 = cam.getX() - fix.getX();
@@ -898,13 +898,13 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
       {
          if (!isTracking || !isTrackingX && !isTrackingY)
          {
-            fixX = cam.getX() - v3d.getX();
-            fixY = cam.getY() - v3d.getY();
+            fix.setX(cam.getX() - v3d.getX());
+            fix.setY(cam.getY() - v3d.getY());
          }
 
          if (!isTracking || !isTrackingZ)
          {
-            fixZ = cam.getZ() - v3d.getZ();
+            fix.setZ(cam.getZ() - v3d.getZ());
 
             /*
              * double factor = elevate_camera_factor * offsetDistance; //Math.abs(cam.getZ()-fix.getZ()); if (factor <
@@ -950,12 +950,12 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
          // {
          if (!isDolly || !isDollyX && !isDollyY)
          {
-            camX += offsetVec.getX();
-            camY += offsetVec.getY();
+            cam.addX(offsetVec.getX());
+            cam.addY(offsetVec.getY());
          }
 
          if (!isDolly || !isDollyZ)
-            camZ += offsetVec.getZ();
+            cam.addZ(offsetVec.getZ());
 
          // }
 
@@ -965,9 +965,9 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
          {
             v3d.normalize();
             v3d.scale(MIN_CAMERA_POSITION_TO_FIX_DISTANCE);
-            camX = v3d.getX() + fix.getX();
-            camY = v3d.getY() + fix.getY();
-            camZ = v3d.getZ() + fix.getZ();
+            cam.setX(v3d.getX() + fix.getX());
+            cam.setY(v3d.getY() + fix.getY());
+            cam.setZ(v3d.getZ() + fix.getZ());
          }
       }
 
@@ -981,15 +981,15 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
 
       double distXY = distance * Math.cos(angleZ);
 
-      camX += distXY * Math.cos(angleXY);
-      camY += distXY * Math.sin(angleXY);
-      camZ += distance * Math.sin(angleZ);
+      cam.addX(distXY * Math.cos(angleXY));
+      cam.addY(distXY * Math.sin(angleXY));
+      cam.addZ(distance * Math.sin(angleZ));
 
       if (Math.sqrt(Math.pow(cam.getX() - fix.getX(), 2) + Math.pow(cam.getY() - fix.getY(), 2) + Math.pow(cam.getY() - fix.getY(), 2)) < 1)
       {
-         fixX += distXY * Math.cos(angleXY);
-         fixY += distXY * Math.sin(angleXY);
-         fixZ += distance * Math.sin(angleZ);
+         fix.addX(distXY * Math.cos(angleXY));
+         fix.addY(distXY * Math.sin(angleXY));
+         fix.addZ(distance * Math.sin(angleZ));
       }
 
       // Vector3d v3d = new Vector3d(cam.getX() - fix.getX(), cam.getY() - fix.getY(), cam.getZ() - fix.getZ());
@@ -1004,11 +1004,11 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
       // if (!isDolly || (!isDollyX &&!isDollyY))
       // {
       // cam.getX() += offsetVec.x;
-      // camY += offsetVec.y;
+      // cam.addY(offsetVec.y;
       // }
       //
       // if (!isDolly ||!isDollyZ)
-      // camZ += offsetVec.z;
+      // cam.addZ(offsetVec.z;
    }
 
    public void pan(double dx, double dy)
@@ -1019,8 +1019,8 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
       double theta = Math.PI / 2 + Math.atan2(cam.getZ() - fix.getZ(), Math.hypot(cam.getX() - fix.getX(), cam.getY() - fix.getY()));
       if (!isTracking || !isTrackingZ)
       {
-         camZ += dy * Math.sin(theta);
-         fixZ += dy * Math.sin(theta);
+         cam.addZ(dy * Math.sin(theta));
+         fix.addZ(dy * Math.sin(theta));
       }
 
       double d = dy * Math.cos(theta);
@@ -1028,28 +1028,28 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
 
       if (!isTracking || !isTrackingY)
       {
-         camY += d * Math.sin(theta);
-         fixY += d * Math.sin(theta);
+         cam.addY(d * Math.sin(theta));
+         fix.addY(d * Math.sin(theta));
       }
 
       if (!isTracking || !isTrackingX)
       {
-         camX += d * Math.cos(theta);
-         fixX += d * Math.cos(theta);
+         cam.addX(d * Math.cos(theta));
+         fix.addX(d * Math.cos(theta));
       }
 
       theta = Math.PI / 2 + Math.atan2(cam.getY() - fix.getY(), cam.getX() - fix.getX());
 
       if (!isTracking || !isTrackingY)
       {
-         camY -= dx * Math.sin(theta);
-         fixY -= dx * Math.sin(theta);
+         cam.subY(dx * Math.sin(theta));
+         fix.subY(dx * Math.sin(theta));
       }
 
       if (!isTracking || !isTrackingX)
       {
-         camX -= dx * Math.cos(theta);
-         fixX -= dx * Math.cos(theta);
+         cam.subX(dx * Math.cos(theta));
+         fix.subX(dx * Math.cos(theta));
       }
    }
 
@@ -1064,34 +1064,34 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
 
       if (!isTracking || !isTrackingZ)
       {
-         camZ += dz;
-         fixZ += dz;
+         cam.addZ(dz);
+         fix.addZ(dz);
       }
 
       if (!isTracking || !isTrackingY)
       {
-         camY += dy * Math.sin(yTiltAngle);
-         fixY += dy * Math.sin(yTiltAngle);
+         cam.addY(dy * Math.sin(yTiltAngle));
+         fix.addY(dy * Math.sin(yTiltAngle));
       }
 
       if (!isTracking || !isTrackingX)
       {
-         camX += dy * Math.cos(yTiltAngle);
-         fixX += dy * Math.cos(yTiltAngle);
+         cam.addX(dy * Math.cos(yTiltAngle));
+         fix.addX(dy * Math.cos(yTiltAngle));
       }
 
       double xTiltAngle = yTiltAngle + Math.PI / 2;
 
       if (!isTracking || !isTrackingY)
       {
-         camY -= dx * Math.sin(xTiltAngle);
-         fixY -= dx * Math.sin(xTiltAngle);
+         cam.subY(dx * Math.sin(xTiltAngle));
+         fix.subY(dx * Math.sin(xTiltAngle));
       }
 
       if (!isTracking || !isTrackingX)
       {
-         camX -= dx * Math.cos(xTiltAngle);
-         fixX -= dx * Math.cos(xTiltAngle);
+         cam.subX(dx * Math.cos(xTiltAngle));
+         fix.subX(dx * Math.cos(xTiltAngle));
       }
    }
 
