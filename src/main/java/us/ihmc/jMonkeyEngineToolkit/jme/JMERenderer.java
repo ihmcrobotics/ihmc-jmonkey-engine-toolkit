@@ -721,7 +721,7 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
 
          updateSpotLights();
 
-         updateCameras();
+         updateCameras(tpf);
       }
 
       if (count > 1000 && !tickUpdated)
@@ -859,14 +859,14 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
       }
    }
 
-   private synchronized void updateCameras()
+   private synchronized void updateCameras(float tpf)
    {
       if (alreadyClosing)
          return;
 
       for (JMEViewportAdapter viewportAdapter : viewportAdapters)
       {
-         viewportAdapter.updateCamera();
+         viewportAdapter.updateCamera(tpf);
       }
    }
 

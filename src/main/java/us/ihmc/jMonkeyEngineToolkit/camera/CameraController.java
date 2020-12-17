@@ -4,7 +4,7 @@ import us.ihmc.euclid.transform.RigidBodyTransform;
 
 public interface CameraController
 {
-   public void computeTransform(RigidBodyTransform cameraTransform);
+   public void computeTransform(RigidBodyTransform cameraTransform, float tpf);
 
    public double getHorizontalFieldOfViewInRadians();
 

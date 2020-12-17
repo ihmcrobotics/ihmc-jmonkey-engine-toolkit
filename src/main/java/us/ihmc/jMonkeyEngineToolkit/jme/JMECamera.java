@@ -177,11 +177,11 @@ public class JMECamera extends Camera implements CameraAdapter
       super.setRotation(rotation);
    }
 
-   public void updateCamera()
+   public void updateCamera(float tpf)
    {
       if (cameraController != null)
       {
-         cameraController.computeTransform(cameraTransform);
+         cameraController.computeTransform(cameraTransform, tpf);
          cameraTransform.get(cameraRotation, cameraPosition);
 
          setLocationInZUpCoordinates(cameraPosition);

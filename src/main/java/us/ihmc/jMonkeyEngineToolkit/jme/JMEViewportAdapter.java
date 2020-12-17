@@ -362,9 +362,9 @@ public class JMEViewportAdapter extends ViewportAdapter implements InputMapSette
       return convertToPhysicalDimension(getHeight());
    }
 
-   public void updateCamera()
+   public void updateCamera(float tpf)
    {
-      jmeCamera.updateCamera();
+      jmeCamera.updateCamera(tpf);
    }
 
    @Override
