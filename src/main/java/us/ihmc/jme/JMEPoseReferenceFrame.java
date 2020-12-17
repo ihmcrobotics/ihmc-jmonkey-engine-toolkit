@@ -1,4 +1,4 @@
-package us.ihmc.jMonkeyEngineToolkit.camera;
+package us.ihmc.jme;
 
 import us.ihmc.euclid.geometry.interfaces.Pose3DReadOnly;
 import us.ihmc.euclid.matrix.RotationMatrix;
@@ -20,18 +20,18 @@ import us.ihmc.euclid.tuple3D.Point3D;
 import us.ihmc.euclid.tuple3D.interfaces.Point3DReadOnly;
 import us.ihmc.euclid.tuple4D.interfaces.QuaternionReadOnly;
 
-public class FocusBasedCameraReferenceFrame extends ReferenceFrame
+public class JMEPoseReferenceFrame extends ReferenceFrame
 {
    private final FramePose3D originPose;
 
-   public FocusBasedCameraReferenceFrame(String frameName, ReferenceFrame parentFrame)
+   public JMEPoseReferenceFrame(String frameName, ReferenceFrame parentFrame)
    {
       super(frameName, parentFrame, parentFrame.isAStationaryFrame(), false);
 
       originPose = new FramePose3D(parentFrame);
    }
 
-   public FocusBasedCameraReferenceFrame(String frameName, FramePose3DReadOnly pose)
+   public JMEPoseReferenceFrame(String frameName, FramePose3DReadOnly pose)
    {
       this(frameName, pose.getReferenceFrame());
       setPoseAndUpdate(pose);
@@ -63,7 +63,7 @@ public class FocusBasedCameraReferenceFrame extends ReferenceFrame
       this.update();
    }
 
-   public void setPoseAndUpdate(FocusBasedCameraReferenceFrame poseReferenceFrame)
+   public void setPoseAndUpdate(JMEPoseReferenceFrame poseReferenceFrame)
    {
       originPose.set(poseReferenceFrame.originPose);
       this.update();
@@ -248,12 +248,12 @@ public class FocusBasedCameraReferenceFrame extends ReferenceFrame
       originPose.interpolate(framePose1, framePose2, alpha);
    }
 
-   public void interpolate(FocusBasedCameraReferenceFrame poseReferenceFrame1, FocusBasedCameraReferenceFrame poseReferenceFrame2, double alpha)
+   public void interpolate(JMEPoseReferenceFrame poseReferenceFrame1, JMEPoseReferenceFrame poseReferenceFrame2, double alpha)
    {
       originPose.interpolate(poseReferenceFrame1.originPose, poseReferenceFrame2.originPose, alpha);
    }
 
-   public boolean epsilonEquals(FocusBasedCameraReferenceFrame otherPoseReferenceFrame, double epsilon)
+   public boolean epsilonEquals(JMEPoseReferenceFrame otherPoseReferenceFrame, double epsilon)
    {
       return originPose.epsilonEquals(otherPoseReferenceFrame.originPose, epsilon);
    }
