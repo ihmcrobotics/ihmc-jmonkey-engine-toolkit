@@ -627,7 +627,7 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
    @Override
    public void update()
    {
-      
+
    }
 
    @Override

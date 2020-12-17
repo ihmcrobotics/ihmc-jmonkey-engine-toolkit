@@ -1298,7 +1298,7 @@ public class FocusBasedCopyCameraController implements TrackingDollyCameraContro
    private Vector3D zAxis = new Vector3D(), yAxis = new Vector3D(), xAxis = new Vector3D();
 
    @Override
-   public void computeTransform(RigidBodyTransform currXform)
+   public void computeTransform(RigidBodyTransform currXform, float tpf)
    {
       update();
       CameraMountInterface cameraMount = getCameraMount();

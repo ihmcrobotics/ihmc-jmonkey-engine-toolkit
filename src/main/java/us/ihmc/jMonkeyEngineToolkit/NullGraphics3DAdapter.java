@@ -166,7 +166,7 @@ public class NullGraphics3DAdapter implements Graphics3DAdapter
                }
 
                @Override
-               public void computeTransform(RigidBodyTransform cameraTransform)
+               public void computeTransform(RigidBodyTransform cameraTransform, float tpf)
                {
                }
 

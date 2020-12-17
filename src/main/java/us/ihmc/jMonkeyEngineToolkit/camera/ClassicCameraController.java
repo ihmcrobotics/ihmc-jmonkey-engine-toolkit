@@ -93,18 +93,18 @@ public class ClassicCameraController implements TrackingDollyCameraController
 
    private KeyListener keyListener;
 
-   public static FocusBasedCopyCameraController createClassicCameraControllerAndAddListeners(ViewportAdapter viewportAdapter,
+   public static TrackingDollyCameraController createClassicCameraControllerAndAddListeners(ViewportAdapter viewportAdapter,
                                                                                              CameraTrackingAndDollyPositionHolder cameraTrackAndDollyVariablesHolder,
                                                                                              Graphics3DAdapter graphics3dAdapter)
    {
       return createClassicCameraControllerAndAddListeners(viewportAdapter, cameraTrackAndDollyVariablesHolder, graphics3dAdapter, null);
    }
 
-   public static FocusBasedCopyCameraController createClassicCameraControllerAndAddListeners(ViewportAdapter viewportAdapter,
+   public static TrackingDollyCameraController createClassicCameraControllerAndAddListeners(ViewportAdapter viewportAdapter,
                                                                                              CameraTrackingAndDollyPositionHolder cameraTrackAndDollyVariablesHolder,
                                                                                              Graphics3DAdapter graphics3dAdapter, JFrame jFrame)
    {
-      return new FocusBasedCopyCameraController(graphics3dAdapter, viewportAdapter, cameraTrackAndDollyVariablesHolder, jFrame, true);
+      return new FocusBasedCameraController(graphics3dAdapter, viewportAdapter, cameraTrackAndDollyVariablesHolder, jFrame, true);
    }
 
    public ClassicCameraController(Graphics3DAdapter graphics3dAdapter,
