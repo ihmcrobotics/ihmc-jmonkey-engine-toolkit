@@ -2,6 +2,11 @@ package us.ihmc.jMonkeyEngineToolkit.camera;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.input.InputManager;
+import com.jme3.input.KeyInput;
+import com.jme3.input.MouseInput;
+import com.jme3.input.controls.KeyTrigger;
+import com.jme3.input.controls.MouseAxisTrigger;
+import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.math.Vector3f;
 import us.ihmc.commons.MathTools;
 import us.ihmc.euclid.Axis3D;
@@ -18,10 +23,13 @@ import us.ihmc.graphicsDescription.Graphics3DObject;
 import us.ihmc.graphicsDescription.appearance.YoAppearance;
 import us.ihmc.graphicsDescription.input.keyboard.KeyListener;
 import us.ihmc.graphicsDescription.input.mouse.MouseButton;
+import us.ihmc.graphicsDescription.input.mouse.MouseListener;
 import us.ihmc.graphicsDescription.structure.Graphics3DNode;
 import us.ihmc.jMonkeyEngineToolkit.Graphics3DAdapter;
 import us.ihmc.jMonkeyEngineToolkit.jme.JMEGraphics3DAdapter;
+import us.ihmc.jme.JMEInputMapperHelper;
 import us.ihmc.jme.JMEPoseReferenceFrame;
+import us.ihmc.log.LogTools;
 import us.ihmc.tools.inputDevices.keyboard.Key;
 
 import javax.swing.*;
@@ -77,7 +85,29 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
 
    private final CameraTrackingAndDollyPositionHolder cameraTrackAndDollyVariablesHolder;
 
-   private KeyListener keyListener;
+   //      JMEInputMapperHelper inputMapper = new JMEInputMapperHelper(inputManager);
+   //      inputMapper.addAnalogMapping("onMouseYUp", new MouseAxisTrigger(MouseInput.AXIS_Y, false), this::onMouseYUp);
+   //      inputMapper.addAnalogMapping("onMouseYDown", new MouseAxisTrigger(MouseInput.AXIS_Y, true), this::onMouseYDown);
+   //      inputMapper.addAnalogMapping("onMouseXLeft", new MouseAxisTrigger(MouseInput.AXIS_X, true), this::onMouseXLeft);
+   //      inputMapper.addAnalogMapping("onMouseXRight", new MouseAxisTrigger(MouseInput.AXIS_X, false), this::onMouseXRight);
+   //      inputMapper.addAnalogMapping("onMouseScrollDown", new MouseAxisTrigger(MouseInput.AXIS_WHEEL, false), this::onMouseScrollDown);
+   //      inputMapper.addAnalogMapping("onMouseScrollUp", new MouseAxisTrigger(MouseInput.AXIS_WHEEL, true), this::onMouseScrollUp);
+   //      inputMapper.addActionMapping("onMouseButtonLeft", new MouseButtonTrigger(MouseInput.BUTTON_LEFT), this::onMouseButtonLeft);
+   //      inputMapper.addActionMapping("onMouseButtonRight", new MouseButtonTrigger(MouseInput.BUTTON_RIGHT), this::onMouseButtonRight);
+   //      inputMapper.addActionMapping("onKeyW", new KeyTrigger(KeyInput.KEY_W), this::onKeyW);
+   //      inputMapper.addActionMapping("onKeyA", new KeyTrigger(KeyInput.KEY_A), this::onKeyA);
+   //      inputMapper.addActionMapping("onKeyS", new KeyTrigger(KeyInput.KEY_S), this::onKeyS);
+   //      inputMapper.addActionMapping("onKeyD", new KeyTrigger(KeyInput.KEY_D), this::onKeyD);
+   //      inputMapper.addActionMapping("onKeyQ", new KeyTrigger(KeyInput.KEY_Q), this::onKeyQ);
+   //      inputMapper.addActionMapping("onKeyZ", new KeyTrigger(KeyInput.KEY_Z), this::onKeyZ);
+   //
+   //      jmeGraphics3DAdapter.getRenderer().getContextManager().registerInputMapSetter(inputMapper::build);
+
+   private KeyListener keyListener = new PrivateKeyListener();
+   private MouseListener mouseListener = new PrivateMouseListener();
+   //      focusPointPose.changeFrame(zUpFrame);
+   private ReferenceFrame worldFrame = ReferenceFrame.getWorldFrame();
+   private final RotationMatrix zUpToYUp;
 
    public FocusBasedCameraController(Graphics3DAdapter graphics3dAdapter,
                                      ViewportAdapter viewportAdapter,
@@ -92,7 +122,7 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
       AssetManager assetManager = jmeGraphics3DAdapter.getRenderer().getAssetManager();
       InputManager inputManager = jmeGraphics3DAdapter.getRenderer().getInputManager();
 
-      RotationMatrix zUpToYUp = new RotationMatrix();
+      zUpToYUp = new RotationMatrix();
       zUpToYUp.set(0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0);
       zUpFrame.setOrientationAndUpdate(zUpToYUp);
 
@@ -113,34 +143,15 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
 //      focusPointSphere = new Geometry("FocusPointViz", colorMeshBuilder.generateMesh());
 //      focusPointSphere.setMaterial(colorMeshBuilder.generateMaterial(assetManager));
 
-      focusPointPose.changeFrame(zUpFrame);
+//      focusPointPose.changeFrame(zUpFrame);
       changeCameraPosition(-2.0, 0.7, 1.0);
 
       updateCameraPose();
 
-//      JMEInputMapperHelper inputMapper = new JMEInputMapperHelper(inputManager);
-//      inputMapper.addAnalogMapping("onMouseYUp", new MouseAxisTrigger(MouseInput.AXIS_Y, false), this::onMouseYUp);
-//      inputMapper.addAnalogMapping("onMouseYDown", new MouseAxisTrigger(MouseInput.AXIS_Y, true), this::onMouseYDown);
-//      inputMapper.addAnalogMapping("onMouseXLeft", new MouseAxisTrigger(MouseInput.AXIS_X, true), this::onMouseXLeft);
-//      inputMapper.addAnalogMapping("onMouseXRight", new MouseAxisTrigger(MouseInput.AXIS_X, false), this::onMouseXRight);
-//      inputMapper.addAnalogMapping("onMouseScrollUp", new MouseAxisTrigger(MouseInput.AXIS_WHEEL, false), this::onMouseScrollUp);
-//      inputMapper.addAnalogMapping("onMouseScrollDown", new MouseAxisTrigger(MouseInput.AXIS_WHEEL, true), this::onMouseScrollDown);
-//      inputMapper.addActionMapping("onMouseButtonLeft", new MouseButtonTrigger(MouseInput.BUTTON_LEFT), this::onMouseButtonLeft);
-//      inputMapper.addActionMapping("onMouseButtonRight", new MouseButtonTrigger(MouseInput.BUTTON_RIGHT), this::onMouseButtonRight);
-//      inputMapper.addActionMapping("onKeyW", new KeyTrigger(KeyInput.KEY_W), this::onKeyW);
-//      inputMapper.addActionMapping("onKeyA", new KeyTrigger(KeyInput.KEY_A), this::onKeyA);
-//      inputMapper.addActionMapping("onKeyS", new KeyTrigger(KeyInput.KEY_S), this::onKeyS);
-//      inputMapper.addActionMapping("onKeyD", new KeyTrigger(KeyInput.KEY_D), this::onKeyD);
-//      inputMapper.addActionMapping("onKeyQ", new KeyTrigger(KeyInput.KEY_Q), this::onKeyQ);
-//      inputMapper.addActionMapping("onKeyZ", new KeyTrigger(KeyInput.KEY_Z), this::onKeyZ);
-//      inputMapper.build();
-
-      keyListener = new PrivateKeyListener();
-
       if (addListeners)
       {
          graphics3dAdapter.addKeyListener(keyListener);
-         graphics3dAdapter.addMouseListener(this::mouseDragged);
+         graphics3dAdapter.addMouseListener(mouseListener);
       }
    }
 
@@ -182,14 +193,15 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
 
       focusPointPose.changeFrame(ReferenceFrame.getWorldFrame());
       focusPointPose.setOrientation(longitudeAxisAngle);
-      focusPointPose.changeFrame(zUpFrame);
+      focusPointPose.changeFrame(worldFrame);
 
 //      focusPointSphere.setLocalTranslation((float) focusPointPose.getX(), (float) focusPointPose.getY(), (float) focusPointPose.getZ());
 //      focusPointSphere.setLocalScale((float) (0.0035 * zoom));
 
       fixPointNode.getTranslation().set(focusPointPose.getPosition());
 
-      cameraPose.setToZero(zUpFrame);
+//      cameraPose.setToZero(zUpFrame);
+      cameraPose.setToZero(worldFrame);
       cameraPose.appendTranslation(focusPointPose.getPosition());
       cameraPose.changeFrame(ReferenceFrame.getWorldFrame());
       cameraPose.appendRotation(cameraOrientationOffset);
@@ -199,6 +211,8 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
       cameraPose.appendTranslation(0.0, 0.0, -zoom);
 
       cameraPose.get(cameraTransform);
+//      cameraTransform.invert();
+//      cameraTransform.transform(zUpToYUp);
 
       translationJME.set(cameraPose.getPosition().getX32(), cameraPose.getPosition().getY32(), cameraPose.getPosition().getZ32());
       orientationJME.set(cameraPose.getOrientation().getX32(),
@@ -215,6 +229,7 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
       {
          latitude += latitudeSpeed * value;
       }
+      LogTools.info("Mouse Y up: {}", latitude);
    }
 
    private void onMouseYDown(float value, float tpf)
@@ -223,6 +238,7 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
       {
          latitude -= latitudeSpeed * value;
       }
+      LogTools.info("Mouse Y down: {}", latitude);
    }
 
    private void onMouseXLeft(float value, float tpf)
@@ -231,6 +247,7 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
       {
          longitude -= longitudeSpeed * value;
       }
+      LogTools.info("Mouse X left: {}", longitude);
    }
 
    private void onMouseXRight(float value, float tpf)
@@ -239,23 +256,27 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
       {
          longitude += longitudeSpeed * value;
       }
-   }
-
-   private void onMouseScrollUp(float value, float tpf)
-   {
-      zoom = zoom - zoom * zoomSpeedFactor;
-      //      zoom -= zoomSpeedFactor * value;
+      LogTools.info("Mouse X right: {}", longitude);
    }
 
    private void onMouseScrollDown(float value, float tpf)
    {
+      zoom = zoom - zoom * zoomSpeedFactor;
+      LogTools.info("Zoom scroll down: {}", zoom);
+      //      zoom -= zoomSpeedFactor * value;
+   }
+
+   private void onMouseScrollUp(float value, float tpf)
+   {
       zoom = zoom + zoom * zoomSpeedFactor;
+      LogTools.info("Zoom scroll up: {}", zoom);
       //      zoom += zoomSpeedFactor * value;
    }
 
    private void onMouseButtonLeft(boolean isPressed, float tpf)
    {
       leftMousePressed = isPressed;
+      LogTools.info("Left mouse pressed: {}", isPressed);
    }
 
    private void onMouseButtonRight(boolean isPressed, float tpf)
@@ -263,20 +284,56 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
 
    }
 
-   private void mouseDragged(MouseButton mouseButton, double dx, double dy)
+   class PrivateMouseListener implements MouseListener
    {
-      switch (mouseButton)
+      @Override
+      public void mouseDragged(MouseButton mouseButton, double dx, double dy)
       {
-         case LEFT:
-            latitude += latitudeSpeed * dy;
-            longitude -= longitudeSpeed * dx;
-            break;
-         case RIGHT:
-            break;
-         case MIDDLE:
-            break;
-         case LEFTRIGHT:
-            break;
+         // undo mouseFactor from JMEInputManager
+         dx /= 10.0;
+         dy /= -10.0;
+
+         if (dx != 0)
+         {
+            LogTools.info("Mouse X: {}", dx > 0 ? "right" : "left");
+         }
+         else if (dy != 0)
+         {
+            LogTools.info("Mouse Y: {}", dy > 0 ? "up" : "down");
+         }
+         else
+         {
+            //         LogTools.info("Mouse X: {}  Mouse Y: {}", dx > 0 ? "right" : "left", dy > 0 ? "up" : "down");
+         }
+
+         switch (mouseButton)
+         {
+            case LEFT:
+               latitude += latitudeSpeed * dy;
+               longitude += longitudeSpeed * dx;
+               break;
+            case RIGHT:
+               break;
+            case MIDDLE:
+               break;
+            case LEFTRIGHT:
+               break;
+         }
+      }
+
+      @Override
+      public void scrolled(double amount)
+      {
+         if (amount > 0.0)
+         {
+            LogTools.info("Zoom in");
+            zoom = zoom - zoom * zoomSpeedFactor;
+         }
+         else
+         {
+            LogTools.info("Zoom out");
+            zoom = zoom + zoom * zoomSpeedFactor;
+         }
       }
    }
 
@@ -374,32 +431,61 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
    {
       if (isWPressed)
       {
-         focusPointPose.appendTranslation(0.0, 0.0, translateSpeed * tpf);
+         System.out.println("Forward");
+         focusPointPose.appendTranslation(0.0, translateSpeed * tpf, 0.0);
       }
       if (isAPressed)
       {
-         focusPointPose.appendTranslation(translateSpeed * tpf, 0.0, 0.0);
+         System.out.println("Left");
+         focusPointPose.appendTranslation(0.0, 0.0, -translateSpeed * tpf);
       }
       if (isSPressed)
       {
-         focusPointPose.appendTranslation(0.0, 0.0, -translateSpeed * tpf);
+         System.out.println("Back");
+         focusPointPose.appendTranslation(0.0, -translateSpeed * tpf, 0.0);
       }
       if (isDPressed)
       {
-         focusPointPose.appendTranslation(-translateSpeed * tpf, 0.0, 0.0);
+         System.out.println("Right");
+         focusPointPose.appendTranslation(0.0, 0.0, translateSpeed * tpf);
       }
       if (isQPressed)
       {
-         focusPointPose.appendTranslation(0.0, translateSpeed * tpf, 0.0);
+         System.out.println("Up");
+         focusPointPose.appendTranslation(-translateSpeed * tpf, 0.0, 0.0);
       }
       if (isZPressed)
       {
-         focusPointPose.appendTranslation(0.0, -translateSpeed * tpf, 0.0);
+         System.out.println("Down");
+         focusPointPose.appendTranslation(translateSpeed * tpf, 0.0, 0.0);
       }
+
+//      focusPointPose.getPosition().setToZero();
+//      changeCameraPosition(10.0, 10.0, 10.0);
 
       updateCameraPose();
 
-      cameraTransform.set(this.cameraTransform);
+      Vector3D zAxis = new Vector3D();
+      Vector3D yAxis = new Vector3D();
+      Vector3D xAxis = new Vector3D();
+      RotationMatrix rotationMatrix = new RotationMatrix();
+
+      xAxis.set(focusPointPose.getPosition());
+
+      xAxis.sub(cameraPose.getPosition());
+      xAxis.normalize();
+      zAxis.set(0.0, 0.0, 1.0);
+      yAxis.cross(zAxis, xAxis);
+      yAxis.normalize();
+      zAxis.cross(xAxis, yAxis);
+
+      rotationMatrix.setColumns(xAxis, yAxis, zAxis);
+
+      cameraTransform.setRotationAndZeroTranslation(rotationMatrix);
+      cameraTransform.getTranslation().set(cameraPose.getPosition());
+      cameraTransform.getRotation().normalize();
+
+//      cameraTransform.set(this.cameraTransform);
    }
 
    @Override

@@ -7,5 +7,8 @@ public interface InputMapSetter
 {
    public void setDefaultInputMappings();
 
-   public void reset();
+   public default void reset()
+   {
+
+   }
 }

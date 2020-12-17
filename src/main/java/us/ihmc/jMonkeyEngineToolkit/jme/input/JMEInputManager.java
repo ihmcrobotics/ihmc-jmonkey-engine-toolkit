@@ -32,6 +32,7 @@ import us.ihmc.jMonkeyEngineToolkit.jme.JMEGraphics3DNode;
 import us.ihmc.jMonkeyEngineToolkit.jme.JMERenderer;
 import us.ihmc.jMonkeyEngineToolkit.jme.util.JMEDataTypeUtils;
 import us.ihmc.jMonkeyEngineToolkit.jme.util.JMEGeometryUtils;
+import us.ihmc.log.LogTools;
 import us.ihmc.tools.inputDevices.keyboard.Key;
 
 public class JMEInputManager implements AnalogListener, ActionListener, Mouse3DListener
@@ -174,6 +175,17 @@ public class JMEInputManager implements AnalogListener, ActionListener, Mouse3DL
    {
       synchronized (controllerConch)
       {
+         if (name.contains("ScrollUp"))
+         {
+            LogTools.info("Scroll up");
+            mouseListenerHolder.scrolled(value);
+         }
+         else if (name.contains("ScrollDown"))
+         {
+            LogTools.info("Scroll down");
+            mouseListenerHolder.scrolled(-value);
+         }
+
          if (!leftMouseClicked && !middleMouseClicked && !rightMouseClicked)
             return;
 
@@ -232,7 +244,10 @@ public class JMEInputManager implements AnalogListener, ActionListener, Mouse3DL
       inputManager.addMapping("MouseUp", new MouseAxisTrigger(MouseInput.AXIS_Y, true));
       inputManager.addMapping("MouseDown", new MouseAxisTrigger(MouseInput.AXIS_Y, false));
 
-      inputManager.addListener(this, "MouseLeft", "MouseRight", "MouseUp", "MouseDown");
+      inputManager.addMapping("ScrollUp", new MouseAxisTrigger(MouseInput.AXIS_WHEEL, false));
+      inputManager.addMapping("ScrollDown", new MouseAxisTrigger(MouseInput.AXIS_WHEEL, true));
+
+      inputManager.addListener(this, "MouseLeft", "MouseRight", "MouseUp", "MouseDown", "ScrollUp", "ScrollDown");
       inputManager.addListener(this, "LeftMouseClick", "MiddleMouseClick", "RightMouseClick");
 
       if (mouse3DJoystick != null)

@@ -3,6 +3,7 @@ package us.ihmc.jMonkeyEngineToolkit.jme;
 import java.util.ArrayList;
 
 import us.ihmc.jMonkeyEngineToolkit.ContextManager;
+import us.ihmc.log.LogTools;
 
 /**
  * User: Matt Date: 1/11/13
@@ -66,6 +67,8 @@ public abstract class JMEContextManager implements ContextManager
       {
          inputMapSetter.setDefaultInputMappings();
       }
+
+      LogTools.info("Reset input mappings.");
    }
 
    protected void resetViewport(JMEViewportAdapter viewport)
