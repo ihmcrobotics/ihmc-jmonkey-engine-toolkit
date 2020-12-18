@@ -1,19 +1,14 @@
 package us.ihmc.jMonkeyEngineToolkit.camera;
 
-import com.jme3.math.Vector3f;
 import us.ihmc.commons.MathTools;
 import us.ihmc.euclid.Axis3D;
 import us.ihmc.euclid.axisAngle.AxisAngle;
-import us.ihmc.euclid.geometry.Pose3D;
-import us.ihmc.euclid.matrix.RotationMatrix;
 import us.ihmc.euclid.referenceFrame.FramePose3D;
-import us.ihmc.euclid.referenceFrame.ReferenceFrame;
 import us.ihmc.euclid.shape.primitives.Sphere3D;
 import us.ihmc.euclid.tools.EuclidCoreTools;
 import us.ihmc.euclid.transform.RigidBodyTransform;
 import us.ihmc.euclid.tuple3D.Point3D;
 import us.ihmc.euclid.tuple3D.Vector3D;
-import us.ihmc.euclid.yawPitchRoll.YawPitchRoll;
 import us.ihmc.graphicsDescription.Graphics3DObject;
 import us.ihmc.graphicsDescription.appearance.YoAppearance;
 import us.ihmc.graphicsDescription.input.keyboard.KeyListener;
@@ -22,7 +17,6 @@ import us.ihmc.graphicsDescription.input.mouse.MouseListener;
 import us.ihmc.graphicsDescription.structure.Graphics3DNode;
 import us.ihmc.jMonkeyEngineToolkit.Graphics3DAdapter;
 import us.ihmc.jMonkeyEngineToolkit.jme.JMEGraphics3DAdapter;
-import us.ihmc.jme.JMEPoseReferenceFrame;
 import us.ihmc.log.LogTools;
 import us.ihmc.tools.inputDevices.keyboard.Key;
 
@@ -31,14 +25,8 @@ import java.util.ArrayList;
 
 public class FocusBasedCameraController implements TrackingDollyCameraController
 {
-   private final JMEPoseReferenceFrame zUpFrame = new JMEPoseReferenceFrame("ZUpFrame", ReferenceFrame.getWorldFrame());
    private final FramePose3D cameraPose = new FramePose3D();
    private final RigidBodyTransform cameraTransform = new RigidBodyTransform();
-
-   private final AxisAngle latitudeAxisAngle = new AxisAngle();
-   private final AxisAngle longitudeAxisAngle = new AxisAngle();
-
-   private final RotationMatrix cameraOrientationOffset = new RotationMatrix();
 
    private double zoomSpeedFactor = 0.1;
    private double latitudeSpeed = 5.0;
@@ -46,12 +34,11 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
    private double translateSpeed = 5.0;
 
    private final FramePose3D focusPointPose = new FramePose3D();
-   private final Graphics3DNode fixPointNode = new Graphics3DNode("cameraFixPoint",
-                                                                  new Graphics3DObject(new Sphere3D(0.01),
-                                                                                       YoAppearance.RGBColor(1.0, 0.0, 0.0, 0.5)));
+   private final RigidBodyTransform focusPointTransform = new RigidBodyTransform();
+   private final Graphics3DNode focusPointNode;
+   private final AxisAngle longitudeAxisAngle = new AxisAngle();
    private double latitude = 0.0;
    private double longitude = 0.0;
-   private double roll;
    private double zoom = 10.0;
 
    private final Vector3D up;
@@ -59,10 +46,6 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
    private final Vector3D left;
    private final Vector3D down;
 
-   private final Vector3f translationJME = new Vector3f();
-   private final com.jme3.math.Quaternion orientationJME = new com.jme3.math.Quaternion();
-
-   private boolean leftMousePressed = false;
    private boolean isWPressed = false;
    private boolean isAPressed = false;
    private boolean isSPressed = false;
@@ -78,9 +61,7 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
 
    private KeyListener keyListener = new PrivateKeyListener();
    private MouseListener mouseListener = new PrivateMouseListener();
-   private final RotationMatrix zUpToYUp;
 
-   private RigidBodyTransform focusPointTransform = new RigidBodyTransform();
 
    public FocusBasedCameraController(Graphics3DAdapter graphics3dAdapter,
                                      ViewportAdapter viewportAdapter,
@@ -93,10 +74,6 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
 
       JMEGraphics3DAdapter jmeGraphics3DAdapter = (JMEGraphics3DAdapter) graphics3dAdapter;
 
-      zUpToYUp = new RotationMatrix();
-      zUpToYUp.set(0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0);
-      zUpFrame.setOrientationAndUpdate(zUpToYUp);
-
       up = new Vector3D(0.0, 0.0, 1.0);
       forward = new Vector3D(1.0, 0.0, 0.0);
       left = new Vector3D();
@@ -107,13 +84,15 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
       Vector3D cameraYAxis = new Vector3D(up);
       Vector3D cameraXAxis = new Vector3D();
       cameraXAxis.cross(cameraYAxis, cameraZAxis);
-      cameraOrientationOffset.setColumns(cameraXAxis, cameraYAxis, cameraZAxis);
 
       changeCameraPosition(-2.0, 0.7, 1.0);
 
       updateCameraPose();
 
-      jmeGraphics3DAdapter.addRootNode(fixPointNode);
+      focusPointNode = new Graphics3DNode("cameraFixPoint",
+                                          new Graphics3DObject(new Sphere3D(0.01),
+                                                             YoAppearance.RGBColor(1.0, 0.0, 0.0, 0.5)));
+      jmeGraphics3DAdapter.addRootNode(focusPointNode);
 
       if (addListeners)
       {
@@ -177,13 +156,13 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
       updateCameraPose();
 
       focusPointPose.get(focusPointTransform);
-      fixPointNode.setTransform(focusPointTransform);
+      focusPointNode.setTransform(focusPointTransform);
 
       // cam appears to be x forward
-      cameraTransform.set(this.cameraTransform);
+      cameraTransform.set(updateCameraPose());
    }
 
-   private void updateCameraPose()
+   private RigidBodyTransform updateCameraPose()
    {
       zoom = MathTools.clamp(zoom, 0.1, 100.0);
       latitude = MathTools.clamp(latitude, Math.PI / 1.99); // don't let it get close to the singularities
@@ -197,6 +176,8 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
       cameraTransform.appendYawRotation(-longitude);
       cameraTransform.appendPitchRotation(-latitude);
       cameraTransform.appendTranslation(-zoom, 0.0, 0.0);
+
+      return cameraTransform;
    }
 
    class PrivateMouseListener implements MouseListener
@@ -547,7 +528,7 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
    @Override
    public void setFixX(double fx)
    {
-
+      
    }
 
    @Override
@@ -649,7 +630,7 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
    @Override
    public void setCameraPosition(double posX, double posY, double posZ)
    {
-//      changeCameraPosition(posX, posY, posZ);
+      changeCameraPosition(posX, posY, posZ);
    }
 
    @Override
