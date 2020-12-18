@@ -16,8 +16,6 @@ import us.ihmc.graphicsDescription.input.mouse.MouseButton;
 import us.ihmc.graphicsDescription.input.mouse.MouseListener;
 import us.ihmc.graphicsDescription.structure.Graphics3DNode;
 import us.ihmc.jMonkeyEngineToolkit.Graphics3DAdapter;
-import us.ihmc.jMonkeyEngineToolkit.jme.JMEGraphics3DAdapter;
-import us.ihmc.log.LogTools;
 import us.ihmc.tools.inputDevices.keyboard.Key;
 
 import javax.swing.*;
@@ -31,7 +29,7 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
    private double zoomSpeedFactor = 0.1;
    private double latitudeSpeed = 5.0;
    private double longitudeSpeed = 5.0;
-   private double translateSpeed = 5.0;
+   private double translateSpeed = 3.0;
 
    private final FramePose3D focusPointPose = new FramePose3D();
    private final RigidBodyTransform focusPointTransform = new RigidBodyTransform();
@@ -72,8 +70,6 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
       this.cameraTrackAndDollyVariablesHolder = cameraTrackAndDollyVariablesHolder;
       //      setFrustumPerspective(fov, (float) width / height, nearClip, farClip);
 
-      JMEGraphics3DAdapter jmeGraphics3DAdapter = (JMEGraphics3DAdapter) graphics3dAdapter;
-
       up = new Vector3D(0.0, 0.0, 1.0);
       forward = new Vector3D(1.0, 0.0, 0.0);
       left = new Vector3D();
@@ -85,14 +81,14 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
       Vector3D cameraXAxis = new Vector3D();
       cameraXAxis.cross(cameraYAxis, cameraZAxis);
 
-      changeCameraPosition(-2.0, 0.7, 1.0);
+      setCameraPosition(-2.0, 0.7, 1.0);
 
       updateCameraPose();
 
       focusPointNode = new Graphics3DNode("cameraFixPoint",
                                           new Graphics3DObject(new Sphere3D(0.01),
                                                              YoAppearance.RGBColor(1.0, 0.0, 0.0, 0.5)));
-      jmeGraphics3DAdapter.addRootNode(focusPointNode);
+      graphics3dAdapter.addRootNode(focusPointNode);
 
       if (addListeners)
       {
@@ -101,9 +97,9 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
       }
    }
 
-   public void changeCameraPosition(double x, double y, double z)
+   private void updateCameraPosition()
    {
-      Point3D desiredCameraPosition = new Point3D(x, y, z);
+      Point3D desiredCameraPosition = new Point3D(cameraPose.getPosition());
 
       zoom = desiredCameraPosition.distance(focusPointPose.getPosition());
 
@@ -209,12 +205,10 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
       {
          if (amount > 0.0)
          {
-            LogTools.info("Zoom in");
             zoom = zoom - zoom * zoomSpeedFactor;
          }
          else
          {
-            LogTools.info("Zoom out");
             zoom = zoom + zoom * zoomSpeedFactor;
          }
       }
@@ -528,37 +522,37 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
    @Override
    public void setFixX(double fx)
    {
-      
+      focusPointPose.setX(fx);
    }
 
    @Override
    public void setFixY(double fy)
    {
-
+      focusPointPose.setY(fy);
    }
 
    @Override
    public void setFixZ(double fz)
    {
-
+      focusPointPose.setZ(fz);
    }
 
    @Override
    public void setCamX(double cx)
    {
-
+      setCameraPosition(cx, cameraPose.getY(), cameraPose.getZ());
    }
 
    @Override
    public void setCamY(double cy)
    {
-
+      setCameraPosition(cameraPose.getX(), cy, cameraPose.getZ());
    }
 
    @Override
    public void setCamZ(double cz)
    {
-
+      setCameraPosition(cameraPose.getX(), cameraPose.getY(), cz);
    }
 
    @Override
@@ -624,13 +618,14 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
    @Override
    public void setFixPosition(double fixX, double fixY, double fixZ)
    {
-
+      focusPointPose.getPosition().set(fixX, fixY, fixZ);
    }
 
    @Override
    public void setCameraPosition(double posX, double posY, double posZ)
    {
-      changeCameraPosition(posX, posY, posZ);
+      cameraPose.getPosition().set(posX, posY, posZ);
+      updateCameraPosition();
    }
 
    @Override
@@ -714,7 +709,7 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
    @Override
    public Graphics3DNode getFixPointNode()
    {
-      return null;
+      return focusPointNode;
    }
 
    @Override
