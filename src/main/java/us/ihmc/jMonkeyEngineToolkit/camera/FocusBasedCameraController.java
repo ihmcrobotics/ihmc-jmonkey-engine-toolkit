@@ -11,6 +11,7 @@ import com.jme3.math.Vector3f;
 import us.ihmc.commons.MathTools;
 import us.ihmc.euclid.Axis3D;
 import us.ihmc.euclid.axisAngle.AxisAngle;
+import us.ihmc.euclid.geometry.Pose3D;
 import us.ihmc.euclid.matrix.RotationMatrix;
 import us.ihmc.euclid.referenceFrame.FramePose3D;
 import us.ihmc.euclid.referenceFrame.ReferenceFrame;
@@ -19,6 +20,7 @@ import us.ihmc.euclid.tools.EuclidCoreTools;
 import us.ihmc.euclid.transform.RigidBodyTransform;
 import us.ihmc.euclid.tuple3D.Point3D;
 import us.ihmc.euclid.tuple3D.Vector3D;
+import us.ihmc.euclid.yawPitchRoll.YawPitchRoll;
 import us.ihmc.graphicsDescription.Graphics3DObject;
 import us.ihmc.graphicsDescription.appearance.YoAppearance;
 import us.ihmc.graphicsDescription.input.keyboard.KeyListener;
@@ -179,21 +181,97 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
          longitude = -longitude;
    }
 
+   @Override
+   public void computeTransform(RigidBodyTransform cameraTransform, float tpf)
+   {
+      if (isWPressed)
+      {
+         System.out.println("Forward");
+         focusPointPose.appendTranslation(translateSpeed * tpf, 0.0, 0.0);
+      }
+      if (isAPressed)
+      {
+         System.out.println("Left");
+         focusPointPose.appendTranslation(0.0, translateSpeed * tpf, 0.0);
+      }
+      if (isSPressed)
+      {
+         System.out.println("Back");
+         focusPointPose.appendTranslation(-translateSpeed * tpf, 0.0, 0.0);
+      }
+      if (isDPressed)
+      {
+         System.out.println("Right");
+         focusPointPose.appendTranslation(0.0, -translateSpeed * tpf, 0.0);
+      }
+      if (isQPressed)
+      {
+         System.out.println("Up");
+         focusPointPose.appendTranslation(0.0, 0.0, translateSpeed * tpf);
+      }
+      if (isZPressed)
+      {
+         System.out.println("Down");
+         focusPointPose.appendTranslation(0.0, 0.0, -translateSpeed * tpf);
+      }
+
+//      focusPointPose.getPosition().set(0.0, 0.0, 0.0);
+
+      //      focusPointPose.getPosition().setToZero();
+      //      changeCameraPosition(10.0, 10.0, 10.0);
+
+      updateCameraPose();
+
+      //      Vector3D zAxis = new Vector3D();
+      //      Vector3D yAxis = new Vector3D();
+      //      Vector3D xAxis = new Vector3D();
+      //      RotationMatrix rotationMatrix = new RotationMatrix();
+      //
+      //      xAxis.set(focusPointPose.getPosition());
+      //
+      //      xAxis.sub(cameraPose.getPosition());
+      //      xAxis.normalize();
+      //      zAxis.set(0.0, 0.0, 1.0);
+      //      yAxis.cross(zAxis, xAxis);
+      //      yAxis.normalize();
+      //      zAxis.cross(xAxis, yAxis);
+      //
+      //      rotationMatrix.setColumns(xAxis, yAxis, zAxis);
+      //
+      //      cameraTransform.setRotationAndZeroTranslation(rotationMatrix);
+      //      cameraTransform.getTranslation().set(cameraPose.getPosition());
+      //      cameraTransform.getRotation().normalize();
+
+      //      new Pose3D(-1.5, 0.0, 1.0)
+
+      cameraTransform.set(this.cameraTransform);
+
+      Pose3D pose = new Pose3D(cameraTransform);
+      LogTools.info("Pose: {}", pose);
+      YawPitchRoll yawPitchRoll = new YawPitchRoll(pose.getOrientation());
+      LogTools.info("YawPitchRoll: {}", yawPitchRoll);
+
+      // cam appears to be x forward
+   }
+
    private void updateCameraPose()
    {
       zoom = MathTools.clamp(zoom, 0.1, 100.0);
 
-      latitude = MathTools.clamp(latitude, Math.PI / 2.0);
+      latitude = MathTools.clamp(latitude, Math.PI / 1.99); // don't let it get close to the singularities
+      LogTools.info("latitude: {}", latitude);
       longitude = EuclidCoreTools.trimAngleMinusPiToPi(longitude);
-      roll = 30.0;
+      LogTools.info("longitude: {}", longitude);
+      roll = 0.1;
 
-      latitudeAxisAngle.set(Axis3D.X, -latitude);
-      longitudeAxisAngle.set(Axis3D.Y, -longitude);
-      rollAxisAngle.set(Axis3D.Z, roll);
+      latitudeAxisAngle.set(Axis3D.Y, latitude);
+      longitudeAxisAngle.set(Axis3D.Z, -longitude);
+//      rollAxisAngle.set(Axis3D.X, roll);
 
-      focusPointPose.changeFrame(ReferenceFrame.getWorldFrame());
-      focusPointPose.setOrientation(longitudeAxisAngle);
-      focusPointPose.changeFrame(worldFrame);
+//      focusPointPose.changeFrame(ReferenceFrame.getWorldFrame());
+      focusPointPose.getOrientation().set(longitudeAxisAngle);
+//      focusPointPose.changeFrame(worldFrame);
+//      LogTools.info("focus x: {}  y: {}  z: {}", focusPointPose.getX(), focusPointPose.getY(), focusPointPose.getZ());
 
 //      focusPointSphere.setLocalTranslation((float) focusPointPose.getX(), (float) focusPointPose.getY(), (float) focusPointPose.getZ());
 //      focusPointSphere.setLocalScale((float) (0.0035 * zoom));
@@ -201,18 +279,26 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
       fixPointNode.getTranslation().set(focusPointPose.getPosition());
 
 //      cameraPose.setToZero(zUpFrame);
-      cameraPose.setToZero(worldFrame);
+//      cameraPose.setToZero(worldFrame);
+      cameraPose.setToZero();
       cameraPose.appendTranslation(focusPointPose.getPosition());
-      cameraPose.changeFrame(ReferenceFrame.getWorldFrame());
-      cameraPose.appendRotation(cameraOrientationOffset);
+//      cameraPose.changeFrame(ReferenceFrame.getWorldFrame());
+//      cameraPose.appendRotation(cameraOrientationOffset);
       cameraPose.appendRotation(longitudeAxisAngle);
       cameraPose.appendRotation(latitudeAxisAngle);
-      cameraPose.appendRotation(rollAxisAngle);
+//      cameraPose.appendRotation(rollAxisAngle);
       cameraPose.appendTranslation(0.0, 0.0, -zoom);
+
 
       cameraPose.get(cameraTransform);
 //      cameraTransform.invert();
 //      cameraTransform.transform(zUpToYUp);
+
+      cameraTransform.setToZero();
+      cameraTransform.appendTranslation(focusPointPose.getPosition());
+      cameraTransform.appendYawRotation(-longitude);
+      cameraTransform.appendPitchRotation(-latitude);
+      cameraTransform.appendTranslation(-zoom, 0.0, 0.0);
 
       translationJME.set(cameraPose.getPosition().getX32(), cameraPose.getPosition().getY32(), cameraPose.getPosition().getZ32());
       orientationJME.set(cameraPose.getOrientation().getX32(),
@@ -424,68 +510,6 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
                break;
          }
       }
-   }
-
-   @Override
-   public void computeTransform(RigidBodyTransform cameraTransform, float tpf)
-   {
-      if (isWPressed)
-      {
-         System.out.println("Forward");
-         focusPointPose.appendTranslation(0.0, translateSpeed * tpf, 0.0);
-      }
-      if (isAPressed)
-      {
-         System.out.println("Left");
-         focusPointPose.appendTranslation(0.0, 0.0, -translateSpeed * tpf);
-      }
-      if (isSPressed)
-      {
-         System.out.println("Back");
-         focusPointPose.appendTranslation(0.0, -translateSpeed * tpf, 0.0);
-      }
-      if (isDPressed)
-      {
-         System.out.println("Right");
-         focusPointPose.appendTranslation(0.0, 0.0, translateSpeed * tpf);
-      }
-      if (isQPressed)
-      {
-         System.out.println("Up");
-         focusPointPose.appendTranslation(-translateSpeed * tpf, 0.0, 0.0);
-      }
-      if (isZPressed)
-      {
-         System.out.println("Down");
-         focusPointPose.appendTranslation(translateSpeed * tpf, 0.0, 0.0);
-      }
-
-//      focusPointPose.getPosition().setToZero();
-//      changeCameraPosition(10.0, 10.0, 10.0);
-
-      updateCameraPose();
-
-      Vector3D zAxis = new Vector3D();
-      Vector3D yAxis = new Vector3D();
-      Vector3D xAxis = new Vector3D();
-      RotationMatrix rotationMatrix = new RotationMatrix();
-
-      xAxis.set(focusPointPose.getPosition());
-
-      xAxis.sub(cameraPose.getPosition());
-      xAxis.normalize();
-      zAxis.set(0.0, 0.0, 1.0);
-      yAxis.cross(zAxis, xAxis);
-      yAxis.normalize();
-      zAxis.cross(xAxis, yAxis);
-
-      rotationMatrix.setColumns(xAxis, yAxis, zAxis);
-
-      cameraTransform.setRotationAndZeroTranslation(rotationMatrix);
-      cameraTransform.getTranslation().set(cameraPose.getPosition());
-      cameraTransform.getRotation().normalize();
-
-//      cameraTransform.set(this.cameraTransform);
    }
 
    @Override
