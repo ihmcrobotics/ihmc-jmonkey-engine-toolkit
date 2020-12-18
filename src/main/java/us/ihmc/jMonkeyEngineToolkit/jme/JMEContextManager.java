@@ -67,8 +67,6 @@ public abstract class JMEContextManager implements ContextManager
       {
          inputMapSetter.setDefaultInputMappings();
       }
-
-      LogTools.info("Reset input mappings.");
    }
 
    protected void resetViewport(JMEViewportAdapter viewport)

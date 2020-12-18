@@ -177,12 +177,10 @@ public class JMEInputManager implements AnalogListener, ActionListener, Mouse3DL
       {
          if (name.contains("ScrollUp"))
          {
-            LogTools.info("Scroll up");
             mouseListenerHolder.scrolled(value);
          }
          else if (name.contains("ScrollDown"))
          {
-            LogTools.info("Scroll down");
             mouseListenerHolder.scrolled(-value);
          }
 
