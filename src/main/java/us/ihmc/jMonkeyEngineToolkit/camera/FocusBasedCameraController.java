@@ -151,32 +151,26 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
    {
       if (isWPressed)
       {
-         System.out.println("Forward");
          focusPointPose.appendTranslation(translateSpeed * tpf, 0.0, 0.0);
       }
       if (isAPressed)
       {
-         System.out.println("Left");
          focusPointPose.appendTranslation(0.0, translateSpeed * tpf, 0.0);
       }
       if (isSPressed)
       {
-         System.out.println("Back");
          focusPointPose.appendTranslation(-translateSpeed * tpf, 0.0, 0.0);
       }
       if (isDPressed)
       {
-         System.out.println("Right");
          focusPointPose.appendTranslation(0.0, -translateSpeed * tpf, 0.0);
       }
       if (isQPressed)
       {
-         System.out.println("Up");
          focusPointPose.appendTranslation(0.0, 0.0, translateSpeed * tpf);
       }
       if (isZPressed)
       {
-         System.out.println("Down");
          focusPointPose.appendTranslation(0.0, 0.0, -translateSpeed * tpf);
       }
 
@@ -185,130 +179,24 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
       focusPointPose.get(focusPointTransform);
       fixPointNode.setTransform(focusPointTransform);
 
-      cameraTransform.set(this.cameraTransform);
-
-      Pose3D pose = new Pose3D(cameraTransform);
-      LogTools.info("Pose: {}", pose);
-      YawPitchRoll yawPitchRoll = new YawPitchRoll(pose.getOrientation());
-      LogTools.info("YawPitchRoll: {}", yawPitchRoll);
-
       // cam appears to be x forward
+      cameraTransform.set(this.cameraTransform);
    }
 
    private void updateCameraPose()
    {
       zoom = MathTools.clamp(zoom, 0.1, 100.0);
-
       latitude = MathTools.clamp(latitude, Math.PI / 1.99); // don't let it get close to the singularities
-      LogTools.info("latitude: {}", latitude);
       longitude = EuclidCoreTools.trimAngleMinusPiToPi(longitude);
-      LogTools.info("longitude: {}", longitude);
-      roll = 0.1;
 
-      latitudeAxisAngle.set(Axis3D.Y, latitude);
       longitudeAxisAngle.set(Axis3D.Z, -longitude);
-//      rollAxisAngle.set(Axis3D.X, roll);
-
-//      focusPointPose.changeFrame(ReferenceFrame.getWorldFrame());
       focusPointPose.getOrientation().set(longitudeAxisAngle);
-//      focusPointPose.changeFrame(worldFrame);
-//      LogTools.info("focus x: {}  y: {}  z: {}", focusPointPose.getX(), focusPointPose.getY(), focusPointPose.getZ());
-
-//      focusPointSphere.setLocalTranslation((float) focusPointPose.getX(), (float) focusPointPose.getY(), (float) focusPointPose.getZ());
-//      focusPointSphere.setLocalScale((float) (0.0035 * zoom));
-
-      fixPointNode.getTranslation().set(focusPointPose.getPosition());
-
-//      cameraPose.setToZero(zUpFrame);
-//      cameraPose.setToZero(worldFrame);
-      cameraPose.setToZero();
-      cameraPose.appendTranslation(focusPointPose.getPosition());
-//      cameraPose.changeFrame(ReferenceFrame.getWorldFrame());
-//      cameraPose.appendRotation(cameraOrientationOffset);
-      cameraPose.appendRotation(longitudeAxisAngle);
-      cameraPose.appendRotation(latitudeAxisAngle);
-//      cameraPose.appendRotation(rollAxisAngle);
-      cameraPose.appendTranslation(0.0, 0.0, -zoom);
-
-
-      cameraPose.get(cameraTransform);
-//      cameraTransform.invert();
-//      cameraTransform.transform(zUpToYUp);
 
       cameraTransform.setToZero();
       cameraTransform.appendTranslation(focusPointPose.getPosition());
       cameraTransform.appendYawRotation(-longitude);
       cameraTransform.appendPitchRotation(-latitude);
       cameraTransform.appendTranslation(-zoom, 0.0, 0.0);
-
-      translationJME.set(cameraPose.getPosition().getX32(), cameraPose.getPosition().getY32(), cameraPose.getPosition().getZ32());
-      orientationJME.set(cameraPose.getOrientation().getX32(),
-                         cameraPose.getOrientation().getY32(),
-                         cameraPose.getOrientation().getZ32(),
-                         cameraPose.getOrientation().getS32());
-
-//      setFrame(translationJME, orientationJME);
-   }
-
-   private void onMouseYUp(float value, float tpf)
-   {
-      if (leftMousePressed)
-      {
-         latitude += latitudeSpeed * value;
-      }
-      LogTools.info("Mouse Y up: {}", latitude);
-   }
-
-   private void onMouseYDown(float value, float tpf)
-   {
-      if (leftMousePressed)
-      {
-         latitude -= latitudeSpeed * value;
-      }
-      LogTools.info("Mouse Y down: {}", latitude);
-   }
-
-   private void onMouseXLeft(float value, float tpf)
-   {
-      if (leftMousePressed)
-      {
-         longitude -= longitudeSpeed * value;
-      }
-      LogTools.info("Mouse X left: {}", longitude);
-   }
-
-   private void onMouseXRight(float value, float tpf)
-   {
-      if (leftMousePressed)
-      {
-         longitude += longitudeSpeed * value;
-      }
-      LogTools.info("Mouse X right: {}", longitude);
-   }
-
-   private void onMouseScrollDown(float value, float tpf)
-   {
-      zoom = zoom - zoom * zoomSpeedFactor;
-      LogTools.info("Zoom scroll down: {}", zoom);
-      //      zoom -= zoomSpeedFactor * value;
-   }
-
-   private void onMouseScrollUp(float value, float tpf)
-   {
-      zoom = zoom + zoom * zoomSpeedFactor;
-      LogTools.info("Zoom scroll up: {}", zoom);
-      //      zoom += zoomSpeedFactor * value;
-   }
-
-   private void onMouseButtonLeft(boolean isPressed, float tpf)
-   {
-      leftMousePressed = isPressed;
-      LogTools.info("Left mouse pressed: {}", isPressed);
-   }
-
-   private void onMouseButtonRight(boolean isPressed, float tpf)
-   {
-
    }
 
    class PrivateMouseListener implements MouseListener
@@ -319,19 +207,6 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
          // undo mouseFactor from JMEInputManager
          dx /= 10.0;
          dy /= -10.0;
-
-         if (dx != 0)
-         {
-            LogTools.info("Mouse X: {}", dx > 0 ? "right" : "left");
-         }
-         else if (dy != 0)
-         {
-            LogTools.info("Mouse Y: {}", dy > 0 ? "up" : "down");
-         }
-         else
-         {
-            //         LogTools.info("Mouse X: {}  Mouse Y: {}", dx > 0 ? "right" : "left", dy > 0 ? "up" : "down");
-         }
 
          switch (mouseButton)
          {
@@ -362,36 +237,6 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
             zoom = zoom + zoom * zoomSpeedFactor;
          }
       }
-   }
-
-   private void onKeyW(boolean isPressed, float tpf)
-   {
-      isWPressed = isPressed;
-   }
-
-   private void onKeyA(boolean isPressed, float tpf)
-   {
-      isAPressed = isPressed;
-   }
-
-   private void onKeyS(boolean isPressed, float tpf)
-   {
-      isSPressed = isPressed;
-   }
-
-   private void onKeyD(boolean isPressed, float tpf)
-   {
-      isDPressed = isPressed;
-   }
-
-   private void onKeyQ(boolean isPressed, float tpf)
-   {
-      isQPressed = isPressed;
-   }
-
-   private void onKeyZ(boolean isPressed, float tpf)
-   {
-      isZPressed = isPressed;
    }
 
    class PrivateKeyListener implements KeyListener
