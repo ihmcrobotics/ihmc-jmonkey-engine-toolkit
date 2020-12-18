@@ -1,12 +1,5 @@
 package us.ihmc.jMonkeyEngineToolkit.camera;
 
-import com.jme3.asset.AssetManager;
-import com.jme3.input.InputManager;
-import com.jme3.input.KeyInput;
-import com.jme3.input.MouseInput;
-import com.jme3.input.controls.KeyTrigger;
-import com.jme3.input.controls.MouseAxisTrigger;
-import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.math.Vector3f;
 import us.ihmc.commons.MathTools;
 import us.ihmc.euclid.Axis3D;
@@ -29,7 +22,6 @@ import us.ihmc.graphicsDescription.input.mouse.MouseListener;
 import us.ihmc.graphicsDescription.structure.Graphics3DNode;
 import us.ihmc.jMonkeyEngineToolkit.Graphics3DAdapter;
 import us.ihmc.jMonkeyEngineToolkit.jme.JMEGraphics3DAdapter;
-import us.ihmc.jme.JMEInputMapperHelper;
 import us.ihmc.jme.JMEPoseReferenceFrame;
 import us.ihmc.log.LogTools;
 import us.ihmc.tools.inputDevices.keyboard.Key;
@@ -45,7 +37,6 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
 
    private final AxisAngle latitudeAxisAngle = new AxisAngle();
    private final AxisAngle longitudeAxisAngle = new AxisAngle();
-   private final AxisAngle rollAxisAngle = new AxisAngle();
 
    private final RotationMatrix cameraOrientationOffset = new RotationMatrix();
 
@@ -62,8 +53,6 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
    private double longitude = 0.0;
    private double roll;
    private double zoom = 10.0;
-
-//   private final Geometry focusPointSphere;
 
    private final Vector3D up;
    private final Vector3D forward;
@@ -87,51 +76,9 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
 
    private final CameraTrackingAndDollyPositionHolder cameraTrackAndDollyVariablesHolder;
 
-   //      JMEInputMapperHelper inputMapper = new JMEInputMapperHelper(inputManager);
-   //      inputMapper.addAnalogMapping("onMouseYUp", new MouseAxisTrigger(MouseInput.AXIS_Y, false), this::onMouseYUp);
-   //      inputMapper.addAnalogMapping("onMouseYDown", new MouseAxisTrigger(MouseInput.AXIS_Y, true), this::onMouseYDown);
-   //      inputMapper.addAnalogMapping("onMouseXLeft", new MouseAxisTrigger(MouseInput.AXIS_X, true), this::onMouseXLeft);
-   //      inputMapper.addAnalogMapping("onMouseXRight", new MouseAxisTrigger(MouseInput.AXIS_X, false), this::onMouseXRight);
-   //      inputMapper.addAnalogMapping("onMouseScrollDown", new MouseAxisTrigger(MouseInput.AXIS_WHEEL, false), this::onMouseScrollDown);
-   //      inputMapper.addAnalogMapping("onMouseScrollUp", new MouseAxisTrigger(MouseInput.AXIS_WHEEL, true), this::onMouseScrollUp);
-   //      inputMapper.addActionMapping("onMouseButtonLeft", new MouseButtonTrigger(MouseInput.BUTTON_LEFT), this::onMouseButtonLeft);
-   //      inputMapper.addActionMapping("onMouseButtonRight", new MouseButtonTrigger(MouseInput.BUTTON_RIGHT), this::onMouseButtonRight);
-   //      inputMapper.addActionMapping("onKeyW", new KeyTrigger(KeyInput.KEY_W), this::onKeyW);
-   //      inputMapper.addActionMapping("onKeyA", new KeyTrigger(KeyInput.KEY_A), this::onKeyA);
-   //      inputMapper.addActionMapping("onKeyS", new KeyTrigger(KeyInput.KEY_S), this::onKeyS);
-   //      inputMapper.addActionMapping("onKeyD", new KeyTrigger(KeyInput.KEY_D), this::onKeyD);
-   //      inputMapper.addActionMapping("onKeyQ", new KeyTrigger(KeyInput.KEY_Q), this::onKeyQ);
-   //      inputMapper.addActionMapping("onKeyZ", new KeyTrigger(KeyInput.KEY_Z), this::onKeyZ);
-   //
-   //      jmeGraphics3DAdapter.getRenderer().getContextManager().registerInputMapSetter(inputMapper::build);
-
    private KeyListener keyListener = new PrivateKeyListener();
    private MouseListener mouseListener = new PrivateMouseListener();
-   //      focusPointPose.changeFrame(zUpFrame);
-   private ReferenceFrame worldFrame = ReferenceFrame.getWorldFrame();
    private final RotationMatrix zUpToYUp;
-
-   //      Vector3D zAxis = new Vector3D();
-   //      Vector3D yAxis = new Vector3D();
-   //      Vector3D xAxis = new Vector3D();
-   //      RotationMatrix rotationMatrix = new RotationMatrix();
-   //
-   //      xAxis.set(focusPointPose.getPosition());
-   //
-   //      xAxis.sub(cameraPose.getPosition());
-   //      xAxis.normalize();
-   //      zAxis.set(0.0, 0.0, 1.0);
-   //      yAxis.cross(zAxis, xAxis);
-   //      yAxis.normalize();
-   //      zAxis.cross(xAxis, yAxis);
-   //
-   //      rotationMatrix.setColumns(xAxis, yAxis, zAxis);
-   //
-   //      cameraTransform.setRotationAndZeroTranslation(rotationMatrix);
-   //      cameraTransform.getTranslation().set(cameraPose.getPosition());
-   //      cameraTransform.getRotation().normalize();
-
-   //      new Pose3D(-1.5, 0.0, 1.0)
 
    private RigidBodyTransform focusPointTransform = new RigidBodyTransform();
 
@@ -145,8 +92,6 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
       //      setFrustumPerspective(fov, (float) width / height, nearClip, farClip);
 
       JMEGraphics3DAdapter jmeGraphics3DAdapter = (JMEGraphics3DAdapter) graphics3dAdapter;
-      AssetManager assetManager = jmeGraphics3DAdapter.getRenderer().getAssetManager();
-      InputManager inputManager = jmeGraphics3DAdapter.getRenderer().getInputManager();
 
       zUpToYUp = new RotationMatrix();
       zUpToYUp.set(0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0);
@@ -164,12 +109,6 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
       cameraXAxis.cross(cameraYAxis, cameraZAxis);
       cameraOrientationOffset.setColumns(cameraXAxis, cameraYAxis, cameraZAxis);
 
-//      JMEMultiColorMeshBuilder colorMeshBuilder = new JMEMultiColorMeshBuilder();
-//      colorMeshBuilder.addSphere((float) 1.0, new Point3D(0.0, 0.0, 0.0), Color.DARKRED);
-//      focusPointSphere = new Geometry("FocusPointViz", colorMeshBuilder.generateMesh());
-//      focusPointSphere.setMaterial(colorMeshBuilder.generateMaterial(assetManager));
-
-//      focusPointPose.changeFrame(zUpFrame);
       changeCameraPosition(-2.0, 0.7, 1.0);
 
       updateCameraPose();
@@ -240,11 +179,6 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
          System.out.println("Down");
          focusPointPose.appendTranslation(0.0, 0.0, -translateSpeed * tpf);
       }
-
-//      focusPointPose.getPosition().set(0.0, 0.0, 0.0);
-
-      //      focusPointPose.getPosition().setToZero();
-      //      changeCameraPosition(10.0, 10.0, 10.0);
 
       updateCameraPose();
 
