@@ -111,6 +111,30 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
    private ReferenceFrame worldFrame = ReferenceFrame.getWorldFrame();
    private final RotationMatrix zUpToYUp;
 
+   //      Vector3D zAxis = new Vector3D();
+   //      Vector3D yAxis = new Vector3D();
+   //      Vector3D xAxis = new Vector3D();
+   //      RotationMatrix rotationMatrix = new RotationMatrix();
+   //
+   //      xAxis.set(focusPointPose.getPosition());
+   //
+   //      xAxis.sub(cameraPose.getPosition());
+   //      xAxis.normalize();
+   //      zAxis.set(0.0, 0.0, 1.0);
+   //      yAxis.cross(zAxis, xAxis);
+   //      yAxis.normalize();
+   //      zAxis.cross(xAxis, yAxis);
+   //
+   //      rotationMatrix.setColumns(xAxis, yAxis, zAxis);
+   //
+   //      cameraTransform.setRotationAndZeroTranslation(rotationMatrix);
+   //      cameraTransform.getTranslation().set(cameraPose.getPosition());
+   //      cameraTransform.getRotation().normalize();
+
+   //      new Pose3D(-1.5, 0.0, 1.0)
+
+   private RigidBodyTransform focusPointTransform = new RigidBodyTransform();
+
    public FocusBasedCameraController(Graphics3DAdapter graphics3dAdapter,
                                      ViewportAdapter viewportAdapter,
                                      CameraTrackingAndDollyPositionHolder cameraTrackAndDollyVariablesHolder,
@@ -149,6 +173,8 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
       changeCameraPosition(-2.0, 0.7, 1.0);
 
       updateCameraPose();
+
+      jmeGraphics3DAdapter.addRootNode(fixPointNode);
 
       if (addListeners)
       {
@@ -222,27 +248,8 @@ public class FocusBasedCameraController implements TrackingDollyCameraController
 
       updateCameraPose();
 
-      //      Vector3D zAxis = new Vector3D();
-      //      Vector3D yAxis = new Vector3D();
-      //      Vector3D xAxis = new Vector3D();
-      //      RotationMatrix rotationMatrix = new RotationMatrix();
-      //
-      //      xAxis.set(focusPointPose.getPosition());
-      //
-      //      xAxis.sub(cameraPose.getPosition());
-      //      xAxis.normalize();
-      //      zAxis.set(0.0, 0.0, 1.0);
-      //      yAxis.cross(zAxis, xAxis);
-      //      yAxis.normalize();
-      //      zAxis.cross(xAxis, yAxis);
-      //
-      //      rotationMatrix.setColumns(xAxis, yAxis, zAxis);
-      //
-      //      cameraTransform.setRotationAndZeroTranslation(rotationMatrix);
-      //      cameraTransform.getTranslation().set(cameraPose.getPosition());
-      //      cameraTransform.getRotation().normalize();
-
-      //      new Pose3D(-1.5, 0.0, 1.0)
+      focusPointPose.get(focusPointTransform);
+      fixPointNode.setTransform(focusPointTransform);
 
       cameraTransform.set(this.cameraTransform);
 
