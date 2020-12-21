@@ -85,9 +85,10 @@ public class JMEGraphics3DNode extends Node implements JMEUpdatable, CloseableAn
       }
 
       AffineTransform transform = graphics3dNode.getTransform();
-      transform.getRotation(rotation);
-      transform.getTranslation(translation);
-      transform.getScale(scale);
+      // This can lead to incorrect transform
+      rotation.set(transform.getLinearTransform().getAsQuaternion());
+      scale.set(transform.getLinearTransform().getScaleVector());
+      translation.set(transform.getTranslation());
 
       JMEDataTypeUtils.packVecMathTuple3dInJMEVector3f(translation, jmeTranslation);
       JMEDataTypeUtils.packVectMathQuat4dInJMEQuaternion(rotation, jmeRotation);

@@ -167,7 +167,7 @@ public class JMEGPULidar implements GPULidar, AppState
    {
       synchronized (lidarTransform)
       {
-         transformFromWorld.getRigidBodyTransform(lidarTransform);
+         lidarTransform.set(transformFromWorld);
          this.time = time;
       }
    }
