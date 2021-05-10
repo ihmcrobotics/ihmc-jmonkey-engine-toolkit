@@ -7,7 +7,7 @@ plugins {
 
 ihmc {
    group = "us.ihmc"
-   version = "0.19.5"
+   version = "0.19.6"
    vcsUrl = "https://github.com/ihmcrobotics/ihmc-jmonkey-engine-toolkit"
    openSource = true
 
@@ -24,15 +24,15 @@ jme.forkEvery = 1
 jme.maxParallelForks = 1
 
 mainDependencies {
-   api("org.jmonkeyengine:jme3-core:3.2.0-171208")
-   api("org.jmonkeyengine:jme3-desktop:3.2.0-171208")
-   api("org.jmonkeyengine:jme3-terrain:3.2.0-171208")
-   api("org.jmonkeyengine:jme3-plugins:3.2.0-171208")
-   api("org.jmonkeyengine:jme3-dae:3.2.0-171208")
+   api("us.ihmc:jme3-core:3.2.0-171209")
+   api("us.ihmc:jme3-desktop:3.2.0-171209")
+   api("us.ihmc:jme3-terrain:3.2.0-171209")
+   api("us.ihmc:jme3-plugins:3.2.0-171209")
+   api("us.ihmc:jme3-dae:3.2.0-171209")
    // Only one version of lwjgl can be used at a time (sealed JARs), we require 2.9.3
    // for Canvas
-   // api("org.jmonkeyengine:jme3-lwjgl3:3.2.0-171208")
-   api("org.jmonkeyengine:jme3-lwjgl:3.2.0-171208") {
+   // api("org.jmonkeyengine:jme3-lwjgl3:3.2.0-171209")
+   api("us.ihmc:jme3-lwjgl:3.2.0-171209") {
       //Exclude incompatible version of jinput
       exclude("net.java.jinput")
    }
