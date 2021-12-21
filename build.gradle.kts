@@ -38,7 +38,6 @@ mainDependencies {
    }
    api("com.vividsolutions:jts:1.13")
    api("com.google.guava:guava:18.0")
-   api("org.apache.commons:commons-lang3:3.12.0")
 
    api("us.ihmc:euclid:0.17.0")
    api("us.ihmc:euclid-shape:0.17.0")
