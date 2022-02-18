@@ -1314,6 +1314,12 @@ public class ClassicCameraController implements TrackingDollyCameraController, K
       yAxis.normalize();
       zAxis.cross(xAxis, yAxis);
 
+      if (xAxis.containsNaN() || yAxis.containsNaN() || zAxis.containsNaN())
+      {
+         currXform.setIdentity();
+         return;
+      }
+
       rotationMatrix.setColumns(xAxis, yAxis, zAxis);
 
       currXform.setRotationAndZeroTranslation(rotationMatrix);
