@@ -7,7 +7,7 @@ plugins {
 
 ihmc {
    group = "us.ihmc"
-   version = "0.19.7"
+   version = "0.19.8"
    vcsUrl = "https://github.com/ihmcrobotics/ihmc-jmonkey-engine-toolkit"
    openSource = true
 
@@ -39,8 +39,8 @@ mainDependencies {
    api("com.vividsolutions:jts:1.13")
    api("com.google.guava:guava:18.0")
 
-   api("us.ihmc:euclid:0.17.0")
-   api("us.ihmc:euclid-shape:0.17.0")
+   api("us.ihmc:euclid:0.17.1")
+   api("us.ihmc:euclid-shape:0.17.1")
    api("us.ihmc:ihmc-commons:0.30.5")
    api("us.ihmc:ihmc-graphics-description:0.19.4")
 }
