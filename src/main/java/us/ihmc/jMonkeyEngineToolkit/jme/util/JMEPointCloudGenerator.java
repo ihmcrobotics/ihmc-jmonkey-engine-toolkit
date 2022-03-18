@@ -55,7 +55,6 @@ public class JMEPointCloudGenerator
       Node result = new Node();
 
       Material mat = new Material(assetManager, "Common/MatDefs/Misc/Particle.j3md");
-      mat.getAdditionalRenderState().setPointSprite(true);
       mat.getAdditionalRenderState().setBlendMode(BlendMode.Off);
 
       mat.getAdditionalRenderState().setDepthWrite(true);

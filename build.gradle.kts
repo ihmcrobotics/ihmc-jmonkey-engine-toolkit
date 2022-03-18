@@ -22,17 +22,18 @@ jme.minHeapSizeGB = 2
 jme.maxHeapSizeGB = 6
 jme.forkEvery = 1
 jme.maxParallelForks = 1
+val jmeVersion = "3.5.0-stable"
 
 mainDependencies {
-   api("us.ihmc:jme3-core:3.2.0-171209")
-   api("us.ihmc:jme3-desktop:3.2.0-171209")
-   api("us.ihmc:jme3-terrain:3.2.0-171209")
-   api("us.ihmc:jme3-plugins:3.2.0-171209")
-   api("us.ihmc:jme3-dae:3.2.0-171209")
+   api("org.jmonkeyengine:jme3-core:$jmeVersion")
+   api("org.jmonkeyengine:jme3-desktop:$jmeVersion")
+   api("org.jmonkeyengine:jme3-terrain:$jmeVersion")
+   api("org.jmonkeyengine:jme3-plugins:$jmeVersion")
+   api("us.ihmc:jme3-dae:$jmeVersion")
    // Only one version of lwjgl can be used at a time (sealed JARs), we require 2.9.3
    // for Canvas
-   // api("us.ihmc:jme3-lwjgl3:3.2.0-171209")
-   api("us.ihmc:jme3-lwjgl:3.2.0-171209") {
+   // api("org.jmonkeyengine:jme3-lwjgl3:$jmeVersion")
+   api("org.jmonkeyengine:jme3-lwjgl:$jmeVersion") {
       //Exclude incompatible version of jinput
       exclude("net.java.jinput")
    }

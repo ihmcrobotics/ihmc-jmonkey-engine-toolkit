@@ -80,7 +80,6 @@ public class YoGraphicPointCloud extends YoGraphic
       node = new Node();
 
       material = new Material(jmeRenderer.getAssetManager(), "Common/MatDefs/Misc/Particle.j3md");
-      material.getAdditionalRenderState().setPointSprite(true);
       material.getAdditionalRenderState().setBlendMode(BlendMode.Off);
       material.getAdditionalRenderState().setDepthWrite(true);
       material.getAdditionalRenderState().setDepthTest(true);
