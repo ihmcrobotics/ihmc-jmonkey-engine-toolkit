@@ -33,6 +33,10 @@ import com.jme3.asset.AssetManager;
 import com.jme3.asset.TextureKey;
 import com.jme3.audio.AudioContext;
 import com.jme3.input.InputManager;
+import com.jme3.input.KeyInput;
+import com.jme3.input.MouseInput;
+import com.jme3.input.awt.AwtKeyInput;
+import com.jme3.input.awt.AwtMouseInput;
 import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.light.Light;
@@ -46,11 +50,11 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.plugins.ogre.MaterialLoader;
 import com.jme3.system.AppSettings;
-import com.jme3.system.JmeContext;
 import com.jme3.system.JmeSystem;
 import com.jme3.system.NativeLibraryLoader;
 import com.jme3.system.awt.AwtPanelsContext;
 import com.jme3.system.lwjgl.LwjglContext;
+import com.jme3.system.lwjgl.LwjglOffscreenBuffer;
 import com.jme3.texture.Texture;
 import com.jme3.texture.plugins.AWTLoader;
 import com.jme3.util.SkyFactory;
@@ -94,10 +98,10 @@ import us.ihmc.jMonkeyEngineToolkit.jme.contextManager.AWTPanelsContextManager;
 import us.ihmc.jMonkeyEngineToolkit.jme.contextManager.CanvasContextManager;
 import us.ihmc.jMonkeyEngineToolkit.jme.lidar.JMEGPULidar;
 import us.ihmc.jMonkeyEngineToolkit.jme.terrain.JMEHeightMapTerrain;
+import us.ihmc.jMonkeyEngineToolkit.jme.util.IHMCMTLLoader;
 import us.ihmc.jMonkeyEngineToolkit.jme.util.JMEDataTypeUtils;
 import us.ihmc.jMonkeyEngineToolkit.jme.util.JMEGeometryUtils;
 import us.ihmc.jMonkeyEngineToolkit.jme.util.JMENodeTools;
-import us.ihmc.jMonkeyEngineToolkit.jme.util.IHMCMTLLoader;
 import us.ihmc.jMonkeyEngineToolkit.stlLoader.STLLoader;
 import us.ihmc.log.LogTools;
 import us.ihmc.tools.thread.CloseableAndDisposable;
@@ -375,10 +379,36 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
       canvas = new AWTPanelPostRender();
       canvas.setPreferredSize(dim);
 
-      context = JmeSystem.newContext(settings, JmeContext.Type.OffscreenSurface);
-      context.setSystemListener(this);
+      context = new LwjglOffscreenBuffer()
+      {
+         AwtMouseInput awtMouseInput;
+         AwtKeyInput awtKeyInput;
 
-      getContext().setSystemListener(this);
+         @Override
+         public MouseInput getMouseInput()
+         {
+            if (awtMouseInput == null)
+            {
+               awtMouseInput = new AwtMouseInput();
+               awtMouseInput.setInputSource(canvas);
+            }
+            return awtMouseInput;
+         }
+
+         @Override
+         public KeyInput getKeyInput()
+         {
+            if (awtKeyInput == null)
+            {
+               awtKeyInput = new AwtKeyInput();
+               awtKeyInput.setInputSource(canvas);
+            }
+            return awtKeyInput;
+         }
+      };
+
+      context.setSettings(settings);
+      context.setSystemListener(this);
 
       // Create the app state dedicated to AWT component rendering
       contextManager = new CanvasContextManager(this);
