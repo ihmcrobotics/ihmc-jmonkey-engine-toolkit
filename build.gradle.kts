@@ -32,11 +32,11 @@ mainDependencies {
    api("us.ihmc:jme3-dae:$jmeVersion")
    // Only one version of lwjgl can be used at a time (sealed JARs), we require 2.9.3
    // for Canvas
-   // api("org.jmonkeyengine:jme3-lwjgl3:$jmeVersion")
-   api("org.jmonkeyengine:jme3-lwjgl:$jmeVersion") {
-      //Exclude incompatible version of jinput
-      exclude("net.java.jinput")
-   }
+   api("org.jmonkeyengine:jme3-lwjgl3:$jmeVersion")
+   // api("org.jmonkeyengine:jme3-lwjgl:$jmeVersion") {
+   //    //Exclude incompatible version of jinput
+   //    exclude("net.java.jinput")
+   // }
    api("com.vividsolutions:jts:1.13")
    api("com.google.guava:guava:18.0")
 

@@ -281,7 +281,7 @@ public class PBOAwtPanelsContext implements JmeContext
    public void setSettings(AppSettings settings)
    {
       this.settings.copyFrom(settings);
-      this.settings.setRenderer(AppSettings.LWJGL_OPENGL2);
+      this.settings.setRenderer(AppSettings.LWJGL_OPENGL32);
 
       if (actualContext != null)
       {

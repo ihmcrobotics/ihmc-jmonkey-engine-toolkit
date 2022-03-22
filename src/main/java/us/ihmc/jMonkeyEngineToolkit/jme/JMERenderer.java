@@ -46,7 +46,7 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.plugins.ogre.MaterialLoader;
 import com.jme3.system.AppSettings;
-import com.jme3.system.JmeCanvasContext;
+import com.jme3.system.JmeContext;
 import com.jme3.system.JmeSystem;
 import com.jme3.system.NativeLibraryLoader;
 import com.jme3.system.awt.AwtPanelsContext;
@@ -86,6 +86,7 @@ import us.ihmc.jMonkeyEngineToolkit.Updatable;
 import us.ihmc.jMonkeyEngineToolkit.camera.ViewportAdapter;
 import us.ihmc.jMonkeyEngineToolkit.input.SelectedListenerHolder;
 import us.ihmc.jMonkeyEngineToolkit.jme.JMEViewportAdapter.ViewportType;
+import us.ihmc.jMonkeyEngineToolkit.jme.context.AWTPanelPostRender;
 import us.ihmc.jMonkeyEngineToolkit.jme.context.PBOAwtPanel;
 import us.ihmc.jMonkeyEngineToolkit.jme.context.PBOAwtPanelListener;
 import us.ihmc.jMonkeyEngineToolkit.jme.context.PBOAwtPanelsContext;
@@ -183,6 +184,9 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
    private Spatial sky = null;
    private HeightMap heightMap = null;
    private AppearanceDefinition terrainAppearance = null;
+
+   // Only available when renderType == RenderType.CANVAS
+   private AWTPanelPostRender canvas = null;
 
    public JMERenderer(RenderType renderType)
    {
@@ -353,32 +357,34 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
          throw new RuntimeException("Cannot get canvas if rendertype not is canvas");
       }
 
-      JmeCanvasContext ctx = (JmeCanvasContext) getContext();
-
-      return ctx.getCanvas();
+      return canvas;
    }
 
    private void initializeCanvas()
    {
-      AppSettings appSettings = new AppSettings(true);
-      appSettings.setWidth(1200);
-      appSettings.setHeight(600);
-      appSettings.setAudioRenderer(null);
-      appSettings.setVSync(true);
-      setSettings(appSettings);
+      settings = new AppSettings(true);
+      settings.setWidth(1200);
+      settings.setHeight(600);
+      settings.setAudioRenderer(null);
+      settings.setVSync(true);
+      settings.setRenderer(AppSettings.LWJGL_OPENGL32);
 
       setPauseOnLostFocus(false);
 
-      createCanvas();
-      JmeCanvasContext ctx = (JmeCanvasContext) getContext();
-      ctx.setSystemListener(this);
       Dimension dim = new Dimension(1200, 600);
-      ctx.getCanvas().setPreferredSize(dim);
+      canvas = new AWTPanelPostRender();
+      canvas.setPreferredSize(dim);
 
+      context = JmeSystem.newContext(settings, JmeContext.Type.OffscreenSurface);
+      context.setSystemListener(this);
+
+      getContext().setSystemListener(this);
+
+      // Create the app state dedicated to AWT component rendering
       contextManager = new CanvasContextManager(this);
-      addRepaintListeners(ctx.getCanvas());
+      addRepaintListeners(canvas);
 
-      startCanvas();
+      context.create(false);
    }
 
    private void initializeAWTPanels()
@@ -757,6 +763,14 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
       }
    }
 
+   @Override
+   public void initialize()
+   {
+      super.initialize();
+      if (canvas != null)
+         canvas.initialize(renderManager);
+   }
+
    /**
     * We override {@link SimpleApplication#update()} with our custom implementation that does not
     * render anything unless necessary.
@@ -808,6 +822,9 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
       if (!lazyRendering || lazyRendersToPerform > 0)
       {
          renderManager.render(tpf, context.isRenderable());
+         if (canvas != null)
+            canvas.postFrame();
+
          lazyRendersToPerform = Math.max(0, lazyRendersToPerform - 1);
       }
       simpleRender(renderManager);
