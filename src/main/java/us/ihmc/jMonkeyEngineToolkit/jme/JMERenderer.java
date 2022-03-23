@@ -25,8 +25,12 @@ import java.util.logging.Logger;
 
 import javax.swing.JComponent;
 import javax.swing.RepaintManager;
+import javax.swing.UIManager;
+
+import org.lwjgl.glfw.GLFW;
 
 import com.google.common.collect.HashBiMap;
+import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.AssetConfig;
 import com.jme3.asset.AssetManager;
@@ -149,6 +153,12 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
 
       System.setProperty("java.library.path", System.getProperty("java.library.path") + File.pathSeparator + scsCachePath.toString());
       NativeLibraryLoader.setCustomExtractionFolder(scsCachePath.toString());
+
+      if (System.getProperty("os.name").toLowerCase().contains("inux"))
+      {
+         GLFW.glfwInit();
+         UIManager.getLookAndFeel();
+      }
    }
 
    private final Object loadingStatus = new Object();
@@ -200,6 +210,7 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
    public JMERenderer(RenderType renderType, Mouse3DInterface mouse3dJoystick)
    {
       super();
+
       this.renderType = renderType;
       mouse3DJoystick = mouse3dJoystick;
 
