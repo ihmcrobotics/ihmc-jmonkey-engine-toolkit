@@ -269,4 +269,10 @@ public class JMEGPULidar implements GPULidar, AppState
    public void cleanup()
    {
    }
+
+   @Override
+   public String getId()
+   {
+      return null;
+   }
 }

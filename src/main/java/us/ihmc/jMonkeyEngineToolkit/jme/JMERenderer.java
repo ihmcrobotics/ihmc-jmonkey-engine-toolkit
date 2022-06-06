@@ -27,7 +27,6 @@ import javax.swing.JComponent;
 import javax.swing.RepaintManager;
 
 import com.google.common.collect.HashBiMap;
-import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.AssetConfig;
 import com.jme3.asset.AssetManager;
@@ -97,6 +96,7 @@ import us.ihmc.jMonkeyEngineToolkit.jme.terrain.JMEHeightMapTerrain;
 import us.ihmc.jMonkeyEngineToolkit.jme.util.JMEDataTypeUtils;
 import us.ihmc.jMonkeyEngineToolkit.jme.util.JMEGeometryUtils;
 import us.ihmc.jMonkeyEngineToolkit.jme.util.JMENodeTools;
+import us.ihmc.jMonkeyEngineToolkit.jme.util.IHMCMTLLoader;
 import us.ihmc.jMonkeyEngineToolkit.stlLoader.STLLoader;
 import us.ihmc.log.LogTools;
 import us.ihmc.tools.thread.CloseableAndDisposable;
@@ -471,6 +471,7 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
 
    public static void setupAssetManger(AssetManager assetManager)
    {
+      assetManager.registerLoader(IHMCMTLLoader.class, "mtl");
       assetManager.registerLoader(AWTLoader.class, "tif");
       assetManager.registerLoader(ColladaLoader.class, "dae");
       assetManager.registerLoader(STLLoader.class, "stl");
