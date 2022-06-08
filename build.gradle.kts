@@ -22,7 +22,7 @@ jme.minHeapSizeGB = 2
 jme.maxHeapSizeGB = 6
 jme.forkEvery = 1
 jme.maxParallelForks = 1
-val jmeVersion = "3.5.0-stable"
+val jmeVersion = "3.5.2-stable"
 
 mainDependencies {
    api("org.jmonkeyengine:jme3-core:$jmeVersion")
