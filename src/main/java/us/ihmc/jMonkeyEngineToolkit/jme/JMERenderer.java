@@ -25,14 +25,22 @@ import java.util.logging.Logger;
 
 import javax.swing.JComponent;
 import javax.swing.RepaintManager;
+import javax.swing.UIManager;
+
+import org.lwjgl.glfw.GLFW;
 
 import com.google.common.collect.HashBiMap;
+import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.AssetConfig;
 import com.jme3.asset.AssetManager;
 import com.jme3.asset.TextureKey;
 import com.jme3.audio.AudioContext;
 import com.jme3.input.InputManager;
+import com.jme3.input.KeyInput;
+import com.jme3.input.MouseInput;
+import com.jme3.input.awt.AwtKeyInput;
+import com.jme3.input.awt.AwtMouseInput;
 import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.light.Light;
@@ -46,11 +54,11 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.plugins.ogre.MaterialLoader;
 import com.jme3.system.AppSettings;
-import com.jme3.system.JmeCanvasContext;
 import com.jme3.system.JmeSystem;
 import com.jme3.system.NativeLibraryLoader;
 import com.jme3.system.awt.AwtPanelsContext;
 import com.jme3.system.lwjgl.LwjglContext;
+import com.jme3.system.lwjgl.LwjglOffscreenBuffer;
 import com.jme3.texture.Texture;
 import com.jme3.texture.plugins.AWTLoader;
 import com.jme3.util.SkyFactory;
@@ -86,6 +94,7 @@ import us.ihmc.jMonkeyEngineToolkit.Updatable;
 import us.ihmc.jMonkeyEngineToolkit.camera.ViewportAdapter;
 import us.ihmc.jMonkeyEngineToolkit.input.SelectedListenerHolder;
 import us.ihmc.jMonkeyEngineToolkit.jme.JMEViewportAdapter.ViewportType;
+import us.ihmc.jMonkeyEngineToolkit.jme.context.AWTPanelPostRender;
 import us.ihmc.jMonkeyEngineToolkit.jme.context.PBOAwtPanel;
 import us.ihmc.jMonkeyEngineToolkit.jme.context.PBOAwtPanelListener;
 import us.ihmc.jMonkeyEngineToolkit.jme.context.PBOAwtPanelsContext;
@@ -93,10 +102,10 @@ import us.ihmc.jMonkeyEngineToolkit.jme.contextManager.AWTPanelsContextManager;
 import us.ihmc.jMonkeyEngineToolkit.jme.contextManager.CanvasContextManager;
 import us.ihmc.jMonkeyEngineToolkit.jme.lidar.JMEGPULidar;
 import us.ihmc.jMonkeyEngineToolkit.jme.terrain.JMEHeightMapTerrain;
+import us.ihmc.jMonkeyEngineToolkit.jme.util.IHMCMTLLoader;
 import us.ihmc.jMonkeyEngineToolkit.jme.util.JMEDataTypeUtils;
 import us.ihmc.jMonkeyEngineToolkit.jme.util.JMEGeometryUtils;
 import us.ihmc.jMonkeyEngineToolkit.jme.util.JMENodeTools;
-import us.ihmc.jMonkeyEngineToolkit.jme.util.IHMCMTLLoader;
 import us.ihmc.jMonkeyEngineToolkit.stlLoader.STLLoader;
 import us.ihmc.log.LogTools;
 import us.ihmc.tools.thread.CloseableAndDisposable;
@@ -144,6 +153,12 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
 
       System.setProperty("java.library.path", System.getProperty("java.library.path") + File.pathSeparator + scsCachePath.toString());
       NativeLibraryLoader.setCustomExtractionFolder(scsCachePath.toString());
+
+      if (System.getProperty("os.name").toLowerCase().contains("inux"))
+      {
+         GLFW.glfwInit();
+         UIManager.getLookAndFeel();
+      }
    }
 
    private final Object loadingStatus = new Object();
@@ -184,6 +199,9 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
    private HeightMap heightMap = null;
    private AppearanceDefinition terrainAppearance = null;
 
+   // Only available when renderType == RenderType.CANVAS
+   private AWTPanelPostRender canvas = null;
+
    public JMERenderer(RenderType renderType)
    {
       this(renderType, null);
@@ -192,6 +210,7 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
    public JMERenderer(RenderType renderType, Mouse3DInterface mouse3dJoystick)
    {
       super();
+
       this.renderType = renderType;
       mouse3DJoystick = mouse3dJoystick;
 
@@ -353,32 +372,60 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
          throw new RuntimeException("Cannot get canvas if rendertype not is canvas");
       }
 
-      JmeCanvasContext ctx = (JmeCanvasContext) getContext();
-
-      return ctx.getCanvas();
+      return canvas;
    }
 
    private void initializeCanvas()
    {
-      AppSettings appSettings = new AppSettings(true);
-      appSettings.setWidth(1200);
-      appSettings.setHeight(600);
-      appSettings.setAudioRenderer(null);
-      appSettings.setVSync(true);
-      setSettings(appSettings);
+      settings = new AppSettings(true);
+      settings.setWidth(1200);
+      settings.setHeight(600);
+      settings.setAudioRenderer(null);
+      settings.setVSync(true);
+      settings.setRenderer(AppSettings.LWJGL_OPENGL32);
 
       setPauseOnLostFocus(false);
 
-      createCanvas();
-      JmeCanvasContext ctx = (JmeCanvasContext) getContext();
-      ctx.setSystemListener(this);
       Dimension dim = new Dimension(1200, 600);
-      ctx.getCanvas().setPreferredSize(dim);
+      canvas = new AWTPanelPostRender();
+      canvas.setPreferredSize(dim);
 
+      context = new LwjglOffscreenBuffer()
+      {
+         AwtMouseInput awtMouseInput;
+         AwtKeyInput awtKeyInput;
+
+         @Override
+         public MouseInput getMouseInput()
+         {
+            if (awtMouseInput == null)
+            {
+               awtMouseInput = new AwtMouseInput();
+               awtMouseInput.setInputSource(canvas);
+            }
+            return awtMouseInput;
+         }
+
+         @Override
+         public KeyInput getKeyInput()
+         {
+            if (awtKeyInput == null)
+            {
+               awtKeyInput = new AwtKeyInput();
+               awtKeyInput.setInputSource(canvas);
+            }
+            return awtKeyInput;
+         }
+      };
+
+      context.setSettings(settings);
+      context.setSystemListener(this);
+
+      // Create the app state dedicated to AWT component rendering
       contextManager = new CanvasContextManager(this);
-      addRepaintListeners(ctx.getCanvas());
+      addRepaintListeners(canvas);
 
-      startCanvas();
+      context.create(false);
    }
 
    private void initializeAWTPanels()
@@ -757,6 +804,14 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
       }
    }
 
+   @Override
+   public void initialize()
+   {
+      super.initialize();
+      if (canvas != null)
+         canvas.initialize(renderManager);
+   }
+
    /**
     * We override {@link SimpleApplication#update()} with our custom implementation that does not
     * render anything unless necessary.
@@ -808,6 +863,9 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
       if (!lazyRendering || lazyRendersToPerform > 0)
       {
          renderManager.render(tpf, context.isRenderable());
+         if (canvas != null)
+            canvas.postFrame();
+
          lazyRendersToPerform = Math.max(0, lazyRendersToPerform - 1);
       }
       simpleRender(renderManager);
