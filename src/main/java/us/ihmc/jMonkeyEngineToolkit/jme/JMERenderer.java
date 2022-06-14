@@ -52,6 +52,7 @@ import com.jme3.renderer.opengl.GLRenderer;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.jme3.scene.plugins.OBJLoader;
 import com.jme3.scene.plugins.ogre.MaterialLoader;
 import com.jme3.system.AppSettings;
 import com.jme3.system.JmeSystem;
@@ -120,8 +121,8 @@ public class JMERenderer extends SimpleApplication implements Graphics3DAdapter,
     * loggers to keep a reference to each of them so any changes will remain permanent.
     */
    private final Logger[] jmeLoggers = new Logger[] {Logger.getLogger(FXBumpMaterialGenerator.class.getName()),
-         Logger.getLogger(ColladaDocumentV14.class.getName()), Logger.getLogger(GLRenderer.class.getName()), Logger.getLogger(AssetConfig.class.getName()),
-         Logger.getLogger(JmeSystem.class.getName()), Logger.getLogger(LwjglContext.class.getName())};
+         Logger.getLogger(ColladaDocumentV14.class.getName()), Logger.getLogger(OBJLoader.class.getName()), Logger.getLogger(GLRenderer.class.getName()),
+         Logger.getLogger(AssetConfig.class.getName()), Logger.getLogger(JmeSystem.class.getName()), Logger.getLogger(LwjglContext.class.getName())};
 
    public enum RenderType
    {
