@@ -40,10 +40,10 @@ mainDependencies {
    api("com.vividsolutions:jts:1.13")
    api("com.google.guava:guava:18.0")
 
-   api("us.ihmc:euclid:0.17.2")
-   api("us.ihmc:euclid-shape:0.17.2")
+   api("us.ihmc:euclid:0.18.1")
+   api("us.ihmc:euclid-shape:0.18.1")
    api("us.ihmc:ihmc-commons:0.31.0")
-   api("us.ihmc:ihmc-graphics-description:0.19.6")
+   api("us.ihmc:ihmc-graphics-description:0.19.7")
 }
 
 testDependencies {
