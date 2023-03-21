@@ -7,7 +7,7 @@ plugins {
 
 ihmc {
    group = "us.ihmc"
-   version = "0.21.4"
+   version = "0.21.5"
    vcsUrl = "https://github.com/ihmcrobotics/ihmc-jmonkey-engine-toolkit"
    openSource = true
 
